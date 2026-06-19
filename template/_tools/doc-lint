@@ -1,0 +1,627 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+doc-lint — YAML-Frontmatter-Validator + Staleness-Check + --fix
+
+Produktions-Script. Adaptiert von BACHs tools/skill_header_gen.py (867 Zeilen).
+Kern-Funktionen (parse_yaml_frontmatter, normalize_header,
+generate_header_from_content, render_yaml_header) sind strukturell
+1:1 übernommen, auf project-docs-Schema angepasst.
+
+Was es tut:
+  1. Scannt konfigurierte Meta-Files auf YAML-Frontmatter
+  2. Validiert Pflichtfelder pro file-type
+  3. Prüft Staleness (last_verified > N Tage alt = WARN)
+  4. --fix: Fehlende Felder einfügen, in Standard-Reihenfolge sortieren,
+           Default-Werte aus Content/Pfad ableiten
+  5. --update-dates: updated + last_verified auf heute setzen
+
+Usage:
+  doc-lint                    # Check alle Meta-Files im cwd
+  doc-lint --file CLAUDE.md   # Nur ein File
+  doc-lint --fix              # Fehlende Felder einfügen
+  doc-lint --update-dates     # Timestamps auf heute setzen
+  doc-lint --max-age 60       # Staleness-Threshold (default: 30)
+  doc-lint --strict           # Exit != 0 auch bei Warnings
+
+Requirements:
+  - python >= 3.8
+  - PyYAML (für robustes Parsing)
+
+Referenz: siehe BACH tools/skill_header_gen.py
+  - parse_yaml_frontmatter() — BACH Zeilen 121-158
+  - normalize_header() — BACH Zeilen 161-228
+  - generate_header_from_content() — BACH Zeilen 231-296
+  - render_yaml_header() — BACH Zeilen 299-380
+"""
+
+__version__ = "1.0.0"
+
+import argparse
+import re
+import sys
+from datetime import date, datetime
+from pathlib import Path
+
+# Windows Console Encoding Fix (aus BACH archive_done_tasks.py übernommen)
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+try:
+    import yaml
+    HAS_YAML = True
+except ImportError:
+    HAS_YAML = False
+
+# ============================================================================
+# SCHEMA-DEFINITIONEN (pro File-Typ)
+# ============================================================================
+
+TODAY = date.today().isoformat()
+DEFAULT_VERSION = "0.1.0"
+DEFAULT_AUTHOR = "[author]"
+
+# Files die gescannt werden + deren erwartetes Schema
+FILE_SCHEMAS = {
+    "CLAUDE.md": {
+        "type": "project-docs",
+        "required": [
+            "name", "type", "version", "created", "updated",
+            "reason_last_change",
+            "last_verified", "description"
+        ],
+        "optional": ["profile", "author", "anthropic_compatible"],
+        "field_order": [
+            "name", "type", "profile", "version", "created", "updated",
+            "reason_last_change",
+            "last_verified", "author", "anthropic_compatible", "description"
+        ],
+    },
+    "START.md": {
+        "type": "session-bootstrap",
+        "required": ["name", "type", "version", "updated", "last_verified"],
+        "optional": ["description"],
+        "field_order": [
+            "name", "type", "version", "updated", "last_verified", "description"
+        ],
+    },
+    "STATE.md": {
+        "type": "state-snapshot",
+        "required": ["name", "type", "updated", "updated_by", "current_phase"],
+        "optional": ["last_verified", "description"],
+        "field_order": [
+            "name", "type", "version", "updated", "updated_by",
+            "current_phase", "last_verified", "description"
+        ],
+    },
+}
+
+MAX_AGE_DEFAULT = 30  # Tage
+
+
+def _is_placeholder_value(value) -> bool:
+    return isinstance(value, str) and value.startswith("[") and value.endswith("]")
+
+
+def is_template_source_root(root: Path) -> bool:
+    """True nur für das kanonische project-docs-Quelltemplate."""
+    return (
+        root.name == "project-docs"
+        and (root / "TEMPLATE.md").exists()
+        and (root / "_tools" / "init-project").exists()
+    )
+
+
+# ============================================================================
+# YAML-FRONTMATTER PARSER (adaptiert von BACH skill_header_gen.py:121)
+# ============================================================================
+
+def parse_yaml_frontmatter(content: str) -> tuple[dict, str, bool]:
+    """Parse YAML frontmatter from markdown content.
+
+    Returns:
+        (yaml_dict, body_text, had_frontmatter)
+    """
+    content = content.lstrip("\ufeff")  # strip BOM
+    lines = content.split("\n")
+
+    if not lines or lines[0].strip() != "---":
+        return {}, content, False
+
+    end_idx = None
+    for i in range(1, len(lines)):
+        if lines[i].strip() == "---":
+            end_idx = i
+            break
+
+    if end_idx is None:
+        return {}, content, False
+
+    yaml_text = "\n".join(lines[1:end_idx])
+    body_text = "\n".join(lines[end_idx + 1:])
+
+    if HAS_YAML:
+        try:
+            data = yaml.safe_load(yaml_text) or {}
+        except yaml.YAMLError as e:
+            print(f"  [WARN] YAML parse error: {e}", file=sys.stderr)
+            data = {}
+    else:
+        # Fallback: naive regex-based parser (nur flache key:value + |-blöcke)
+        data = _naive_yaml_parse(yaml_text)
+
+    return data, body_text, True
+
+
+def _naive_yaml_parse(yaml_text: str) -> dict:
+    """Fallback-Parser ohne PyYAML — nur flache Strukturen + multi-line |."""
+    result = {}
+    current_key = None
+    current_multi = []
+
+    for raw_line in yaml_text.split("\n"):
+        line = raw_line.rstrip()
+        if not line.strip():
+            continue
+
+        # Multi-line continuation
+        if current_key and line.startswith("  "):
+            current_multi.append(line[2:])
+            continue
+
+        # Finish previous multi-line
+        if current_key and current_multi:
+            result[current_key] = "\n".join(current_multi).strip()
+            current_key = None
+            current_multi = []
+
+        if ":" in line and not line.startswith(" "):
+            key, _, value = line.partition(":")
+            key = key.strip()
+            value = value.strip()
+            if value == "|" or value == ">":
+                current_key = key
+                current_multi = []
+            else:
+                # Strip quotes
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1]
+                elif value.startswith("'") and value.endswith("'"):
+                    value = value[1:-1]
+                # Type coercion for booleans
+                if value.lower() == "true":
+                    value = True
+                elif value.lower() == "false":
+                    value = False
+                result[key] = value
+
+    # Cleanup last multi-line
+    if current_key and current_multi:
+        result[current_key] = "\n".join(current_multi).strip()
+
+    return result
+
+
+# ============================================================================
+# HEADER NORMALIZATION (adaptiert von BACH skill_header_gen.py:161)
+# ============================================================================
+
+def normalize_header(data: dict, file_path: Path, schema: dict) -> dict:
+    """Normalize a parsed YAML header to the standard format.
+
+    - Fügt fehlende Pflichtfelder mit Defaults ein
+    - Behält existierende Werte (überschreibt nicht)
+    - Ordnet Felder in field_order-Reihenfolge
+    """
+    normalized = {}
+
+    # Detect defaults
+    detected_name = _detect_name(file_path)
+    detected_type = schema["type"]
+
+    # Fülle Felder in der Standard-Reihenfolge
+    for field in schema["field_order"]:
+        if field == "name":
+            normalized[field] = data.get("name") or detected_name
+        elif field == "type":
+            normalized[field] = data.get("type") or detected_type
+        elif field == "version":
+            normalized[field] = str(data.get("version", DEFAULT_VERSION))
+        elif field == "profile":
+            if "profile" in data and data["profile"]:
+                normalized[field] = data["profile"]
+            # sonst: optional, nicht einfügen
+        elif field == "created":
+            normalized[field] = str(data.get("created", TODAY))
+        elif field == "updated":
+            normalized[field] = str(data.get("updated", TODAY))
+        elif field == "reason_last_change":
+            normalized[field] = data.get("reason_last_change", "[Was wurde warum geändert]")
+        elif field == "last_verified":
+            normalized[field] = str(data.get("last_verified", TODAY))
+        elif field == "updated_by":
+            normalized[field] = data.get("updated_by", "Claude")
+        elif field == "current_phase":
+            normalized[field] = data.get("current_phase", "[phase-name]")
+        elif field == "author":
+            if "author" in data and data["author"]:
+                normalized[field] = data["author"]
+            # sonst: optional
+        elif field == "anthropic_compatible":
+            normalized[field] = data.get("anthropic_compatible", True)
+        elif field == "description":
+            normalized[field] = data.get("description", "").strip() or "[description]"
+
+    return normalized
+
+
+def _detect_name(file_path: Path) -> str:
+    """Detect project-name from parent directory."""
+    # Für CLAUDE.md im project-root: parent dir name
+    parent = file_path.resolve().parent.name
+    if file_path.name == "CLAUDE.md":
+        return parent
+    # Für STATE.md / START.md: parent dir + "-state"/"-start" Suffix
+    stem_lower = file_path.stem.lower()
+    return f"{parent}-{stem_lower}"
+
+
+# ============================================================================
+# HEADER GENERATION aus Content (adaptiert von BACH:231)
+# ============================================================================
+
+def generate_header_from_content(content: str, file_path: Path, schema: dict) -> dict:
+    """Bootstrap: Wenn kein YAML-Header da ist, baue einen aus Content-Hints."""
+    header = {
+        "name": _detect_name(file_path),
+        "type": schema["type"],
+        "version": DEFAULT_VERSION,
+        "created": TODAY,
+        "updated": TODAY,
+        "last_verified": TODAY,
+        "description": "[description]",
+    }
+
+    if schema["type"] == "project-docs":
+        header["reason_last_change"] = "[Was wurde warum geändert]"
+
+    # Description aus erster Prose-Zeile nach H1 oder Blockquote
+    lines = content.strip().split("\n")
+    desc_lines = []
+    in_desc = False
+
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("#"):
+            if in_desc:
+                break
+            continue
+        if not stripped and not in_desc:
+            continue
+        if stripped.startswith(("```", "---", "|")):
+            if in_desc:
+                break
+            continue
+        if stripped.startswith(">"):
+            desc_text = stripped.lstrip("> ").strip()
+            if desc_text and len(desc_text) > 10:
+                desc_lines.append(desc_text)
+                in_desc = True
+            continue
+        if stripped:
+            desc_lines.append(stripped)
+            in_desc = True
+        elif in_desc:
+            break
+
+    if desc_lines:
+        header["description"] = " ".join(desc_lines)[:300]
+
+    # Version aus Content (falls dort erwähnt)
+    version_match = re.search(
+        r"(?:Version|version|VERSION)[:\s]+v?(\d+\.\d+(?:\.\d+)?)",
+        content,
+    )
+    if version_match:
+        header["version"] = version_match.group(1)
+
+    # Type-specific extras
+    if schema["type"] == "state-snapshot":
+        header["updated_by"] = "Claude"
+        header["current_phase"] = "[phase-name]"
+
+    return header
+
+
+# ============================================================================
+# HEADER RENDERER (adaptiert von BACH skill_header_gen.py:299)
+# ============================================================================
+
+def render_yaml_header(data: dict, schema: dict) -> str:
+    """Render header dict as YAML frontmatter string in standard order."""
+    lines = ["---"]
+
+    for field in schema["field_order"]:
+        if field not in data:
+            continue
+        value = data[field]
+
+        if isinstance(value, bool):
+            lines.append(f"{field}: {str(value).lower()}")
+        elif field == "description":
+            # Multi-line format für längere Descriptions
+            desc = str(value).strip()
+            if "\n" in desc or len(desc) > 60:
+                lines.append(f"{field}: |")
+                for desc_line in desc.split("\n"):
+                    lines.append(f"  {desc_line}")
+            else:
+                lines.append(f"{field}: {desc}")
+        else:
+            lines.append(f"{field}: {value}")
+
+    lines.append("---")
+    return "\n".join(lines)
+
+
+# ============================================================================
+# LINT-LOGIK
+# ============================================================================
+
+class LintResult:
+    def __init__(self, filename: str):
+        self.filename = filename
+        self.errors: list[str] = []
+        self.warnings: list[str] = []
+        self.file_path: Path | None = None
+        self.parsed_header: dict = {}
+        self.body: str = ""
+        self.had_frontmatter: bool = False
+
+    def add_error(self, msg: str) -> None:
+        self.errors.append(msg)
+
+    def add_warning(self, msg: str) -> None:
+        self.warnings.append(msg)
+
+    def has_errors(self) -> bool:
+        return bool(self.errors)
+
+    def print_report(self) -> None:
+        if not self.errors and not self.warnings:
+            print(f"  OK   {self.filename}")
+            return
+        for err in self.errors:
+            print(f"  FAIL {self.filename}: {err}")
+        for warn in self.warnings:
+            print(f"  WARN {self.filename}: {warn}")
+
+
+def check_staleness(fm: dict, max_age: int) -> tuple[bool, int]:
+    """Returns (is_stale, age_in_days)."""
+    lv = str(fm.get("last_verified", ""))
+    if not lv or lv.startswith("["):
+        return True, -1
+
+    try:
+        lv_date = datetime.strptime(lv, "%Y-%m-%d").date()
+    except ValueError:
+        return True, -1
+
+    age = (date.today() - lv_date).days
+    return age > max_age, age
+
+
+def lint_file(
+    path: Path,
+    schema: dict,
+    max_age: int,
+    allow_template_placeholders: bool = False,
+) -> LintResult:
+    """Lintet ein einzelnes File."""
+    result = LintResult(path.name)
+    result.file_path = path
+
+    if not path.exists():
+        result.add_warning("File existiert nicht (optional?)")
+        return result
+
+    content = path.read_text(encoding="utf-8")
+    fm, body, had_fm = parse_yaml_frontmatter(content)
+    result.parsed_header = fm
+    result.body = body
+    result.had_frontmatter = had_fm
+
+    if not had_fm:
+        result.add_error("Kein YAML-Frontmatter gefunden")
+        return result
+
+    # Type-Check
+    expected_type = schema["type"]
+    actual_type = fm.get("type", "")
+    if actual_type != expected_type:
+        result.add_error(
+            f"type-Mismatch: erwartet '{expected_type}', gefunden '{actual_type or '(fehlt)'}'"
+        )
+
+    # Pflichtfelder prüfen
+    missing = []
+    for field in schema["required"]:
+        value = fm.get(field)
+        if value is None or value == "":
+            missing.append(field)
+            continue
+        if _is_placeholder_value(value) and not allow_template_placeholders:
+            missing.append(field)
+    if missing:
+        result.add_error(f"Pflichtfelder fehlen/Platzhalter: {', '.join(missing)}")
+
+    # Staleness
+    if not (allow_template_placeholders and _is_placeholder_value(fm.get("last_verified"))):
+        is_stale, age = check_staleness(fm, max_age)
+        if is_stale:
+            if age == -1:
+                result.add_warning("last_verified ist nicht gesetzt oder ungültig")
+            else:
+                result.add_warning(
+                    f"last_verified ist {age} Tage alt (max: {max_age})"
+                )
+
+    return result
+
+
+def fix_file(path: Path, schema: dict, update_dates: bool, dry_run: bool = False) -> bool:
+    """Repariert ein File: fügt fehlende Felder ein, sortiert, schreibt zurück.
+
+    Returns True wenn etwas geändert wurde.
+    """
+    if not path.exists():
+        print(f"  SKIP {path.name}: existiert nicht")
+        return False
+
+    content = path.read_text(encoding="utf-8")
+    fm, body, had_fm = parse_yaml_frontmatter(content)
+
+    if not had_fm:
+        # Auto-generate from content
+        print(f"  FIX  {path.name}: generiere frischen Header aus Content")
+        fm = generate_header_from_content(content, path, schema)
+        body = content  # gesamter alter content wird zum body
+
+    # Normalize (fehlende Felder einfügen)
+    normalized = normalize_header(fm, path, schema)
+
+    # Dates updaten falls gewünscht
+    if update_dates:
+        normalized["updated"] = TODAY
+        if "last_verified" in normalized:
+            normalized["last_verified"] = TODAY
+
+    # Neuen Header rendern
+    new_header = render_yaml_header(normalized, schema)
+
+    # Zusammenbauen
+    if body and not body.startswith("\n"):
+        new_content = new_header + "\n\n" + body.lstrip()
+    else:
+        new_content = new_header + body
+
+    # Prüfe ob Änderung nötig
+    if new_content == content:
+        print(f"  OK   {path.name}: keine Änderung nötig")
+        return False
+
+    if dry_run:
+        print(f"  [DRY] {path.name}: würde aktualisiert werden")
+        return True
+
+    # Schreiben
+    path.write_text(new_content, encoding="utf-8")
+    print(f"  FIX  {path.name}: Header aktualisiert")
+    return True
+
+
+# ============================================================================
+# CLI
+# ============================================================================
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Lint YAML-Frontmatter in project docs",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__,
+    )
+    parser.add_argument("--file", type=Path, help="Nur dieses File prüfen")
+    parser.add_argument("--fix", action="store_true", help="Fehlende Felder einfügen")
+    parser.add_argument("--update-dates", action="store_true",
+                        help="updated + last_verified auf heute setzen")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Zeigt --fix Plan ohne zu schreiben")
+    parser.add_argument("--max-age", type=int, default=MAX_AGE_DEFAULT,
+                        help=f"Staleness-Threshold in Tagen (default: {MAX_AGE_DEFAULT})")
+    parser.add_argument("--strict", action="store_true",
+                        help="Exit != 0 auch bei Warnings")
+    parser.add_argument("--root", type=Path, default=Path.cwd(),
+                        help="Projekt-Root (default: cwd)")
+    args = parser.parse_args()
+    template_source_mode = is_template_source_root(args.root.resolve())
+
+    if not HAS_YAML:
+        print("[INFO] PyYAML nicht installiert — nutze Fallback-Parser "
+              "(funktioniert für einfache Fälle)", file=sys.stderr)
+
+    print(f"==> Root:    {args.root.resolve()}")
+    print(f"==> Max age: {args.max_age} days")
+    if template_source_mode:
+        print("==> Mode:    template-source (Platzhalter in Meta-Files erlaubt)")
+    if args.fix:
+        print(f"==> Mode:    FIX {'(dry-run)' if args.dry_run else ''}")
+    if args.update_dates:
+        print(f"==> Dates:   will update updated + last_verified")
+    print()
+
+    results: list[LintResult] = []
+
+    if args.file:
+        filename = args.file.name
+        schema = FILE_SCHEMAS.get(filename)
+        if not schema:
+            print(f"ERROR: Kein Schema für '{filename}'", file=sys.stderr)
+            print(f"Verfügbar: {', '.join(FILE_SCHEMAS.keys())}", file=sys.stderr)
+            sys.exit(2)
+        path = args.file if args.file.is_absolute() else args.root / args.file
+        result = lint_file(
+            path,
+            schema,
+            args.max_age,
+            allow_template_placeholders=template_source_mode,
+        )
+        results.append(result)
+    else:
+        for filename, schema in FILE_SCHEMAS.items():
+            path = args.root / filename
+            result = lint_file(
+                path,
+                schema,
+                args.max_age,
+                allow_template_placeholders=template_source_mode,
+            )
+            results.append(result)
+
+    # Lint-Report
+    print("Results:")
+    for r in results:
+        r.print_report()
+
+    # Fix-Pass
+    if args.fix or args.update_dates:
+        print("\n==> Fixing...")
+        for r in results:
+            if not r.file_path:
+                continue
+            schema = FILE_SCHEMAS.get(r.filename)
+            if not schema:
+                continue
+            # Fix wenn Errors da sind ODER update_dates verlangt
+            if r.has_errors() or args.update_dates or not r.had_frontmatter:
+                fix_file(r.file_path, schema, args.update_dates, args.dry_run)
+
+    # Exit-Code
+    any_errors = any(r.has_errors() for r in results)
+    any_warnings = any(r.warnings for r in results)
+
+    print()
+    if any_errors and not args.fix:
+        print("FAIL: Pflichtfelder fehlen (nutze --fix zum Reparieren)")
+        sys.exit(1)
+    if args.strict and any_warnings:
+        print("FAIL (strict): Warnings gefunden")
+        sys.exit(1)
+
+    print("OK: Alle geprüften Files bestehen (oder wurden gefixt)")
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

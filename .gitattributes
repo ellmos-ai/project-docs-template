@@ -1,0 +1,7 @@
+# Keep template scripts and docs stable across Windows/macOS/Linux checkouts.
+* text=auto eol=lf
+
+template/_tools/* text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+*.txt text eol=lf

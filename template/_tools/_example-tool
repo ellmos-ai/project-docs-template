@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# example-tool — Minimal-Template für ein neues _tools/-Script
+#
+# Dies ist ein BEISPIEL, das als Ausgangspunkt für eigene Tools dient.
+# Beim Anlegen eines echten Tools diese Datei kopieren, umbenennen und
+# die TODO-Markierungen durch echten Code ersetzen.
+#
+# Usage:
+#   _tools/example-tool [OPTIONS] [ARG]
+#
+# Options:
+#   -y, --yes        Skip confirmation prompt
+#   -h, --help       Show this help
+#
+# Arguments:
+#   ARG              [Beschreibung des Arguments]
+#
+# Requirements:
+#   - bash >= 4.0
+#   - [weitere tools wie git, gh, python...]
+#
+# Safety features:
+#   - set -euo pipefail (jeder Fehler = Abbruch)
+#   - trap EXIT/INT/TERM für Cleanup
+#   - --force-with-lease statt --force bei git-Operationen
+#   - Confirmation-Prompt vor destruktiven Aktionen (außer --yes)
+
+set -euo pipefail
+
+# ---- Option Parsing ----
+SKIP_CONFIRM=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -y|--yes)
+      SKIP_CONFIRM=1
+      shift
+      ;;
+    -h|--help)
+      sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'
+      exit 0
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      echo "ERROR: unknown option: $1" >&2
+      exit 2
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+# ---- Argument Handling ----
+ARG="${1:-}"
+
+if [[ -z "$ARG" ]]; then
+  echo "ERROR: missing required argument" >&2
+  echo "Run with --help for usage" >&2
+  exit 1
+fi
+
+# ---- Cleanup Trap (vor destruktiven Operationen registrieren) ----
+NEEDS_CLEANUP=0
+cleanup() {
+  local exit_code=$?
+  if [[ $NEEDS_CLEANUP -eq 1 ]]; then
+    echo "==> Cleanup..."
+    # TODO: hier die Reverse-Operation implementieren
+    echo "    OK cleaned up"
+  fi
+  exit $exit_code
+}
+trap cleanup EXIT INT TERM
+
+# ---- Confirmation Prompt ----
+echo "==> About to: [TODO: Beschreibe was passiert]"
+if [[ $SKIP_CONFIRM -eq 0 ]]; then
+  read -r -p "Continue? [y/N] " reply
+  [[ "$reply" =~ ^[Yy]$ ]] || { echo "Aborted."; exit 1; }
+fi
+
+# ---- Main Logic ----
+echo "==> Doing the thing..."
+NEEDS_CLEANUP=1
+
+# TODO: hier die eigentliche Logik
+echo "    Arg war: $ARG"
+
+echo "==> Done."
+# trap cleanup läuft auf EXIT

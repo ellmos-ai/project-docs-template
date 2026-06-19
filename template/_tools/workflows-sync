@@ -1,0 +1,339 @@
+#!/usr/bin/env python3
+"""
+workflows-sync — Generiert WORKFLOWS.md-Router aus workflows/*.md
+
+Concept-Script. Direkt inspiriert (und konzeptionell adaptiert) von BACHs
+tools/workflows_export.py. Es folgt dem selben Muster: Dateisystem ist die
+Source of Truth, Markdown-Mirror wird automatisch generiert.
+
+Was es tut:
+  1. Scannt workflows/ (und Unterordner für Kategorien)
+  2. Für jede workflows/*.md:
+     - Extrahiert H1-Titel
+     - Extrahiert "Purpose"-Abschnitt (1-Zeiler)
+     - Extrahiert Frequency/Duration falls vorhanden
+  3. Generiert WORKFLOWS.md im Projekt-Root mit:
+     - Kategorisierte Tabelle
+     - "Wann welcher Workflow"-Hinweise
+     - Zeitstempel + AUTOGEN-Marker
+  4. Ersetzt nur den Inhalt zwischen <!-- @auto-generated --> Markern
+
+Usage:
+    workflows-sync              # Scan cwd/workflows/, write cwd/WORKFLOWS.md
+    workflows-sync --root /path # Anderer Projekt-Root
+    workflows-sync --dry-run    # Zeigt Plan, schreibt nichts
+    workflows-sync --check      # Exit != 0 falls WORKFLOWS.md veraltet ist
+
+Requirements:
+    - python >= 3.8
+    - Keine externen Dependencies (nur stdlib)
+
+Status: CONCEPT. Parsing-Logik ist funktional, aber Edge-Cases (nested
+Kategorien, fehlende Frontmatter, etc.) brauchen Härtung.
+
+BACH-Referenz: tools/workflows_export.py — das Original-Pattern mit
+DB-Integration. Dieser Port nutzt kein DB, sondern nur Dateisystem.
+"""
+
+import argparse
+import re
+import sys
+from datetime import datetime
+from pathlib import Path
+
+# Windows Console Encoding Fix (aus BACH archive_done_tasks.py übernommen)
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+# ============================================================================
+# KONFIGURATION
+# ============================================================================
+
+WORKFLOWS_DIR_NAME = "workflows"
+OUTPUT_FILE_NAME = "WORKFLOWS.md"
+
+# AUTOGEN-Marker im Output-File — nur Inhalt dazwischen wird ersetzt
+AUTOGEN_START = "<!-- @auto-generated:workflow-index -->"
+AUTOGEN_END = "<!-- @end:workflow-index -->"
+
+DEFAULT_HEADER = """# WORKFLOWS.md — Router zu Multi-Step-Playbooks
+
+> **Zweck:** Navigation. „Welcher Workflow für welches Problem?"
+> **Content:** Siehe `workflows/*.md` — hier steht **kein** Prozedur-Detail.
+> **Auto-generiert** via `_tools/workflows-sync` zwischen den AUTOGEN-Markern.
+> Alles außerhalb bleibt unangetastet.
+
+"""
+
+
+# ============================================================================
+# PARSING
+# ============================================================================
+
+H1_PATTERN = re.compile(r"^#\s+(.+?)$", re.MULTILINE)
+PURPOSE_PATTERN = re.compile(
+    r"^##\s+Purpose\s*\n+(.+?)(?=\n\n|\n##|\Z)", re.MULTILINE | re.DOTALL
+)
+FREQUENCY_PATTERN = re.compile(r"\*\*Frequency:\*\*\s*([^\n]+)", re.IGNORECASE)
+DURATION_PATTERN = re.compile(r"\*\*Duration:\*\*\s*([^\n]+)", re.IGNORECASE)
+
+
+def parse_workflow_file(path: Path) -> dict:
+    """Extrahiert Meta-Info aus einer Workflow-Datei.
+
+    Returns dict mit: title, purpose, frequency, duration, relative_path
+    """
+    content = path.read_text(encoding="utf-8")
+
+    # H1 Titel
+    h1_match = H1_PATTERN.search(content)
+    title = h1_match.group(1).strip() if h1_match else path.stem
+
+    # Strip "Workflow: " prefix falls vorhanden
+    title = re.sub(r"^workflow:\s*", "", title, flags=re.IGNORECASE)
+
+    # Purpose (erster Absatz nach ## Purpose)
+    purpose_match = PURPOSE_PATTERN.search(content)
+    if purpose_match:
+        purpose = purpose_match.group(1).strip()
+        # Erste Zeile / bis ersten Doppelpunkt
+        purpose = purpose.split("\n")[0].strip()
+        # Kürzen auf ~150 Zeichen
+        if len(purpose) > 150:
+            purpose = purpose[:147] + "..."
+    else:
+        purpose = "(kein Purpose-Abschnitt gefunden)"
+
+    # Frequency + Duration
+    freq_match = FREQUENCY_PATTERN.search(content)
+    frequency = freq_match.group(1).strip() if freq_match else ""
+
+    dur_match = DURATION_PATTERN.search(content)
+    duration = dur_match.group(1).strip() if dur_match else ""
+
+    return {
+        "title": title,
+        "purpose": purpose,
+        "frequency": frequency,
+        "duration": duration,
+        "path": path,
+    }
+
+
+def collect_workflows(workflows_dir: Path) -> dict[str, list[dict]]:
+    """Sammelt alle Workflows, kategorisiert nach Unterordner.
+
+    Returns dict: {category_name: [workflow_dict, ...]}
+    Root-Level-Files werden in Kategorie "general" gruppiert.
+    """
+    if not workflows_dir.exists():
+        return {}
+
+    categories = {}
+
+    for md_file in sorted(workflows_dir.rglob("*.md")):
+        # Skip README.md und Files mit _example-Prefix
+        if md_file.name == "README.md":
+            continue
+        if md_file.name.startswith("_example"):
+            continue
+
+        # Kategorie = direkter Parent-Ordner relativ zu workflows_dir
+        rel = md_file.relative_to(workflows_dir)
+        if len(rel.parts) == 1:
+            category = "general"
+        else:
+            category = rel.parts[0]
+
+        wf = parse_workflow_file(md_file)
+        wf["relative_path"] = str(rel).replace("\\", "/")
+
+        categories.setdefault(category, []).append(wf)
+
+    return categories
+
+
+# ============================================================================
+# GENERATION
+# ============================================================================
+
+def generate_workflow_block(categories: dict[str, list[dict]]) -> str:
+    """Generiert den AUTOGEN-Block-Inhalt."""
+    lines = []
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+    total = sum(len(wfs) for wfs in categories.values())
+
+    lines.append(AUTOGEN_START)
+    lines.append(f"<!-- last-updated: {timestamp} -->")
+    lines.append(f"<!-- tool: _tools/workflows-sync -->")
+    lines.append(f"<!-- count: {total} workflows in {len(categories)} categories -->")
+    lines.append("")
+
+    if not categories:
+        lines.append("_Noch keine Workflows in `workflows/` vorhanden._")
+        lines.append("")
+        lines.append(AUTOGEN_END)
+        return "\n".join(lines)
+
+    # Sortiere Kategorien (general zuerst, Rest alphabetisch)
+    sorted_cats = sorted(categories.keys(), key=lambda c: (c != "general", c))
+
+    for category in sorted_cats:
+        workflows = categories[category]
+        cat_display = category.replace("-", " ").replace("_", " ").title()
+        lines.append(f"## {cat_display} ({len(workflows)})")
+        lines.append("")
+        lines.append("| Workflow | Purpose | Frequency | Duration |")
+        lines.append("|---|---|---|---|")
+        for wf in sorted(workflows, key=lambda w: w["title"]):
+            path_link = f"[`{wf['relative_path']}`](./workflows/{wf['relative_path']})"
+            freq = wf["frequency"] or "—"
+            dur = wf["duration"] or "—"
+            # Escape pipes in purpose
+            purpose_safe = wf["purpose"].replace("|", "\\|")
+            lines.append(
+                f"| **{wf['title']}** {path_link} | {purpose_safe} | {freq} | {dur} |"
+            )
+        lines.append("")
+
+    lines.append(AUTOGEN_END)
+    return "\n".join(lines)
+
+
+# ============================================================================
+# OUTPUT-FILE-UPDATE
+# ============================================================================
+
+def update_workflows_md(output_path: Path, new_block: str, dry_run: bool):
+    """Ersetzt den AUTOGEN-Block in WORKFLOWS.md, behält Rest unverändert.
+
+    Falls WORKFLOWS.md nicht existiert: legt neue Datei mit DEFAULT_HEADER an.
+    """
+    if not output_path.exists():
+        content = DEFAULT_HEADER + "\n" + new_block + "\n"
+        if dry_run:
+            print(f"  [DRY] Würde neues File anlegen: {output_path}")
+            return
+        output_path.write_text(content, encoding="utf-8")
+        print(f"  NEW: {output_path}")
+        return
+
+    content = output_path.read_text(encoding="utf-8")
+
+    # Regex für den ganzen Block inkl. Marker
+    pattern = re.compile(
+        rf"{re.escape(AUTOGEN_START)}.*?{re.escape(AUTOGEN_END)}",
+        re.DOTALL,
+    )
+
+    if pattern.search(content):
+        new_content = pattern.sub(new_block, content)
+    else:
+        # Keine Marker vorhanden — am Ende anhängen
+        new_content = content.rstrip() + "\n\n" + new_block + "\n"
+        print(f"  WARN: Keine AUTOGEN-Marker gefunden, füge am Ende ein")
+
+    if dry_run:
+        print(f"  [DRY] Würde updaten: {output_path}")
+        print(f"  [DRY] Block-Länge: {len(new_block)} Zeichen")
+        return
+
+    if content == new_content:
+        print(f"  UNCHANGED: {output_path}")
+        return
+
+    output_path.write_text(new_content, encoding="utf-8")
+    print(f"  UPDATED: {output_path}")
+
+
+def check_freshness(output_path: Path, new_block: str) -> bool:
+    """Gibt True zurück falls Output aktuell ist (kein Update nötig).
+
+    Für --check Modus: exit != 0 wenn nicht aktuell.
+    """
+    if not output_path.exists():
+        return False
+    content = output_path.read_text(encoding="utf-8")
+    pattern = re.compile(
+        rf"{re.escape(AUTOGEN_START)}.*?{re.escape(AUTOGEN_END)}",
+        re.DOTALL,
+    )
+    match = pattern.search(content)
+    if not match:
+        return False
+    # Vergleiche Content ohne Timestamp (der ändert sich immer)
+    existing = re.sub(r"last-updated: [^\n]+", "", match.group(0))
+    new = re.sub(r"last-updated: [^\n]+", "", new_block)
+    return existing == new
+
+
+# ============================================================================
+# CLI
+# ============================================================================
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Generate WORKFLOWS.md router from workflows/*.md",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__,
+    )
+    parser.add_argument(
+        "--root",
+        type=Path,
+        default=Path.cwd(),
+        help="Projekt-Root (default: cwd)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Nur anzeigen was passieren würde",
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Exit != 0 falls WORKFLOWS.md veraltet ist (für CI)",
+    )
+    args = parser.parse_args()
+
+    root = args.root.resolve()
+    workflows_dir = root / WORKFLOWS_DIR_NAME
+    output_path = root / OUTPUT_FILE_NAME
+
+    print(f"==> Root:       {root}")
+    print(f"==> Workflows:  {workflows_dir}")
+    print(f"==> Output:     {output_path}")
+
+    if not workflows_dir.exists():
+        print(f"\nWARN: workflows/ existiert nicht in {root}", file=sys.stderr)
+        print("Nichts zu tun.", file=sys.stderr)
+        sys.exit(0 if not args.check else 1)
+
+    print("\n==> Scanning workflows...")
+    categories = collect_workflows(workflows_dir)
+    total = sum(len(wfs) for wfs in categories.values())
+    print(f"    Found {total} workflows in {len(categories)} categories")
+    for cat, wfs in categories.items():
+        print(f"    - {cat}: {len(wfs)}")
+
+    print("\n==> Generating block...")
+    new_block = generate_workflow_block(categories)
+
+    if args.check:
+        fresh = check_freshness(output_path, new_block)
+        if fresh:
+            print("\n==> Check OK: WORKFLOWS.md ist aktuell")
+            sys.exit(0)
+        else:
+            print("\n==> Check FAIL: WORKFLOWS.md ist veraltet", file=sys.stderr)
+            print("Run 'workflows-sync' (ohne --check) zum Updaten", file=sys.stderr)
+            sys.exit(1)
+
+    print("\n==> Updating output...")
+    update_workflows_md(output_path, new_block, args.dry_run)
+
+    print("\n==> Fertig.")
+
+
+if __name__ == "__main__":
+    main()

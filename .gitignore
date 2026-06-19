@@ -1,0 +1,32 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Node / generated output
+node_modules/
+dist/
+build/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.key
+credentials.json
+
+# Local scratch
+tmp/
+temp/
+*.log

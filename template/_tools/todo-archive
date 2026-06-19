@@ -1,0 +1,291 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+todo-archive — Verschiebt erledigte Tasks aus TODO.md nach DONE.md
+
+Produktions-Script. Adaptiert von BACHs
+tools/maintenance/archive_done_tasks.py (90 Zeilen, JSON-basiert).
+
+Unterschied zum Original:
+  - BACH arbeitet mit tasks.json ({"status": "done"})
+  - Wir arbeiten mit Markdown (- [x] ...) in TODO.md
+  - Archiv-Ziel: DONE.md mit chronologischen Datums-Headers
+
+Kern-Muster (1:1 aus BACH übernommen):
+  1. Dry-run als Default, --apply für echte Ausführung
+  2. Load → Filter done → Move → Write both atomar
+  3. Statistik am Ende (Dateigröße, Anzahl)
+  4. Idempotent: Mehrfach-Aufruf verändert nichts
+
+Usage:
+  todo-archive                  # Dry-run (zeigt was passieren würde)
+  todo-archive --apply          # Wirklich ausführen
+  todo-archive --todo FILE      # Custom TODO-Pfad (default: TODO.md im cwd)
+  todo-archive --done FILE      # Custom DONE-Pfad (default: DONE.md im cwd)
+  todo-archive --apply --verbose
+
+Exit-Codes:
+  0 = OK (oder nichts zu tun)
+  1 = Fehler (File fehlt, Parser-Error)
+  2 = Invalid usage
+
+Referenz: siehe BACH tools/maintenance/archive_done_tasks.py (Kern-Logik).
+"""
+
+__version__ = "1.0.0"
+
+import argparse
+import re
+import sys
+from datetime import date
+from pathlib import Path
+
+# Windows Console Encoding Fix (aus BACH archive_done_tasks.py übernommen)
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+
+# ============================================================================
+# MARKDOWN TASK-PARSER
+# ============================================================================
+
+# Matched:
+#   - [x] Text
+#   -  [X]  Text   (loose whitespace)
+#   * [x] Text     (star statt dash)
+DONE_PATTERN = re.compile(
+    r"^(?P<indent>\s*)(?P<bullet>[-*])\s*\[(?P<mark>[xX])\]\s*(?P<text>.+?)\s*$",
+    re.MULTILINE,
+)
+
+
+def extract_done_tasks(content: str) -> tuple[list[str], str]:
+    """Extrahiert alle [x]-Zeilen, entfernt sie aus dem Content.
+
+    Returns:
+        (done_lines, remaining_content)
+        - done_lines: Liste der erledigten Tasks (als Markdown-Zeilen, ohne Indent)
+        - remaining_content: TODO.md-Content ohne die done-Zeilen
+    """
+    done = []
+    lines = content.split("\n")
+    kept = []
+
+    for line in lines:
+        match = DONE_PATTERN.match(line)
+        if match:
+            # Normalisierte Form: "- [x] text"
+            text = match.group("text").strip()
+            done.append(f"- [x] {text}")
+        else:
+            kept.append(line)
+
+    return done, "\n".join(kept)
+
+
+# ============================================================================
+# DONE.md WRITER
+# ============================================================================
+
+DATE_HEADER_PATTERN = re.compile(r"^## (\d{4}-\d{2}-\d{2})\s*$", re.MULTILINE)
+
+
+def append_to_done(done_content: str, new_tasks: list[str], today: str) -> str:
+    """Fügt neue Tasks unter heutigem Datum in DONE.md ein.
+
+    Logik:
+    1. Wenn DONE.md leer/neu: Erstelle Basis-Struktur mit heutigem Header
+    2. Wenn heute bereits einen Header hat: Tasks darunter anhängen
+    3. Sonst: Neuen Header vor dem ersten existierenden Header einfügen
+       (neueste oben — chronologisch umgekehrt)
+    """
+    if not done_content.strip():
+        # Leer oder nur Whitespace → frisches File
+        return _fresh_done_file(new_tasks, today)
+
+    # Prüfe ob heute-Header schon existiert
+    today_header = f"## {today}"
+    if today_header in done_content:
+        return _append_to_existing_date(done_content, new_tasks, today_header)
+
+    # Neuen Header oberhalb des ersten existierenden Headers einfügen
+    return _insert_new_date_section(done_content, new_tasks, today)
+
+
+def _fresh_done_file(new_tasks: list[str], today: str) -> str:
+    """Erstellt ein frisches DONE.md mit heutigen Tasks."""
+    lines = [
+        "# DONE.md — Erledigte Tasks (Archiv)",
+        "",
+        "> Automatisch gepflegt via `_tools/todo-archive`. Neueste oben.",
+        "",
+        f"## {today}",
+        "",
+    ]
+    lines.extend(new_tasks)
+    lines.append("")
+    return "\n".join(lines)
+
+
+def _append_to_existing_date(content: str, new_tasks: list[str], header: str) -> str:
+    """Fügt Tasks unter existierendem Datums-Header ein."""
+    lines = content.split("\n")
+    result = []
+    in_section = False
+    appended = False
+
+    for i, line in enumerate(lines):
+        result.append(line)
+        if line.strip() == header:
+            in_section = True
+            continue
+        if in_section and not appended:
+            # Finde Ende der Section (nächster Header oder EOF)
+            is_next_header = line.startswith("## ") and line.strip() != header
+            if is_next_header:
+                # Tasks direkt vor dem nächsten Header einfügen
+                result.insert(len(result) - 1, "")
+                for task in new_tasks:
+                    result.insert(len(result) - 1, task)
+                appended = True
+                in_section = False
+
+    if in_section and not appended:
+        # Section reicht bis EOF
+        if result and result[-1].strip():
+            result.append("")
+        result.extend(new_tasks)
+        result.append("")
+
+    return "\n".join(result)
+
+
+def _insert_new_date_section(content: str, new_tasks: list[str], today: str) -> str:
+    """Fügt einen neuen Datums-Header oberhalb des ersten existierenden ein."""
+    match = DATE_HEADER_PATTERN.search(content)
+    if not match:
+        # Kein Header existiert → am Ende anhängen
+        ending = "" if content.endswith("\n") else "\n"
+        section = f"\n## {today}\n\n" + "\n".join(new_tasks) + "\n"
+        return content + ending + section
+
+    # Einfügen vor dem ersten Header
+    insert_pos = match.start()
+    prefix = content[:insert_pos]
+    suffix = content[insert_pos:]
+
+    # Sicherstellen dass prefix mit Zeilenumbruch endet
+    if prefix and not prefix.endswith("\n\n"):
+        prefix = prefix.rstrip("\n") + "\n\n"
+
+    new_section = f"## {today}\n\n" + "\n".join(new_tasks) + "\n\n"
+    return prefix + new_section + suffix
+
+
+# ============================================================================
+# MAIN
+# ============================================================================
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Archive [x] tasks from TODO.md to DONE.md",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__,
+    )
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="Schreibt tatsächlich (ohne: dry-run)",
+    )
+    parser.add_argument(
+        "--todo",
+        type=Path,
+        default=Path("TODO.md"),
+        help="Pfad zur TODO.md (default: TODO.md im cwd)",
+    )
+    parser.add_argument(
+        "--done",
+        type=Path,
+        default=Path("DONE.md"),
+        help="Pfad zur DONE.md (default: DONE.md im cwd)",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Zeigt alle verschobenen Tasks (nicht nur die ersten 10)",
+    )
+    args = parser.parse_args()
+
+    todo_path = args.todo.resolve()
+    done_path = args.done.resolve()
+    today = date.today().isoformat()
+
+    print(f"==> TODO:  {todo_path}")
+    print(f"==> DONE:  {done_path}")
+    print(f"==> Today: {today}")
+    print(f"==> Mode:  {'APPLY' if args.apply else 'DRY-RUN (nutze --apply zum Schreiben)'}")
+    print()
+
+    # TODO.md laden
+    if not todo_path.exists():
+        print(f"ERROR: TODO.md existiert nicht: {todo_path}", file=sys.stderr)
+        sys.exit(1)
+
+    todo_content = todo_path.read_text(encoding="utf-8")
+    done_tasks, remaining_todo = extract_done_tasks(todo_content)
+
+    print(f"==> Gefunden: {len(done_tasks)} erledigte Tasks")
+
+    if not done_tasks:
+        print("    Nichts zu tun — keine [x]-Einträge.")
+        sys.exit(0)
+
+    # Preview
+    display_limit = None if args.verbose else 10
+    preview = done_tasks[:display_limit] if display_limit else done_tasks
+    print()
+    for task in preview:
+        print(f"    {task}")
+    if display_limit and len(done_tasks) > display_limit:
+        print(f"    ... und {len(done_tasks) - display_limit} weitere (--verbose für alle)")
+
+    if not args.apply:
+        print()
+        print("==> DRY-RUN: nichts geschrieben. Nutze --apply.")
+        sys.exit(0)
+
+    # DONE.md laden (oder leer starten)
+    if done_path.exists():
+        done_content = done_path.read_text(encoding="utf-8")
+    else:
+        done_content = ""
+
+    # Neue DONE.md bauen
+    new_done = append_to_done(done_content, done_tasks, today)
+
+    # Schreiben
+    print()
+    print("==> Schreibe...")
+
+    # TODO.md zuerst (um bei Fehler die alte Version in DONE zu behalten)
+    todo_size_before = todo_path.stat().st_size
+    todo_path.write_text(remaining_todo, encoding="utf-8")
+    todo_size_after = todo_path.stat().st_size
+
+    # DONE.md danach
+    done_size_before = done_path.stat().st_size if done_path.exists() else 0
+    done_path.write_text(new_done, encoding="utf-8")
+    done_size_after = done_path.stat().st_size
+
+    # Statistik
+    print(f"    OK  TODO.md: {todo_size_before} → {todo_size_after} bytes "
+          f"({todo_size_after - todo_size_before:+d})")
+    print(f"    OK  DONE.md: {done_size_before} → {done_size_after} bytes "
+          f"({done_size_after - done_size_before:+d})")
+    print()
+    print(f"==> {len(done_tasks)} Tasks archiviert unter # {today}")
+
+
+if __name__ == "__main__":
+    main()

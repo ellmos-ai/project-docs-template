@@ -1,0 +1,340 @@
+#!/usr/bin/env python3
+"""
+init-project — Template-Instantiator für project-docs
+
+Concept-Script (NICHT produktionsreif). Zeigt wie ein Template-Generator
+gebaut werden könnte, inspiriert von BACHs skill_generator.py.
+
+Was es tut:
+  1. Nimmt Ziel-Ordner, Projekt-Name und Profil (MINIMAL/STANDARD/FULL)
+  2. Kopiert die zum Profil gehörigen Files aus dem Template-Ordner
+  3. Ersetzt Platzhalter ([project-name], [YYYY-MM-DD], [author]) in allen Files
+  4. Initialisiert git repo (optional)
+  5. Lässt Git-/Commit-Härtung bewusst als TODO markiert
+
+Inspiration: BACHs tools/skill_generator.py mit 4-Profil-System.
+
+Usage:
+    init-project --target ./new-project --name MyProject --profile STANDARD
+    init-project --target ./new-project --name MyProject --profile MINIMAL --author "Max Mustermann"
+    init-project --target ./new-project --name MyProject --profile FULL --git
+
+Arguments:
+    --target       Zielordner für das neue Projekt (wird erstellt falls fehlend)
+    --name         Projekt-Name (wird in allen Templates als [project-name] gesetzt)
+    --profile      MINIMAL | STANDARD | FULL (default: STANDARD)
+    --author       Autor-Name für Frontmatter (default: git config user.name)
+    --git          Git repo initialisieren und ersten Commit anlegen
+    --dry-run      Nur anzeigen was passieren würde, nichts schreiben
+
+Status: CONCEPT — die eigentliche Implementierung ist bewusst ausgelassen.
+Siehe TODO-Marker im Code. Wenn du das Tool produktionsreif machen willst,
+adaptiere BACHs tools/skill_generator.py als Referenz.
+
+Requirements:
+    - python >= 3.8
+    - git (für --git Option)
+"""
+
+import argparse
+import sys
+from datetime import date
+from pathlib import Path
+
+# Windows Console Encoding Fix (aus BACH archive_done_tasks.py übernommen)
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+# ============================================================================
+# PROFIL-DEFINITIONEN
+# ============================================================================
+
+PROFILES = {
+    "MINIMAL": {
+        "description": "Kleine Projekte mit vollständigem Session-Kernset",
+        "root_files": [
+            "AGENTS.md",
+            "CLAUDE.md",
+            "README.md",
+            "START.md",
+            "STATE.md",
+            "TODO.md",
+            "DONE.md",
+        ],
+        "subdirs": ["_tools"],
+        "tools": ["todo-archive", "doc-lint"],
+    },
+    "STANDARD": {
+        "description": "Ernsthafte Projekte mit mehrmonatiger Lebensdauer",
+        "root_files": [
+            "AGENTS.md",
+            "CLAUDE.md",
+            "README.md",
+            "START.md",
+            "STATE.md",
+            "CHANGELOG.md",
+            "HEADER-RULES.md",
+            "CUT-AND-CLUE.md",
+            "DECISIONS.md",
+            "PATTERNS.md",
+            "TODO.md",
+            "DONE.md",
+        ],
+        "subdirs": ["_tools"],
+        "tools": ["todo-archive", "doc-lint"],
+    },
+    "FULL": {
+        "description": "Komplexe Projekte mit Multi-Agent / Auto-Generatoren",
+        "root_files": [
+            "CLAUDE.md",
+            "AGENTS.md",
+            "README.md",
+            "START.md",
+            "STATE.md",
+            "ARCHITECTURE.md",
+            "CHANGELOG.md",
+            "HEADER-RULES.md",
+            "CUT-AND-CLUE.md",
+            "DECISIONS.md",
+            "PATTERNS.md",
+            "WORKFLOWS.md",
+            "TOOLS.md",
+            "TODO.md",
+            "DONE.md",
+            "GLOSSARY.md",
+        ],
+        "subdirs": ["workflows", "_tools", ".github"],
+        "tools": [
+            "todo-archive",
+            "doc-lint",
+            "workflows-sync",
+        ],
+    },
+}
+
+# Pfad zum Template-Ordner (relativ zu diesem Script)
+TEMPLATE_ROOT = Path(__file__).resolve().parent.parent
+
+
+# ============================================================================
+# KERN-LOGIK
+# ============================================================================
+
+def replace_placeholders(content: str, context: dict) -> str:
+    """Ersetzt [project-name], [YYYY-MM-DD], [author] etc. in Template-Content.
+
+    TODO: Diese Funktion ist bewusst naiv. Für Produktion:
+    - Regex-basiertes Matching mit Word-Boundaries (nicht substring)
+    - Unterscheidung zwischen Frontmatter-Feldern (YAML) und Prose-Text
+    - Validierung der Ersetzungen
+    """
+    replacements = {
+        "[project-name]": context["name"],
+        "[Projektname]": context["name"],
+        "[MINIMAL|STANDARD|FULL]": context["profile"],
+        "[YYYY-MM-DD]": context["today"],
+        "[YYYY-MM-DD HH:MM]": f"{context['today']} 00:00",
+        "[author]": context["author"],
+        "[Autor: Claude / Mensch / Gemini / ...]": context["author"],
+        "[Claude | Gemini | Mensch]": "init-project",
+        "[phase-name]": "Initial Setup",
+        "[Was wurde warum geändert]": "Initiale Projektanlage via init-project",
+    }
+    for placeholder, value in replacements.items():
+        content = content.replace(placeholder, value)
+    return content
+
+
+def copy_template_file(src: Path, dst: Path, context: dict, dry_run: bool):
+    """Kopiert eine Template-Datei und ersetzt Platzhalter.
+
+    TODO: Für Produktion:
+    - Backup falls dst existiert
+    - Merge-Logik für bestehende Files (z.B. CLAUDE.md erweitern statt überschreiben)
+    - Binary-File-Erkennung (dieses Template hat keine, aber defensiv)
+    """
+    if not src.exists():
+        print(f"  WARN: Template-File fehlt: {src}", file=sys.stderr)
+        return
+
+    content = src.read_text(encoding="utf-8")
+    content = replace_placeholders(content, context)
+
+    if dry_run:
+        print(f"  [DRY] Would write: {dst}")
+        return
+
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    dst.write_text(content, encoding="utf-8")
+    print(f"  OK: {dst.relative_to(context['target'])}")
+
+
+def instantiate_profile(context: dict, dry_run: bool):
+    """Kopiert alle Files eines Profils in den Ziel-Ordner."""
+    profile = PROFILES[context["profile"]]
+    target = context["target"]
+
+    print(f"\n==> Profil: {context['profile']}")
+    print(f"    {profile['description']}")
+    print(f"==> Root-Files ({len(profile['root_files'])})")
+
+    for filename in profile["root_files"]:
+        src = TEMPLATE_ROOT / filename
+        dst = target / filename
+        copy_template_file(src, dst, context, dry_run)
+
+    # Unterordner: nur die profilierten Inhalte kopieren.
+    if profile["subdirs"]:
+        print(f"\n==> Unterordner ({len(profile['subdirs'])})")
+        for subdir_name in profile["subdirs"]:
+            subdir_src = TEMPLATE_ROOT / subdir_name
+            subdir_dst = target / subdir_name
+            if not subdir_src.is_dir():
+                continue
+
+            if subdir_name == "_tools":
+                copy_template_file(
+                    subdir_src / "README.md",
+                    subdir_dst / "README.md",
+                    context,
+                    dry_run,
+                )
+                for tool in profile["tools"]:
+                    copy_template_file(
+                        subdir_src / tool,
+                        subdir_dst / tool,
+                        context,
+                        dry_run,
+                    )
+                continue
+
+            if subdir_name == "workflows":
+                copy_template_file(
+                    subdir_src / "README.md",
+                    subdir_dst / "README.md",
+                    context,
+                    dry_run,
+                )
+                if context["profile"] == "FULL":
+                    copy_template_file(
+                        subdir_src / "_example-workflow.md",
+                        subdir_dst / "_example-workflow.md",
+                        context,
+                        dry_run,
+                    )
+                continue
+
+            for item in sorted(subdir_src.iterdir()):
+                if item.name.startswith("_example") and context["profile"] != "FULL":
+                    continue
+                copy_template_file(item, subdir_dst / item.name, context, dry_run)
+
+
+def init_git(target: Path, dry_run: bool):
+    """Initialisiert git repo und legt ersten Commit an.
+
+    TODO: Für Produktion:
+    - subprocess.run mit proper error handling
+    - .gitignore mit sinnvollen defaults
+    - Kein Commit wenn schon ein .git existiert
+    """
+    print(f"\n==> Git init")
+    if dry_run:
+        print("    [DRY] Würde git init + commit ausführen")
+        return
+    print("    TODO: subprocess.run(['git', 'init'], cwd=target)")
+    print("    TODO: initial .gitignore mit Python/Node/OS defaults")
+    print("    TODO: git add + initial commit")
+
+
+# ============================================================================
+# CLI
+# ============================================================================
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Instantiate a project-docs template with selected profile",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__,
+    )
+    parser.add_argument(
+        "--target",
+        type=Path,
+        required=True,
+        help="Zielordner für das neue Projekt",
+    )
+    parser.add_argument(
+        "--name",
+        required=True,
+        help="Projekt-Name",
+    )
+    parser.add_argument(
+        "--profile",
+        choices=list(PROFILES.keys()),
+        default="STANDARD",
+        help="Profil (default: STANDARD)",
+    )
+    parser.add_argument(
+        "--author",
+        default="",
+        help="Autor-Name (default: aus git config)",
+    )
+    parser.add_argument(
+        "--git",
+        action="store_true",
+        help="Git repo initialisieren",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Nur anzeigen, nichts schreiben",
+    )
+    args = parser.parse_args()
+
+    # Author fallback
+    author = args.author
+    if not author:
+        # TODO: git config user.name auslesen
+        author = "[author]"
+
+    context = {
+        "target": args.target.resolve(),
+        "name": args.name,
+        "profile": args.profile,
+        "author": author,
+        "today": date.today().isoformat(),
+    }
+
+    print(f"==> Target:  {context['target']}")
+    print(f"==> Name:    {context['name']}")
+    print(f"==> Author:  {context['author']}")
+    print(f"==> Date:    {context['today']}")
+
+    if args.dry_run:
+        print("==> MODE:    DRY-RUN (keine Änderungen)")
+
+    if context["target"].exists() and not args.dry_run:
+        if any(context["target"].iterdir()):
+            print(
+                f"\nERROR: Zielordner existiert und ist nicht leer: {context['target']}",
+                file=sys.stderr,
+            )
+            print("Nutze einen leeren Ordner oder --dry-run", file=sys.stderr)
+            sys.exit(1)
+
+    instantiate_profile(context, args.dry_run)
+
+    if args.git:
+        init_git(context["target"], args.dry_run)
+
+    print("\n==> Fertig.")
+    print(f"\nNächste Schritte:")
+    print(f"  cd {context['target']}")
+    print(f"  # Platzhalter in den Files ersetzen")
+    print(f"  # CLAUDE.md als ersten anfassen — das ist der Einstieg")
+    print(f"  # Dann 'last_verified'-Dates setzen")
+
+
+if __name__ == "__main__":
+    main()
