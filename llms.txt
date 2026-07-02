@@ -1,0 +1,42 @@
+## Last-checked: 2026-07-02
+
+# ellmos-ai/project-docs-template
+
+Agent-ready project documentation template with START/STATE/TODO/DONE,
+workflows, lightweight tooling, and LLM-friendly project memory.
+
+Canonical repository:
+https://github.com/ellmos-ai/project-docs-template
+
+Primary audience:
+- Maintainers who want predictable LLM-agent handoff files in a repo root.
+- Claude Code, Codex, Gemini CLI, and other coding-agent users.
+- Teams that need lightweight project state, decision, task, and workflow docs.
+- Template authors looking for a small alternative to heavy agent OS scaffolds.
+
+Important files:
+- `README.md`: human-facing overview and quick start.
+- `template/TEMPLATE.md`: rationale, profile definitions, and file-by-file explanation.
+- `template/_tools/init-project`: profile-based scaffold generator.
+- `template/START.md`: session bootstrap pattern.
+- `template/STATE.md`: current-state snapshot pattern.
+- `template/TODO.md` and `template/DONE.md`: active and completed task surfaces.
+- `template/DECISIONS.md` and `template/PATTERNS.md`: decision and practice logs.
+
+## Search Phrases
+
+```text
+agent-ready project documentation template
+LLM project docs template START STATE TODO DONE
+Claude Code Codex project documentation scaffold
+multi-agent repo handoff documentation template
+lightweight project memory template for coding agents
+project docs template with TODO DONE DECISIONS STATE
+```
+
+## Disambiguation
+
+This repository is a documentation scaffold for software, research, and
+operations projects that are maintained with LLM agents. It is not a runtime
+agent framework, not a task runner, and not a replacement for project-specific
+source code or CI.

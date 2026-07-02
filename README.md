@@ -1,5 +1,8 @@
 # Project Docs Template
 
+[![Template](https://img.shields.io/badge/template-agent--ready_project_docs-2f6f5e)](https://github.com/ellmos-ai/project-docs-template)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
 Agent-ready project documentation template with START/STATE/TODO/DONE,
 workflows, lightweight tooling, and LLM-friendly project memory.
 
@@ -7,6 +10,17 @@ This repository contains a compact documentation scaffold for projects that are
 maintained with LLM agents. The template focuses on clear project state,
 session handoff, task history, decision records, workflows, and small local
 utilities without turning the project into a heavy operating system.
+
+## Use This Template When
+
+| Situation | Why it helps |
+|---|---|
+| A new project will be maintained by Claude Code, Codex, Gemini CLI, or another coding agent | Gives the agent a predictable bootstrap path and current-state file. |
+| An existing repo has scattered notes, stale task files, or no handoff trail | Separates active work, completed work, decisions, patterns, and session state. |
+| Multiple agents or humans need to resume work safely | Keeps instructions, current state, workflows, and tools in distinct files. |
+
+This is a documentation and coordination template, not a runtime framework. It
+is meant to sit inside ordinary software, research, or operations repositories.
 
 ## What Is Included
 
@@ -39,6 +53,14 @@ Available profiles:
 You can also copy files manually from [`template/`](./template/) if you only
 need selected pieces.
 
+## Profile Comparison
+
+| Profile | Best for | Files copied |
+|---|---|---|
+| `MINIMAL` | Small repos, experiments, short-lived tools | Core agent instructions, start/state, TODO/DONE, essential tools |
+| `STANDARD` | Serious projects with decisions and recurring maintenance | Minimal set plus changelog, decisions, patterns, header and cut-and-clue rules |
+| `FULL` | Multi-agent or long-running projects with routers and workflows | Standard set plus architecture, workflow/tool routers, glossary, `.github/` |
+
 ## Design Principles
 
 - Every file has a distinct job.
@@ -49,6 +71,19 @@ need selected pieces.
 
 See [`template/TEMPLATE.md`](./template/TEMPLATE.md) for the full rationale and
 file-by-file explanation.
+
+## Discoverability
+
+Canonical search phrases:
+
+```text
+agent-ready project documentation template
+LLM project docs template START STATE TODO DONE
+Claude Code Codex project documentation scaffold
+multi-agent repo handoff documentation template
+```
+
+For LLM and crawler-oriented metadata, see [`llms.txt`](./llms.txt).
 
 ## License
 
