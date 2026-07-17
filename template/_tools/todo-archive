@@ -13,9 +13,9 @@ Unterschied zum Original:
 
 Kern-Muster (1:1 aus BACH übernommen):
   1. Dry-run als Default, --apply für echte Ausführung
-  2. Load → Filter done → Move → Write both atomar
+  2. Load → Filter done → Journal → Stage both → Replace with rollback/recovery
   3. Statistik am Ende (Dateigröße, Anzahl)
-  4. Idempotent: Mehrfach-Aufruf verändert nichts
+  4. Idempotent: Mehrfach-Aufruf und Crash-Retry duplizieren nichts
 
 Usage:
   todo-archive                  # Dry-run (zeigt was passieren würde)
@@ -35,8 +35,12 @@ Referenz: siehe BACH tools/maintenance/archive_done_tasks.py (Kern-Logik).
 __version__ = "1.0.0"
 
 import argparse
+import hashlib
+import json
+import os
 import re
 import sys
+import tempfile
 from datetime import date
 from pathlib import Path
 
@@ -184,6 +188,175 @@ def _insert_new_date_section(content: str, new_tasks: list[str], today: str) -> 
 
 
 # ============================================================================
+# TRANSACTIONAL WRITE
+# ============================================================================
+
+def _stage_text(path: Path, content: str) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    temp_path = Path(temp_name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        if path.exists():
+            os.chmod(temp_path, path.stat().st_mode)
+        return temp_path
+    except Exception:
+        temp_path.unlink(missing_ok=True)
+        raise
+
+
+def _restore(path: Path, original: str | None) -> None:
+    if original is None:
+        path.unlink(missing_ok=True)
+        return
+    staged = _stage_text(path, original)
+    try:
+        os.replace(staged, path)
+    finally:
+        staged.unlink(missing_ok=True)
+
+
+def _content_hash(content: str) -> str:
+    return hashlib.sha256(content.encode("utf-8")).hexdigest()
+
+
+def journal_path(todo_path: Path, done_path: Path) -> Path:
+    identity = hashlib.sha256(
+        f"{todo_path.resolve()}\0{done_path.resolve()}".encode("utf-8")
+    ).hexdigest()[:12]
+    return todo_path.parent / f".{todo_path.name}.todo-archive-{identity}.json"
+
+
+def _write_journal(
+    path: Path,
+    todo_path: Path,
+    original_todo: str,
+    new_todo: str,
+    done_path: Path,
+    original_done: str | None,
+    new_done: str,
+) -> None:
+    payload = {
+        "version": 1,
+        "todo_path": str(todo_path.resolve()),
+        "done_path": str(done_path.resolve()),
+        "original_todo_sha256": _content_hash(original_todo),
+        "new_todo_sha256": _content_hash(new_todo),
+        "original_done_sha256": _content_hash(original_done or ""),
+        "new_done_sha256": _content_hash(new_done),
+        "new_todo": new_todo,
+        "new_done": new_done,
+    }
+    staged = _stage_text(path, json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
+    try:
+        os.replace(staged, path)
+    finally:
+        staged.unlink(missing_ok=True)
+
+
+def recover_pending(todo_path: Path, done_path: Path) -> bool:
+    """Finish or clear an interrupted pair commit; fail on divergence."""
+    pending = journal_path(todo_path, done_path)
+    if not pending.exists():
+        return False
+    try:
+        payload = json.loads(pending.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"Transaktionsjournal ist nicht lesbar: {pending}: {exc}") from exc
+    if (
+        payload.get("version") != 1
+        or payload.get("todo_path") != str(todo_path.resolve())
+        or payload.get("done_path") != str(done_path.resolve())
+    ):
+        raise RuntimeError(f"Transaktionsjournal passt nicht zu den Zielpfaden: {pending}")
+    if not todo_path.exists():
+        raise RuntimeError(f"TODO fehlt während Recovery: {todo_path}")
+
+    todo_content = todo_path.read_text(encoding="utf-8")
+    done_content = done_path.read_text(encoding="utf-8") if done_path.exists() else ""
+    todo_hash = _content_hash(todo_content)
+    done_hash = _content_hash(done_content)
+    old_todo = payload.get("original_todo_sha256")
+    new_todo = payload.get("new_todo_sha256")
+    old_done = payload.get("original_done_sha256")
+    new_done = payload.get("new_done_sha256")
+
+    if todo_hash == old_todo and done_hash == old_done:
+        pending.unlink()
+        return False
+    if todo_hash == old_todo and done_hash == new_done:
+        _restore(todo_path, str(payload["new_todo"]))
+    elif todo_hash == new_todo and done_hash == old_done:
+        _restore(done_path, str(payload["new_done"]))
+    elif not (todo_hash == new_todo and done_hash == new_done):
+        raise RuntimeError(
+            "Dateien weichen von altem und neuem Transaktionsstand ab; "
+            f"Journal bleibt zur manuellen Prüfung erhalten: {pending}"
+        )
+
+    final_todo = _content_hash(todo_path.read_text(encoding="utf-8"))
+    final_done = _content_hash(done_path.read_text(encoding="utf-8") if done_path.exists() else "")
+    if final_todo != new_todo or final_done != new_done:
+        raise RuntimeError(f"Recovery konnte Transaktion nicht verifizieren: {pending}")
+    pending.unlink()
+    return True
+
+
+def commit_pair(
+    todo_path: Path,
+    original_todo: str,
+    new_todo: str,
+    done_path: Path,
+    original_done: str | None,
+    new_done: str,
+) -> None:
+    """Commit DONE then TODO; restore both originals after any failure."""
+    pending = journal_path(todo_path, done_path)
+    _write_journal(
+        pending,
+        todo_path,
+        original_todo,
+        new_todo,
+        done_path,
+        original_done,
+        new_done,
+    )
+    todo_temp: Path | None = None
+    done_temp: Path | None = None
+    try:
+        todo_temp = _stage_text(todo_path, new_todo)
+        done_temp = _stage_text(done_path, new_done)
+        os.replace(done_temp, done_path)
+        os.replace(todo_temp, todo_path)
+    except Exception as write_error:
+        rollback_errors = []
+        for path, original in (
+            (done_path, original_done),
+            (todo_path, original_todo),
+        ):
+            try:
+                _restore(path, original)
+            except Exception as rollback_error:  # pragma: no cover - catastrophic FS case
+                rollback_errors.append(f"{path}: {rollback_error}")
+        detail = ""
+        if rollback_errors:
+            detail = "; Rollback-Fehler: " + "; ".join(rollback_errors)
+        else:
+            pending.unlink(missing_ok=True)
+        raise RuntimeError(f"Archiv-Commit fehlgeschlagen: {write_error}{detail}") from write_error
+    else:
+        pending.unlink(missing_ok=True)
+    finally:
+        if todo_temp:
+            todo_temp.unlink(missing_ok=True)
+        if done_temp:
+            done_temp.unlink(missing_ok=True)
+
+
+# ============================================================================
 # MAIN
 # ============================================================================
 
@@ -227,6 +400,18 @@ def main():
     print(f"==> Mode:  {'APPLY' if args.apply else 'DRY-RUN (nutze --apply zum Schreiben)'}")
     print()
 
+    if todo_path == done_path:
+        print("ERROR: TODO- und DONE-Pfad müssen verschieden sein", file=sys.stderr)
+        sys.exit(2)
+
+    try:
+        if recover_pending(todo_path, done_path):
+            print("==> Unterbrochene Archiv-Transaktion sicher abgeschlossen.")
+            sys.exit(0)
+    except (OSError, RuntimeError, KeyError, TypeError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        sys.exit(1)
+
     # TODO.md laden
     if not todo_path.exists():
         print(f"ERROR: TODO.md existiert nicht: {todo_path}", file=sys.stderr)
@@ -256,10 +441,8 @@ def main():
         sys.exit(0)
 
     # DONE.md laden (oder leer starten)
-    if done_path.exists():
-        done_content = done_path.read_text(encoding="utf-8")
-    else:
-        done_content = ""
+    original_done = done_path.read_text(encoding="utf-8") if done_path.exists() else None
+    done_content = original_done or ""
 
     # Neue DONE.md bauen
     new_done = append_to_done(done_content, done_tasks, today)
@@ -268,14 +451,22 @@ def main():
     print()
     print("==> Schreibe...")
 
-    # TODO.md zuerst (um bei Fehler die alte Version in DONE zu behalten)
     todo_size_before = todo_path.stat().st_size
-    todo_path.write_text(remaining_todo, encoding="utf-8")
-    todo_size_after = todo_path.stat().st_size
-
-    # DONE.md danach
     done_size_before = done_path.stat().st_size if done_path.exists() else 0
-    done_path.write_text(new_done, encoding="utf-8")
+    try:
+        commit_pair(
+            todo_path,
+            todo_content,
+            remaining_todo,
+            done_path,
+            original_done,
+            new_done,
+        )
+    except (OSError, RuntimeError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    todo_size_after = todo_path.stat().st_size
     done_size_after = done_path.stat().st_size
 
     # Statistik

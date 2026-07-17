@@ -1,4 +1,4 @@
-## Last-checked: 2026-07-02
+## Last-checked: 2026-07-17
 
 # ellmos-ai/project-docs-template
 
@@ -18,6 +18,9 @@ Important files:
 - `README.md`: human-facing overview and quick start.
 - `template/TEMPLATE.md`: rationale, profile definitions, and file-by-file explanation.
 - `template/_tools/init-project`: profile-based scaffold generator.
+- `tests/test_tools.py`: cross-profile and tool-integrity regression contract.
+- `RELEASE_GATE.md`: commands and evidence required before release.
+- `SECURITY.md`: private vulnerability-reporting policy.
 - `template/START.md`: session bootstrap pattern.
 - `template/STATE.md`: current-state snapshot pattern.
 - `template/TODO.md` and `template/DONE.md`: active and completed task surfaces.

@@ -1,66 +1,39 @@
 #!/usr/bin/env python3
+"""Create an agent-ready project documentation scaffold.
+
+The command renders one of the MINIMAL, STANDARD, or FULL profiles into a new
+or empty directory. Rendering happens in a sibling staging directory and is
+promoted only after placeholder and link validation succeeds. With ``--git``
+the staged result is initialized and committed before promotion.
 """
-init-project — Template-Instantiator für project-docs
 
-Concept-Script (NICHT produktionsreif). Zeigt wie ein Template-Generator
-gebaut werden könnte, inspiriert von BACHs skill_generator.py.
-
-Was es tut:
-  1. Nimmt Ziel-Ordner, Projekt-Name und Profil (MINIMAL/STANDARD/FULL)
-  2. Kopiert die zum Profil gehörigen Files aus dem Template-Ordner
-  3. Ersetzt Platzhalter ([project-name], [YYYY-MM-DD], [author]) in allen Files
-  4. Initialisiert git repo (optional)
-  5. Lässt Git-/Commit-Härtung bewusst als TODO markiert
-
-Inspiration: BACHs tools/skill_generator.py mit 4-Profil-System.
-
-Usage:
-    init-project --target ./new-project --name MyProject --profile STANDARD
-    init-project --target ./new-project --name MyProject --profile MINIMAL --author "Max Mustermann"
-    init-project --target ./new-project --name MyProject --profile FULL --git
-
-Arguments:
-    --target       Zielordner für das neue Projekt (wird erstellt falls fehlend)
-    --name         Projekt-Name (wird in allen Templates als [project-name] gesetzt)
-    --profile      MINIMAL | STANDARD | FULL (default: STANDARD)
-    --author       Autor-Name für Frontmatter (default: git config user.name)
-    --git          Git repo initialisieren und ersten Commit anlegen
-    --dry-run      Nur anzeigen was passieren würde, nichts schreiben
-
-Status: CONCEPT — die eigentliche Implementierung ist bewusst ausgelassen.
-Siehe TODO-Marker im Code. Wenn du das Tool produktionsreif machen willst,
-adaptiere BACHs tools/skill_generator.py als Referenz.
-
-Requirements:
-    - python >= 3.8
-    - git (für --git Option)
-"""
+from __future__ import annotations
 
 import argparse
+import getpass
+import json
+import os
+import re
+import shutil
+import subprocess
 import sys
-from datetime import date
+import tempfile
+from datetime import date, datetime
 from pathlib import Path
+from urllib.parse import unquote
 
-# Windows Console Encoding Fix (aus BACH archive_done_tasks.py übernommen)
+
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-# ============================================================================
-# PROFIL-DEFINITIONEN
-# ============================================================================
 
 PROFILES = {
     "MINIMAL": {
         "description": "Kleine Projekte mit vollständigem Session-Kernset",
         "root_files": [
-            "AGENTS.md",
-            "CLAUDE.md",
-            "README.md",
-            "START.md",
-            "STATE.md",
-            "TODO.md",
-            "DONE.md",
+            "AGENTS.md", "CLAUDE.md", "README.md", "START.md", "STATE.md",
+            "TODO.md", "DONE.md",
         ],
         "subdirs": ["_tools"],
         "tools": ["todo-archive", "doc-lint"],
@@ -68,18 +41,9 @@ PROFILES = {
     "STANDARD": {
         "description": "Ernsthafte Projekte mit mehrmonatiger Lebensdauer",
         "root_files": [
-            "AGENTS.md",
-            "CLAUDE.md",
-            "README.md",
-            "START.md",
-            "STATE.md",
-            "CHANGELOG.md",
-            "HEADER-RULES.md",
-            "CUT-AND-CLUE.md",
-            "DECISIONS.md",
-            "PATTERNS.md",
-            "TODO.md",
-            "DONE.md",
+            "AGENTS.md", "CLAUDE.md", "README.md", "START.md", "STATE.md",
+            "CHANGELOG.md", "HEADER-RULES.md", "CUT-AND-CLUE.md",
+            "DECISIONS.md", "PATTERNS.md", "TODO.md", "DONE.md",
         ],
         "subdirs": ["_tools"],
         "tools": ["todo-archive", "doc-lint"],
@@ -87,253 +51,307 @@ PROFILES = {
     "FULL": {
         "description": "Komplexe Projekte mit Multi-Agent / Auto-Generatoren",
         "root_files": [
-            "CLAUDE.md",
-            "AGENTS.md",
-            "README.md",
-            "START.md",
-            "STATE.md",
-            "ARCHITECTURE.md",
-            "CHANGELOG.md",
-            "HEADER-RULES.md",
-            "CUT-AND-CLUE.md",
-            "DECISIONS.md",
-            "PATTERNS.md",
-            "WORKFLOWS.md",
-            "TOOLS.md",
-            "TODO.md",
-            "DONE.md",
-            "GLOSSARY.md",
+            "CLAUDE.md", "AGENTS.md", "README.md", "START.md", "STATE.md",
+            "ARCHITECTURE.md", "CHANGELOG.md", "HEADER-RULES.md",
+            "CUT-AND-CLUE.md", "DECISIONS.md", "PATTERNS.md", "WORKFLOWS.md",
+            "TOOLS.md", "TODO.md", "DONE.md", "GLOSSARY.md",
         ],
         "subdirs": ["workflows", "_tools", ".github"],
-        "tools": [
-            "todo-archive",
-            "doc-lint",
-            "workflows-sync",
-        ],
+        "tools": ["init-project", "todo-archive", "doc-lint", "workflows-sync"],
     },
 }
 
-# Pfad zum Template-Ordner (relativ zu diesem Script)
 TEMPLATE_ROOT = Path(__file__).resolve().parent.parent
+SUPPORT_FILES = [".gitignore"]
+PROFILE_START = re.compile(r"^\s*<!-- profiles:([A-Z,]+) -->\s*$")
+PROFILE_END = re.compile(r"^\s*<!-- /profiles -->\s*$")
+MARKDOWN_LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
+GENERATOR_PLACEHOLDERS = (
+    "[project-name]", "[Projektname]", "[MINIMAL|STANDARD|FULL]",
+    "[YYYY-MM-DD]", "[YYYY-MM-DD HH:MM]", "[author]",
+    "[Autor: Claude / Mensch / Gemini / ...]", "[Claude | Gemini | Mensch]",
+)
 
 
-# ============================================================================
-# KERN-LOGIK
-# ============================================================================
+class GenerationError(RuntimeError):
+    """Raised when a scaffold cannot be generated safely."""
 
-def replace_placeholders(content: str, context: dict) -> str:
-    """Ersetzt [project-name], [YYYY-MM-DD], [author] etc. in Template-Content.
 
-    TODO: Diese Funktion ist bewusst naiv. Für Produktion:
-    - Regex-basiertes Matching mit Word-Boundaries (nicht substring)
-    - Unterscheidung zwischen Frontmatter-Feldern (YAML) und Prose-Text
-    - Validierung der Ersetzungen
-    """
+def validate_single_line(value: str, label: str) -> str:
+    value = value.strip()
+    if not value:
+        raise GenerationError(f"{label} darf nicht leer sein")
+    if any(char in value for char in ("\r", "\n", "\0")):
+        raise GenerationError(f"{label} muss einzeilig sein")
+    if len(value) > 200:
+        raise GenerationError(f"{label} ist zu lang (maximal 200 Zeichen)")
+    return value
+
+
+def git_config_value(key: str) -> str:
+    try:
+        result = subprocess.run(
+            ["git", "config", "--get", key],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+    except (FileNotFoundError, OSError):
+        return ""
+    return result.stdout.strip() if result.returncode == 0 else ""
+
+
+def resolve_author(explicit: str) -> str:
+    candidate = explicit or git_config_value("user.name") or getpass.getuser()
+    return validate_single_line(candidate, "Autor")
+
+
+def render_profile_blocks(content: str, profile: str) -> str:
+    output: list[str] = []
+    active: set[str] | None = None
+    for line in content.splitlines(keepends=True):
+        start = PROFILE_START.match(line)
+        if start:
+            if active is not None:
+                raise GenerationError("Verschachtelte Profil-Marker sind nicht erlaubt")
+            active = {item.strip() for item in start.group(1).split(",")}
+            continue
+        if PROFILE_END.match(line):
+            if active is None:
+                raise GenerationError("Schließender Profil-Marker ohne Start")
+            active = None
+            continue
+        if active is None or profile in active:
+            output.append(line)
+    if active is not None:
+        raise GenerationError("Profil-Marker wurde nicht geschlossen")
+    return "".join(output)
+
+
+def replace_placeholders(content: str, context: dict[str, str | Path]) -> str:
+    now = datetime.now().strftime("%Y-%m-%d %H:%M")
+    # User-controlled values in quoted YAML scalars are encoded before the
+    # prose replacements. JSON strings are valid YAML strings.
+    content = content.replace(
+        '"[project-name]-start"',
+        json.dumps(f"{context['name']}-start", ensure_ascii=False),
+    )
+    content = content.replace(
+        '"[project-name]-state"',
+        json.dumps(f"{context['name']}-state", ensure_ascii=False),
+    )
+    content = content.replace(
+        '"[project-name]"',
+        json.dumps(str(context["name"]), ensure_ascii=False),
+    )
+    content = content.replace(
+        '"[author]"',
+        json.dumps(str(context["author"]), ensure_ascii=False),
+    )
     replacements = {
-        "[project-name]": context["name"],
-        "[Projektname]": context["name"],
-        "[MINIMAL|STANDARD|FULL]": context["profile"],
-        "[YYYY-MM-DD]": context["today"],
-        "[YYYY-MM-DD HH:MM]": f"{context['today']} 00:00",
-        "[author]": context["author"],
-        "[Autor: Claude / Mensch / Gemini / ...]": context["author"],
+        "[YYYY-MM-DD HH:MM]": now,
+        "[MINIMAL|STANDARD|FULL]": str(context["profile"]),
+        "[Autor: Claude / Mensch / Gemini / ...]": str(context["author"]),
         "[Claude | Gemini | Mensch]": "init-project",
+        "[project-name]": str(context["name"]),
+        "[Projektname]": str(context["name"]),
+        "[YYYY-MM-DD]": str(context["today"]),
+        "[author]": str(context["author"]),
         "[phase-name]": "Initial Setup",
         "[Was wurde warum geändert]": "Initiale Projektanlage via init-project",
     }
-    for placeholder, value in replacements.items():
-        content = content.replace(placeholder, value)
-    return content
+    for placeholder in sorted(replacements, key=len, reverse=True):
+        content = content.replace(placeholder, replacements[placeholder])
+    return render_profile_blocks(content, str(context["profile"]))
 
 
-def copy_template_file(src: Path, dst: Path, context: dict, dry_run: bool):
-    """Kopiert eine Template-Datei und ersetzt Platzhalter.
-
-    TODO: Für Produktion:
-    - Backup falls dst existiert
-    - Merge-Logik für bestehende Files (z.B. CLAUDE.md erweitern statt überschreiben)
-    - Binary-File-Erkennung (dieses Template hat keine, aber defensiv)
-    """
-    if not src.exists():
-        print(f"  WARN: Template-File fehlt: {src}", file=sys.stderr)
-        return
-
+def copy_template_file(
+    src: Path,
+    dst: Path,
+    context: dict[str, str | Path],
+    *,
+    render: bool = True,
+) -> None:
+    if not src.is_file():
+        raise GenerationError(f"Template-Datei fehlt: {src}")
     content = src.read_text(encoding="utf-8")
-    content = replace_placeholders(content, context)
-
-    if dry_run:
-        print(f"  [DRY] Would write: {dst}")
-        return
-
+    if render:
+        content = replace_placeholders(content, context)
     dst.parent.mkdir(parents=True, exist_ok=True)
-    dst.write_text(content, encoding="utf-8")
+    dst.write_text(content, encoding="utf-8", newline="\n")
+    shutil.copymode(src, dst)
     print(f"  OK: {dst.relative_to(context['target'])}")
 
 
-def instantiate_profile(context: dict, dry_run: bool):
-    """Kopiert alle Files eines Profils in den Ziel-Ordner."""
-    profile = PROFILES[context["profile"]]
-    target = context["target"]
-
+def instantiate_profile(context: dict[str, str | Path]) -> None:
+    profile = PROFILES[str(context["profile"])]
+    target = Path(context["target"])
     print(f"\n==> Profil: {context['profile']}")
     print(f"    {profile['description']}")
-    print(f"==> Root-Files ({len(profile['root_files'])})")
 
-    for filename in profile["root_files"]:
-        src = TEMPLATE_ROOT / filename
-        dst = target / filename
-        copy_template_file(src, dst, context, dry_run)
+    for filename in profile["root_files"] + SUPPORT_FILES:
+        copy_template_file(TEMPLATE_ROOT / filename, target / filename, context)
 
-    # Unterordner: nur die profilierten Inhalte kopieren.
-    if profile["subdirs"]:
-        print(f"\n==> Unterordner ({len(profile['subdirs'])})")
-        for subdir_name in profile["subdirs"]:
-            subdir_src = TEMPLATE_ROOT / subdir_name
-            subdir_dst = target / subdir_name
-            if not subdir_src.is_dir():
+    for subdir_name in profile["subdirs"]:
+        src_dir = TEMPLATE_ROOT / subdir_name
+        dst_dir = target / subdir_name
+        if not src_dir.is_dir():
+            raise GenerationError(f"Template-Ordner fehlt: {src_dir}")
+        if subdir_name == "_tools":
+            copy_template_file(src_dir / "README.md", dst_dir / "README.md", context)
+            for tool in profile["tools"]:
+                copy_template_file(src_dir / tool, dst_dir / tool, context, render=False)
+            continue
+        if subdir_name == "workflows":
+            copy_template_file(src_dir / "README.md", dst_dir / "README.md", context)
+            copy_template_file(
+                src_dir / "_example-workflow.md",
+                dst_dir / "_example-workflow.md",
+                context,
+            )
+            continue
+        for item in sorted(src_dir.rglob("*")):
+            if item.is_file():
+                copy_template_file(item, dst_dir / item.relative_to(src_dir), context)
+
+
+def run_tool(command: list[str], cwd: Path) -> None:
+    try:
+        subprocess.run(command, cwd=cwd, check=True)
+    except FileNotFoundError as exc:
+        raise GenerationError(f"Programm nicht gefunden: {command[0]}") from exc
+    except subprocess.CalledProcessError as exc:
+        raise GenerationError(
+            f"Befehl fehlgeschlagen ({exc.returncode}): {' '.join(command)}"
+        ) from exc
+
+
+def prepare_generated_files(target: Path, profile: str) -> None:
+    if profile == "FULL":
+        run_tool([sys.executable, str(target / "_tools" / "workflows-sync"), "--root", str(target)], target)
+    run_tool(
+        [sys.executable, str(target / "_tools" / "doc-lint"), "--root", str(target)],
+        target,
+    )
+
+
+def validate_rendered_output(target: Path) -> None:
+    errors: list[str] = []
+    for path in sorted(target.rglob("*")):
+        if not path.is_file() or ".git" in path.parts:
+            continue
+        try:
+            content = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        if path.suffix.lower() != ".md":
+            continue
+        for placeholder in GENERATOR_PLACEHOLDERS:
+            if placeholder in content:
+                errors.append(f"{path.relative_to(target)}: Platzhalter {placeholder}")
+        for raw_target in MARKDOWN_LINK.findall(content):
+            link = raw_target.strip().split(maxsplit=1)[0].strip("<>")
+            if not link or link.startswith(("#", "http://", "https://", "mailto:")):
                 continue
-
-            if subdir_name == "_tools":
-                copy_template_file(
-                    subdir_src / "README.md",
-                    subdir_dst / "README.md",
-                    context,
-                    dry_run,
-                )
-                for tool in profile["tools"]:
-                    copy_template_file(
-                        subdir_src / tool,
-                        subdir_dst / tool,
-                        context,
-                        dry_run,
-                    )
-                continue
-
-            if subdir_name == "workflows":
-                copy_template_file(
-                    subdir_src / "README.md",
-                    subdir_dst / "README.md",
-                    context,
-                    dry_run,
-                )
-                if context["profile"] == "FULL":
-                    copy_template_file(
-                        subdir_src / "_example-workflow.md",
-                        subdir_dst / "_example-workflow.md",
-                        context,
-                        dry_run,
-                    )
-                continue
-
-            for item in sorted(subdir_src.iterdir()):
-                if item.name.startswith("_example") and context["profile"] != "FULL":
-                    continue
-                copy_template_file(item, subdir_dst / item.name, context, dry_run)
+            relative = unquote(link.split("#", 1)[0].split("?", 1)[0])
+            if relative and not (path.parent / relative).resolve().exists():
+                errors.append(f"{path.relative_to(target)}: toter Link {link}")
+    if errors:
+        raise GenerationError("Validierung fehlgeschlagen:\n  - " + "\n  - ".join(errors))
 
 
-def init_git(target: Path, dry_run: bool):
-    """Initialisiert git repo und legt ersten Commit an.
-
-    TODO: Für Produktion:
-    - subprocess.run mit proper error handling
-    - .gitignore mit sinnvollen defaults
-    - Kein Commit wenn schon ein .git existiert
-    """
-    print(f"\n==> Git init")
-    if dry_run:
-        print("    [DRY] Würde git init + commit ausführen")
-        return
-    print("    TODO: subprocess.run(['git', 'init'], cwd=target)")
-    print("    TODO: initial .gitignore mit Python/Node/OS defaults")
-    print("    TODO: git add + initial commit")
+def init_git(target: Path, author: str) -> None:
+    print("\n==> Git init + initialer Commit")
+    run_tool(["git", "init", "-b", "main"], target)
+    email = git_config_value("user.email") or "project-docs@localhost"
+    run_tool(["git", "config", "user.name", author], target)
+    run_tool(["git", "config", "user.email", email], target)
+    run_tool(["git", "add", "--all"], target)
+    run_tool(["git", "commit", "-m", "docs: initialize project documentation"], target)
 
 
-# ============================================================================
-# CLI
-# ============================================================================
+def promote_staging(staging: Path, target: Path, target_existed: bool) -> None:
+    displaced: Path | None = None
+    try:
+        if target_existed:
+            displaced = target.with_name(f".{target.name}.empty-{os.getpid()}")
+            target.replace(displaced)
+        staging.replace(target)
+        if displaced:
+            displaced.rmdir()
+    except Exception:
+        if target.exists() and not target_existed:
+            shutil.rmtree(target, ignore_errors=True)
+        if displaced and displaced.exists() and not target.exists():
+            displaced.replace(target)
+        raise
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Instantiate a project-docs template with selected profile",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=__doc__,
-    )
-    parser.add_argument(
-        "--target",
-        type=Path,
-        required=True,
-        help="Zielordner für das neue Projekt",
-    )
-    parser.add_argument(
-        "--name",
-        required=True,
-        help="Projekt-Name",
-    )
-    parser.add_argument(
-        "--profile",
-        choices=list(PROFILES.keys()),
-        default="STANDARD",
-        help="Profil (default: STANDARD)",
-    )
-    parser.add_argument(
-        "--author",
-        default="",
-        help="Autor-Name (default: aus git config)",
-    )
-    parser.add_argument(
-        "--git",
-        action="store_true",
-        help="Git repo initialisieren",
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Nur anzeigen, nichts schreiben",
-    )
-    args = parser.parse_args()
 
-    # Author fallback
-    author = args.author
-    if not author:
-        # TODO: git config user.name auslesen
-        author = "[author]"
+def generate(args: argparse.Namespace) -> Path:
+    target = args.target.resolve()
+    name = validate_single_line(args.name, "Projekt-Name")
+    author = resolve_author(args.author)
+    target_existed = target.exists()
+    if target_existed and (not target.is_dir() or any(target.iterdir())):
+        raise GenerationError(f"Zielordner existiert und ist nicht leer: {target}")
 
-    context = {
-        "target": args.target.resolve(),
-        "name": args.name,
+    context: dict[str, str | Path] = {
+        "target": target,
+        "name": name,
         "profile": args.profile,
         "author": author,
         "today": date.today().isoformat(),
     }
-
-    print(f"==> Target:  {context['target']}")
-    print(f"==> Name:    {context['name']}")
-    print(f"==> Author:  {context['author']}")
+    print(f"==> Target:  {target}")
+    print(f"==> Name:    {name}")
+    print(f"==> Author:  {author}")
     print(f"==> Date:    {context['today']}")
 
     if args.dry_run:
         print("==> MODE:    DRY-RUN (keine Änderungen)")
+        print(f"==> Profil:  {args.profile} ({len(PROFILES[args.profile]['root_files'])} Root-Dateien)")
+        if args.git:
+            print("==> Git:     würde Repository und initialen Commit anlegen")
+        return target
 
-    if context["target"].exists() and not args.dry_run:
-        if any(context["target"].iterdir()):
-            print(
-                f"\nERROR: Zielordner existiert und ist nicht leer: {context['target']}",
-                file=sys.stderr,
-            )
-            print("Nutze einen leeren Ordner oder --dry-run", file=sys.stderr)
-            sys.exit(1)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    staging = Path(tempfile.mkdtemp(prefix=f".{target.name}.staging-", dir=target.parent))
+    context["target"] = staging
+    try:
+        instantiate_profile(context)
+        prepare_generated_files(staging, args.profile)
+        validate_rendered_output(staging)
+        if args.git:
+            init_git(staging, author)
+        promote_staging(staging, target, target_existed)
+    except Exception:
+        shutil.rmtree(staging, ignore_errors=True)
+        raise
+    print(f"\n==> Fertig: {target}")
+    return target
 
-    instantiate_profile(context, args.dry_run)
 
-    if args.git:
-        init_git(context["target"], args.dry_run)
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--target", type=Path, required=True, help="Neuer oder leerer Zielordner")
+    parser.add_argument("--name", required=True, help="Projekt-Name")
+    parser.add_argument("--profile", choices=tuple(PROFILES), default="STANDARD")
+    parser.add_argument("--author", default="", help="Autor (Standard: git config oder OS-User)")
+    parser.add_argument("--git", action="store_true", help="Git-Repository mit initialem Commit anlegen")
+    parser.add_argument("--dry-run", action="store_true", help="Plan anzeigen, nichts schreiben")
+    return parser
 
-    print("\n==> Fertig.")
-    print(f"\nNächste Schritte:")
-    print(f"  cd {context['target']}")
-    print(f"  # Platzhalter in den Files ersetzen")
-    print(f"  # CLAUDE.md als ersten anfassen — das ist der Einstieg")
-    print(f"  # Dann 'last_verified'-Dates setzen")
+
+def main() -> None:
+    try:
+        generate(build_parser().parse_args())
+    except GenerationError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        raise SystemExit(1) from exc
+    except OSError as exc:
+        print(f"ERROR: Dateisystem-Operation fehlgeschlagen: {exc}", file=sys.stderr)
+        raise SystemExit(1) from exc
 
 
 if __name__ == "__main__":

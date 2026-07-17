@@ -22,7 +22,7 @@
 |---|---|---|---|
 | [`_tools/doc-lint`](./_tools/doc-lint) | Validiert YAML-Frontmatter in Meta-Files (CLAUDE/START/STATE), prüft Staleness | python | bei Commit / regelmäßig |
 | [`_tools/workflows-sync`](./_tools/workflows-sync) | Generiert `WORKFLOWS.md`-Router aus `workflows/*.md` (AUTOGEN-Block) | python | bei neuem Workflow |
-| [`_tools/todo-archive`](./_tools/todo-archive) | Verschiebt `[x]`-Einträge aus `TODO.md` nach `DONE.md` mit Datum | bash | regelmäßig |
+| [`_tools/todo-archive`](./_tools/todo-archive) | Verschiebt `[x]`-Einträge aus `TODO.md` nach `DONE.md` mit Datum | python | regelmäßig |
 
 ## Optionale Referenzen, nicht im Template gebündelt
 
@@ -51,8 +51,8 @@ Drei der gebündelten Tools sind **konzeptionell adaptiert** aus dem BACH-System
 | `doc-lint` | `skill_header_gen.py` | Generisches project-docs statt BACH-spezifisches Skill-Manifest |
 | `workflows-sync` | `workflows_export.py` | Nur Dateisystem statt Dateisystem + DB (kein bach.db nötig) |
 
-Die BACH-Originale sind produktionserprobt — wenn unsere Concept-Scripts
-produktionsreif gemacht werden sollen, ist BACH die Referenz.
+Die BACH-Originale sind produktionserprobt und bleiben für die Wartung unserer
+produktiven lokalen Ports die erste Referenz.
 
 ## Wann ein neues Tool anlegen
 

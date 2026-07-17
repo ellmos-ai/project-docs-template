@@ -2,7 +2,7 @@
 """
 workflows-sync — Generiert WORKFLOWS.md-Router aus workflows/*.md
 
-Concept-Script. Direkt inspiriert (und konzeptionell adaptiert) von BACHs
+Produktions-Script. Direkt inspiriert (und konzeptionell adaptiert) von BACHs
 tools/workflows_export.py. Es folgt dem selben Muster: Dateisystem ist die
 Source of Truth, Markdown-Mirror wird automatisch generiert.
 
@@ -25,21 +25,24 @@ Usage:
     workflows-sync --check      # Exit != 0 falls WORKFLOWS.md veraltet ist
 
 Requirements:
-    - python >= 3.8
+    - python >= 3.10
     - Keine externen Dependencies (nur stdlib)
 
-Status: CONCEPT. Parsing-Logik ist funktional, aber Edge-Cases (nested
-Kategorien, fehlende Frontmatter, etc.) brauchen Härtung.
+Schreibzugriffe erfolgen atomar. Tabellenfelder werden maskiert und der
+AUTOGEN-Block wird ohne Regex-Replacement-Interpretation eingesetzt.
 
 BACH-Referenz: tools/workflows_export.py — das Original-Pattern mit
 DB-Integration. Dieser Port nutzt kein DB, sondern nur Dateisystem.
 """
 
 import argparse
+import os
 import re
 import sys
+import tempfile
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import quote
 
 # Windows Console Encoding Fix (aus BACH archive_done_tasks.py übernommen)
 if sys.platform == "win32":
@@ -187,13 +190,15 @@ def generate_workflow_block(categories: dict[str, list[dict]]) -> str:
         lines.append("| Workflow | Purpose | Frequency | Duration |")
         lines.append("|---|---|---|---|")
         for wf in sorted(workflows, key=lambda w: w["title"]):
-            path_link = f"[`{wf['relative_path']}`](./workflows/{wf['relative_path']})"
-            freq = wf["frequency"] or "—"
-            dur = wf["duration"] or "—"
-            # Escape pipes in purpose
-            purpose_safe = wf["purpose"].replace("|", "\\|")
+            path_label = escape_table_cell(wf["relative_path"])
+            path_target = quote(wf["relative_path"], safe="/")
+            path_link = f"[`{path_label}`](./workflows/{path_target})"
+            freq = escape_table_cell(wf["frequency"] or "—")
+            dur = escape_table_cell(wf["duration"] or "—")
+            purpose_safe = escape_table_cell(wf["purpose"])
+            title_safe = escape_table_cell(wf["title"])
             lines.append(
-                f"| **{wf['title']}** {path_link} | {purpose_safe} | {freq} | {dur} |"
+                f"| **{title_safe}** {path_link} | {purpose_safe} | {freq} | {dur} |"
             )
         lines.append("")
 
@@ -201,9 +206,29 @@ def generate_workflow_block(categories: dict[str, list[dict]]) -> str:
     return "\n".join(lines)
 
 
+def escape_table_cell(value: str) -> str:
+    """Keep one metadata value inside one Markdown table cell."""
+    return str(value).replace("\\", "\\\\").replace("|", "\\|").replace("\n", " ")
+
+
 # ============================================================================
 # OUTPUT-FILE-UPDATE
 # ============================================================================
+
+def atomic_write_text(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    temp_path = Path(temp_name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        if path.exists():
+            os.chmod(temp_path, path.stat().st_mode)
+        os.replace(temp_path, path)
+    finally:
+        temp_path.unlink(missing_ok=True)
 
 def update_workflows_md(output_path: Path, new_block: str, dry_run: bool):
     """Ersetzt den AUTOGEN-Block in WORKFLOWS.md, behält Rest unverändert.
@@ -215,7 +240,7 @@ def update_workflows_md(output_path: Path, new_block: str, dry_run: bool):
         if dry_run:
             print(f"  [DRY] Würde neues File anlegen: {output_path}")
             return
-        output_path.write_text(content, encoding="utf-8")
+        atomic_write_text(output_path, content)
         print(f"  NEW: {output_path}")
         return
 
@@ -228,7 +253,9 @@ def update_workflows_md(output_path: Path, new_block: str, dry_run: bool):
     )
 
     if pattern.search(content):
-        new_content = pattern.sub(new_block, content)
+        # Callable replacement prevents backslashes in generated Markdown from
+        # being interpreted as regex group escapes (for example ``\g``).
+        new_content = pattern.sub(lambda _match: new_block, content)
     else:
         # Keine Marker vorhanden — am Ende anhängen
         new_content = content.rstrip() + "\n\n" + new_block + "\n"
@@ -243,7 +270,7 @@ def update_workflows_md(output_path: Path, new_block: str, dry_run: bool):
         print(f"  UNCHANGED: {output_path}")
         return
 
-    output_path.write_text(new_content, encoding="utf-8")
+    atomic_write_text(output_path, new_content)
     print(f"  UPDATED: {output_path}")
 
 

@@ -67,7 +67,7 @@ Workflow ist eine eigene Datei mit sprechendem Namen (NICHT `WORKFLOW-A.md`).
 
 ## Verwandte
 
-- [Workflow X](./x.md) — wenn Y der Fall ist
+- `Workflow X` (`workflows/x.md`, sobald angelegt) — wenn Y der Fall ist
 - [PATTERNS.md#sektion](../PATTERNS.md) — für Do/Don't
 
 ## Historie

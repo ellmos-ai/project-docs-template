@@ -25,7 +25,7 @@ Usage:
   doc-lint --strict           # Exit != 0 auch bei Warnings
 
 Requirements:
-  - python >= 3.8
+  - python >= 3.10
   - PyYAML (für robustes Parsing)
 
 Referenz: siehe BACH tools/skill_header_gen.py
@@ -38,8 +38,11 @@ Referenz: siehe BACH tools/skill_header_gen.py
 __version__ = "1.0.0"
 
 import argparse
+import json
+import os
 import re
 import sys
+import tempfile
 from datetime import date, datetime
 from pathlib import Path
 
@@ -60,7 +63,6 @@ except ImportError:
 
 TODAY = date.today().isoformat()
 DEFAULT_VERSION = "0.1.0"
-DEFAULT_AUTHOR = "[author]"
 
 # Files die gescannt werden + deren erwartetes Schema
 FILE_SCHEMAS = {
@@ -104,18 +106,28 @@ def _is_placeholder_value(value) -> bool:
     return isinstance(value, str) and value.startswith("[") and value.endswith("]")
 
 
+def _value_or_default(value, default):
+    if value is None or value == "" or _is_placeholder_value(value):
+        return default
+    return value
+
+
 def is_template_source_root(root: Path) -> bool:
     """True nur für das kanonische project-docs-Quelltemplate."""
     return (
-        root.name == "project-docs"
-        and (root / "TEMPLATE.md").exists()
+        (root / "TEMPLATE.md").exists()
         and (root / "_tools" / "init-project").exists()
+        and (root / "CLAUDE.md").exists()
     )
 
 
 # ============================================================================
 # YAML-FRONTMATTER PARSER (adaptiert von BACH skill_header_gen.py:121)
 # ============================================================================
+
+class FrontmatterParseError(ValueError):
+    """Raised when an existing YAML header cannot be parsed safely."""
+
 
 def parse_yaml_frontmatter(content: str) -> tuple[dict, str, bool]:
     """Parse YAML frontmatter from markdown content.
@@ -145,11 +157,13 @@ def parse_yaml_frontmatter(content: str) -> tuple[dict, str, bool]:
         try:
             data = yaml.safe_load(yaml_text) or {}
         except yaml.YAMLError as e:
-            print(f"  [WARN] YAML parse error: {e}", file=sys.stderr)
-            data = {}
+            raise FrontmatterParseError(f"YAML kann nicht sicher geparst werden: {e}") from e
     else:
         # Fallback: naive regex-based parser (nur flache key:value + |-blöcke)
         data = _naive_yaml_parse(yaml_text)
+
+    if not isinstance(data, dict):
+        raise FrontmatterParseError("YAML-Frontmatter muss ein Mapping sein")
 
     return data, body_text, True
 
@@ -184,17 +198,27 @@ def _naive_yaml_parse(yaml_text: str) -> dict:
                 current_key = key
                 current_multi = []
             else:
-                # Strip quotes
-                if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1]
-                elif value.startswith("'") and value.endswith("'"):
-                    value = value[1:-1]
+                if value.startswith('"') or value.endswith('"'):
+                    if not (value.startswith('"') and value.endswith('"')):
+                        raise FrontmatterParseError(f"Ungültiger quoted scalar: {line}")
+                    try:
+                        value = json.loads(value)
+                    except json.JSONDecodeError as exc:
+                        raise FrontmatterParseError(
+                            f"Ungültiger double-quoted scalar: {line}"
+                        ) from exc
+                elif value.startswith("'") or value.endswith("'"):
+                    if not (value.startswith("'") and value.endswith("'")):
+                        raise FrontmatterParseError(f"Ungültiger quoted scalar: {line}")
+                    value = value[1:-1].replace("''", "'")
                 # Type coercion for booleans
                 if value.lower() == "true":
                     value = True
                 elif value.lower() == "false":
                     value = False
                 result[key] = value
+        elif not line.lstrip().startswith("#"):
+            raise FrontmatterParseError(f"Ungültige YAML-Zeile: {line}")
 
     # Cleanup last multi-line
     if current_key and current_multi:
@@ -223,35 +247,47 @@ def normalize_header(data: dict, file_path: Path, schema: dict) -> dict:
     # Fülle Felder in der Standard-Reihenfolge
     for field in schema["field_order"]:
         if field == "name":
-            normalized[field] = data.get("name") or detected_name
+            normalized[field] = _value_or_default(data.get("name"), detected_name)
         elif field == "type":
-            normalized[field] = data.get("type") or detected_type
+            normalized[field] = _value_or_default(data.get("type"), detected_type)
         elif field == "version":
-            normalized[field] = str(data.get("version", DEFAULT_VERSION))
+            normalized[field] = str(_value_or_default(data.get("version"), DEFAULT_VERSION))
         elif field == "profile":
-            if "profile" in data and data["profile"]:
+            if "profile" in data and data["profile"] and not _is_placeholder_value(data["profile"]):
                 normalized[field] = data["profile"]
             # sonst: optional, nicht einfügen
         elif field == "created":
-            normalized[field] = str(data.get("created", TODAY))
+            normalized[field] = str(_value_or_default(data.get("created"), TODAY))
         elif field == "updated":
-            normalized[field] = str(data.get("updated", TODAY))
+            normalized[field] = str(_value_or_default(data.get("updated"), TODAY))
         elif field == "reason_last_change":
-            normalized[field] = data.get("reason_last_change", "[Was wurde warum geändert]")
+            normalized[field] = _value_or_default(
+                data.get("reason_last_change"), "Dokumentation normalisiert"
+            )
         elif field == "last_verified":
-            normalized[field] = str(data.get("last_verified", TODAY))
+            normalized[field] = str(_value_or_default(data.get("last_verified"), TODAY))
         elif field == "updated_by":
-            normalized[field] = data.get("updated_by", "Claude")
+            normalized[field] = _value_or_default(data.get("updated_by"), "doc-lint")
         elif field == "current_phase":
-            normalized[field] = data.get("current_phase", "[phase-name]")
+            normalized[field] = _value_or_default(data.get("current_phase"), "Initial Setup")
         elif field == "author":
-            if "author" in data and data["author"]:
+            if "author" in data and data["author"] and not _is_placeholder_value(data["author"]):
                 normalized[field] = data["author"]
             # sonst: optional
         elif field == "anthropic_compatible":
             normalized[field] = data.get("anthropic_compatible", True)
         elif field == "description":
-            normalized[field] = data.get("description", "").strip() or "[description]"
+            description = data.get("description", "")
+            normalized[field] = _value_or_default(
+                description.strip() if isinstance(description, str) else description,
+                "Projekt-Dokumentation",
+            )
+
+    # Projekt- oder Tool-spezifische Erweiterungen sind Daten, keine Fehler.
+    # Sie bleiben nach den kanonischen Feldern in ihrer Originalreihenfolge.
+    for field, value in data.items():
+        if field not in schema["field_order"]:
+            normalized[field] = value
 
     return normalized
 
@@ -280,11 +316,11 @@ def generate_header_from_content(content: str, file_path: Path, schema: dict) ->
         "created": TODAY,
         "updated": TODAY,
         "last_verified": TODAY,
-        "description": "[description]",
+        "description": "Projekt-Dokumentation",
     }
 
     if schema["type"] == "project-docs":
-        header["reason_last_change"] = "[Was wurde warum geändert]"
+        header["reason_last_change"] = "Frontmatter mit doc-lint ergänzt"
 
     # Description aus erster Prose-Zeile nach H1 oder Blockquote
     lines = content.strip().split("\n")
@@ -328,8 +364,8 @@ def generate_header_from_content(content: str, file_path: Path, schema: dict) ->
 
     # Type-specific extras
     if schema["type"] == "state-snapshot":
-        header["updated_by"] = "Claude"
-        header["current_phase"] = "[phase-name]"
+        header["updated_by"] = "doc-lint"
+        header["current_phase"] = "Initial Setup"
 
     return header
 
@@ -342,27 +378,42 @@ def render_yaml_header(data: dict, schema: dict) -> str:
     """Render header dict as YAML frontmatter string in standard order."""
     lines = ["---"]
 
-    for field in schema["field_order"]:
+    ordered_fields = list(schema["field_order"])
+    ordered_fields.extend(field for field in data if field not in ordered_fields)
+
+    for field in ordered_fields:
         if field not in data:
             continue
         value = data[field]
 
         if isinstance(value, bool):
             lines.append(f"{field}: {str(value).lower()}")
-        elif field == "description":
-            # Multi-line format für längere Descriptions
-            desc = str(value).strip()
-            if "\n" in desc or len(desc) > 60:
-                lines.append(f"{field}: |")
-                for desc_line in desc.split("\n"):
-                    lines.append(f"  {desc_line}")
-            else:
-                lines.append(f"{field}: {desc}")
+        elif isinstance(value, str):
+            # JSON-Strings sind gültige YAML-Scalars und schützen Doppelpunkte,
+            # Hashes, Quotes sowie bool-artige Wörter zuverlässig.
+            lines.append(f"{field}: {json.dumps(str(value), ensure_ascii=False)}")
         else:
-            lines.append(f"{field}: {value}")
+            lines.append(
+                f"{field}: {json.dumps(value, ensure_ascii=False, default=str)}"
+            )
 
     lines.append("---")
     return "\n".join(lines)
+
+
+def atomic_write_text(path: Path, content: str) -> None:
+    """Write UTF-8 text via a same-directory temporary file and replace."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    temp_path = Path(temp_name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temp_path, path)
+    finally:
+        temp_path.unlink(missing_ok=True)
 
 
 # ============================================================================
@@ -428,7 +479,11 @@ def lint_file(
         return result
 
     content = path.read_text(encoding="utf-8")
-    fm, body, had_fm = parse_yaml_frontmatter(content)
+    try:
+        fm, body, had_fm = parse_yaml_frontmatter(content)
+    except FrontmatterParseError as exc:
+        result.add_error(str(exc))
+        return result
     result.parsed_header = fm
     result.body = body
     result.had_frontmatter = had_fm
@@ -457,6 +512,18 @@ def lint_file(
     if missing:
         result.add_error(f"Pflichtfelder fehlen/Platzhalter: {', '.join(missing)}")
 
+    placeholder_fields = [
+        key for key, value in fm.items()
+        if _is_placeholder_value(value)
+        and key not in missing
+        and not allow_template_placeholders
+    ]
+    if placeholder_fields:
+        result.add_error(
+            "Frontmatter-Platzhalter nicht aufgelöst: "
+            + ", ".join(sorted(placeholder_fields))
+        )
+
     # Staleness
     if not (allow_template_placeholders and _is_placeholder_value(fm.get("last_verified"))):
         is_stale, age = check_staleness(fm, max_age)
@@ -481,7 +548,11 @@ def fix_file(path: Path, schema: dict, update_dates: bool, dry_run: bool = False
         return False
 
     content = path.read_text(encoding="utf-8")
-    fm, body, had_fm = parse_yaml_frontmatter(content)
+    try:
+        fm, body, had_fm = parse_yaml_frontmatter(content)
+    except FrontmatterParseError as exc:
+        print(f"  SKIP {path.name}: {exc}")
+        return False
 
     if not had_fm:
         # Auto-generate from content
@@ -517,7 +588,7 @@ def fix_file(path: Path, schema: dict, update_dates: bool, dry_run: bool = False
         return True
 
     # Schreiben
-    path.write_text(new_content, encoding="utf-8")
+    atomic_write_text(path, new_content)
     print(f"  FIX  {path.name}: Header aktualisiert")
     return True
 
@@ -607,13 +678,33 @@ def main():
             if r.has_errors() or args.update_dates or not r.had_frontmatter:
                 fix_file(r.file_path, schema, args.update_dates, args.dry_run)
 
+        # Ein Fix ist nur erfolgreich, wenn der tatsächlich geschriebene Stand
+        # den gleichen Vertrag anschließend erfüllt.
+        if not args.dry_run:
+            print("\n==> Re-checking...")
+            refreshed: list[LintResult] = []
+            for r in results:
+                if not r.file_path:
+                    continue
+                schema = FILE_SCHEMAS.get(r.filename)
+                if schema:
+                    refreshed.append(lint_file(
+                        r.file_path,
+                        schema,
+                        args.max_age,
+                        allow_template_placeholders=template_source_mode,
+                    ))
+            results = refreshed
+            for r in results:
+                r.print_report()
+
     # Exit-Code
     any_errors = any(r.has_errors() for r in results)
     any_warnings = any(r.warnings for r in results)
 
     print()
-    if any_errors and not args.fix:
-        print("FAIL: Pflichtfelder fehlen (nutze --fix zum Reparieren)")
+    if any_errors:
+        print("FAIL: Dokumentationsvertrag ist nicht erfüllt")
         sys.exit(1)
     if args.strict and any_warnings:
         print("FAIL (strict): Warnings gefunden")

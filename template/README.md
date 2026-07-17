@@ -8,7 +8,6 @@ dieses Projekt löst.]
 ## Status
 
 [![Status](https://img.shields.io/badge/status-[Alpha|Beta|Stable]-[red|yellow|green])]()
-[![License](https://img.shields.io/badge/license-[MIT|Apache-2.0]-blue.svg)](LICENSE)
 
 ## Installation
 
@@ -40,6 +39,7 @@ cd [projekt]
 [command]
 ```
 
+<!-- profiles:FULL -->
 ## Projekt-Struktur
 
 ```
@@ -52,6 +52,7 @@ cd [projekt]
 ```
 
 Für Details siehe [ARCHITECTURE.md](./ARCHITECTURE.md).
+<!-- /profiles -->
 
 ## Documentation
 
@@ -59,21 +60,29 @@ Für Details siehe [ARCHITECTURE.md](./ARCHITECTURE.md).
 |---|---|
 | Erste Schritte | [START.md](./START.md) |
 | Aktuellen Stand | [STATE.md](./STATE.md) |
+<!-- profiles:FULL -->
 | Architektur & Module | [ARCHITECTURE.md](./ARCHITECTURE.md) |
+<!-- /profiles -->
+<!-- profiles:STANDARD,FULL -->
 | Header-Konventionen | [HEADER-RULES.md](./HEADER-RULES.md) |
 | Zu lange Dateien aufteilen | [CUT-AND-CLUE.md](./CUT-AND-CLUE.md) |
 | Design-Entscheidungen | [DECISIONS.md](./DECISIONS.md) |
 | Best Practices | [PATTERNS.md](./PATTERNS.md) |
+<!-- /profiles -->
+<!-- profiles:FULL -->
 | Workflows | [WORKFLOWS.md](./WORKFLOWS.md) |
 | Begriffe | [GLOSSARY.md](./GLOSSARY.md) |
+<!-- /profiles -->
+<!-- profiles:STANDARD,FULL -->
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
+<!-- /profiles -->
 
 ## Contributing
 
 [Hinweis zu Contributions, PR-Prozess, Code-of-Conduct, etc.]
 
-Siehe [CONTRIBUTING.md](.github/CONTRIBUTING.md) falls vorhanden.
+Lege bei Bedarf eine projektspezifische `CONTRIBUTING.md` an.
 
 ## License
 
-[License-Info]
+[Lizenz oder Hinweis „proprietär / nicht zur Weitergabe"]

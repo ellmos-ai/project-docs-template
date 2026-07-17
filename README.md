@@ -1,6 +1,7 @@
 # Project Docs Template
 
 [![Template](https://img.shields.io/badge/template-agent--ready_project_docs-2f6f5e)](https://github.com/ellmos-ai/project-docs-template)
+[![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 Agent-ready project documentation template with START/STATE/TODO/DONE,
@@ -44,6 +45,14 @@ cd project-docs-template
 python template/_tools/init-project --target ../my-project --name MyProject --profile STANDARD
 ```
 
+Add `--author "Your Name"` to set explicit frontmatter ownership or `--git` to
+create a `main` repository and initial commit. Without `--author`, the tool uses
+`git config user.name` and then the local OS account as a safe fallback.
+
+Generation is staged beside the target. The result is promoted only after its
+profile markers, generator-owned placeholders, and relative Markdown links
+have been validated. Existing non-empty targets are never overwritten.
+
 Available profiles:
 
 - `MINIMAL`: 7 root files plus essential tools
@@ -52,6 +61,8 @@ Available profiles:
 
 You can also copy files manually from [`template/`](./template/) if you only
 need selected pieces.
+
+Requires Python 3.10 or newer. Git is required only for `--git`.
 
 ## Profile Comparison
 
@@ -71,6 +82,19 @@ need selected pieces.
 
 See [`template/TEMPLATE.md`](./template/TEMPLATE.md) for the full rationale and
 file-by-file explanation.
+
+## Verification
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+The suite exercises every profile, real Git initialization, frontmatter
+repair, workflow metadata escaping, and TODO/DONE rollback behavior. The same
+suite runs on Linux, Windows, and macOS; see [`RELEASE_GATE.md`](./RELEASE_GATE.md).
+
+Security reports belong in the private channel described in
+[`SECURITY.md`](./SECURITY.md), not in public issues.
 
 ## Discoverability
 

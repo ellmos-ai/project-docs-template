@@ -24,15 +24,15 @@ sie konkurrieren nicht.
 
 ## Wie das Template nutzen
 
-### Variante A: Copy-Paste
+### Variante A: Einzelne Dateien übernehmen
 ```bash
-# Von hier ins Zielprojekt kopieren (nur die relevanten Files)
 git clone https://github.com/ellmos-ai/project-docs-template.git
-cp -r project-docs-template/template/* /path/to/new/project/
-cd /path/to/new/project
-rm TEMPLATE.md           # Diese Meta-Datei raus
-# Dann Platzhalter [...] in jeder Datei ersetzen
+# Bewusst nur eine benötigte Datei übernehmen und ihre Platzhalter bearbeiten:
+cp project-docs-template/template/DECISIONS.md /path/to/project/
 ```
+
+Für ein vollständiges Profil immer Variante B verwenden. Ein rohes rekursives
+Kopieren würde Profil-Marker und Template-Metadaten mitnehmen.
 
 ### Variante B: Profil-basiert (empfohlen)
 

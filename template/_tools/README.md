@@ -1,8 +1,10 @@
 # _tools/ — Admin-Utilities außerhalb der Haupt-Pipeline
 
 > **Lokale Konventionen** für Utility-Scripts in diesem Ordner.
+<!-- profiles:FULL -->
 > **Router im Root:** [`../TOOLS.md`](../TOOLS.md) — enthält die
 > „Welches Tool wofür"-Übersicht.
+<!-- /profiles -->
 
 ---
 
@@ -104,12 +106,15 @@ Bei neuem Tool:
    - Bekannte Limitierungen
    - Geschichte
 
-2. **`../TOOLS.md`** → Eintrag in der Router-Tabelle
-
-3. **`../CHANGELOG.md`** → Eintrag beim ersten Anlegen
-
-4. **`../DECISIONS.md`** → nur bei Architektur-relevanten Entscheidungen
+- Dokumentation im Projekt aktualisieren.
+<!-- profiles:FULL -->
+- **`../TOOLS.md`** → Eintrag in der Router-Tabelle
+<!-- /profiles -->
+<!-- profiles:STANDARD,FULL -->
+- **`../CHANGELOG.md`** → Eintrag beim ersten Anlegen
+- **`../DECISIONS.md`** → nur bei Architektur-relevanten Entscheidungen
    (z.B. „warum bash statt Python", „warum Tool statt Config-Änderung")
+<!-- /profiles -->
 
 ## Beispiel: Minimal-Template für neues Tool
 
@@ -151,9 +156,10 @@ done
 
 *(Wird bei jedem neuen Tool hier erweitert)*
 
+<!-- profiles:REPOSITORY -->
 ### Projekt-Bootstrap
 
-#### `init-project` (python, CONCEPT)
+#### `init-project` (python, PRODUKTIV)
 
 **Zweck:** Template-Instantiator — kopiert project-docs-Template in einen
 neuen Ordner, ersetzt Platzhalter, optional git init.
@@ -165,8 +171,9 @@ neuen Ordner, ersetzt Platzhalter, optional git init.
 - `STANDARD` (12 Root-Files + `_tools/`): + CHANGELOG, HEADER-RULES, CUT-AND-CLUE, DECISIONS, PATTERNS
 - `FULL` (16 Files + Ordner): + ARCHITECTURE, HEADER-RULES, CUT-AND-CLUE, WORKFLOWS, TOOLS, GLOSSARY + `workflows/`, `_tools/`, `.github/`
 
-**Status:** Concept-Script mit vollständigem CLI-Interface und Profil-Logik.
-Die tatsächliche Kopier-Logik hat TODO-Marker für Produktions-Härtung.
+**Status:** Produktiv. Transaktionale Erzeugung, profilabhängige Inhalte,
+Link-/Platzhalterprüfung und echte optionale Git-Initialisierung sind getestet.
+<!-- /profiles -->
 
 ---
 
@@ -194,12 +201,13 @@ doc-lint --update-dates     # Timestamps auf heute setzen
 doc-lint --strict           # Exit != 0 auch bei Warnings
 ```
 
-**Status:** Produktiv. CLI, Parsing, `--fix` und `--update-dates` sind
-implementiert; Härtung betrifft vor allem seltene Edge-Cases.
+**Status:** Produktiv. CLI, Parsing, atomarer `--fix`, Re-Lint und
+`--update-dates` sind durch die Repository-Tests abgedeckt.
 
 ---
 
-#### `workflows-sync` (python, CONCEPT — funktional)
+<!-- profiles:FULL -->
+#### `workflows-sync` (python, PRODUKTIV)
 
 **Zweck:** Generiert `WORKFLOWS.md`-Router aus `workflows/*.md`. Scannt alle
 Workflow-Dateien, extrahiert Title + Purpose + Frequency + Duration, schreibt
@@ -222,11 +230,13 @@ workflows-sync --dry-run    # Plan anzeigen
 workflows-sync --check      # CI-Mode: exit != 0 falls veraltet
 ```
 
-**Status:** Funktional. CLI läuft, Parsing und Output-Generation sind
-implementiert. Getestet: `--help` funktioniert.
+**Status:** Produktiv. Tabellen-Metadaten werden maskiert, der AUTOGEN-Block
+wird atomar und ohne Regex-Replacement-Nebenwirkungen aktualisiert.
+<!-- /profiles -->
 
 ---
 
+<!-- profiles:REPOSITORY -->
 #### `arch-update` (python, GEPLANT)
 
 **Zweck:** Parst `core/*.py` (o.ä.), generiert Module-Graph (mermaid) und
@@ -234,9 +244,11 @@ Module-Tabelle, ersetzt AUTOGEN-Blöcke in `ARCHITECTURE.md`.
 
 **Status:** Noch nicht implementiert. Design siehe `DECISIONS.md` Diskussion
 zu "Living Architecture".
+<!-- /profiles -->
 
 ---
 
+<!-- profiles:REPOSITORY -->
 ### Admin / Notfall
 
 #### `git-force-admin-push` (bash + python)
@@ -248,16 +260,19 @@ ohne die BP dauerhaft zu schwächen. Unlock → Push → Relock mit trap-safety.
 
 **Status:** Produktiv (GithubBot-Kontext). Hier nur als Referenz erwähnt,
 nicht im Template enthalten (kontext-spezifisch).
+<!-- /profiles -->
 
 ---
 
-#### `todo-archive` (bash, PRODUKTIV)
+#### `todo-archive` (python, PRODUKTIV)
 
 **Zweck:** Verschiebt `[x]`-Einträge aus `TODO.md` mit heutigem Datum nach
 `DONE.md`. Automatisierte Lösung gegen TODO.md-Wachstum.
 
-**Status:** Produktiv. Dry-run und `--apply` sind implementiert; das Tool
-arbeitet auf `TODO.md`/`DONE.md` nach dem BACH-Muster.
+**Status:** Produktiv. Dry-run und `--apply` sind implementiert; beide
+Zieldateien werden vorgestaged und bei einem Schreibfehler zurückgerollt. Ein
+atomisches Journal beendet nach einem Prozessabbruch den halben Pair-Commit,
+ohne wiederkehrende gleichlautende Aufgaben aus der Historie zu verwerfen.
 
 ---
 
@@ -265,17 +280,14 @@ arbeitet auf `TODO.md`/`DONE.md` nach dem BACH-Muster.
 
 | Reifegrad | Bedeutung |
 |---|---|
-| **PRODUKTIV** | Läuft in realen Projekten, vollständig getestet |
+| **PRODUKTIV** | Der dokumentierte Vertrag ist durch das Repository-Gate abgedeckt |
 | **CONCEPT (funktional)** | CLI läuft, Kern-Logik implementiert, TODO-Marker für Edge-Cases |
 | **CONCEPT (Skizze)** | CLI-Interface + Dokumentation vorhanden, Kern-Logik als TODO |
 | **GEPLANT** | Design fertig, noch nicht geschrieben |
 
-Aktueller Stand im Template-Bundle:
+Aktueller Stand im erzeugten Template-Bundle:
 - `doc-lint` — PRODUKTIV
 - `todo-archive` — PRODUKTIV
-- `workflows-sync` — CONCEPT (funktional)
-- `init-project` — CONCEPT (Skizze, Kopier-Logik naiv)
-- `arch-update` — GEPLANT
-
-Externe Referenz, nicht gebündelt:
-- `git-force-admin-push` — PRODUKTIV (projektspezifisch, nicht Teil dieses Templates)
+<!-- profiles:FULL -->
+- `workflows-sync` — PRODUKTIV
+<!-- /profiles -->

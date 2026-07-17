@@ -27,7 +27,9 @@ description: |
 
 > **Selbstkorrektur:** Wenn du veraltete Passagen oder Verweise entdeckst, oder sogar missgeleitet wirst, korrigiere diese Datei autonom. Wenn du etwas Neues gebaut oder erstellt hast, prüfe: Hättest du es durch das Lesen der Dateien, die du gelesen hast, bereits gefunden und/oder richtig verstanden? Wenn nicht, setze dort an und behebe es, sodass du es gefunden und verstanden hättest.
 
+<!-- profiles:STANDARD,FULL -->
 > **Dateigröße:** Wenn diese Datei zu lang wird, verwende das Cut-and-Clue-Verfahren → `CUT-AND-CLUE.md` (Pointer-Verfahren mit Vorläufer/Nachfolger-Dateien).
+<!-- /profiles -->
 
 ## Projekt
 
@@ -86,6 +88,7 @@ Bevor du destructive Git-Operationen ausführst oder Architektur-relevante
 3. Ist `--force-with-lease` statt `--force` möglich?
 4. Wird diese Änderung in `DECISIONS.md` dokumentierbar?
 
+<!-- profiles:FULL -->
 ## Projekt-Struktur
 
 Details siehe [`ARCHITECTURE.md`](./ARCHITECTURE.md). Kurz:
@@ -98,6 +101,7 @@ Details siehe [`ARCHITECTURE.md`](./ARCHITECTURE.md). Kurz:
 ├── _tools/         # Admin-Utilities
 └── .github/        # GitHub-native Config
 ```
+<!-- /profiles -->
 
 ## Wichtige Dateien
 
@@ -107,13 +111,21 @@ Details siehe [`ARCHITECTURE.md`](./ARCHITECTURE.md). Kurz:
 | [`STATE.md`](./STATE.md) | Wo-stehen-wir-Snapshot — aktueller Stand |
 | [`TODO.md`](./TODO.md) | Aktive Tasks |
 | [`DONE.md`](./DONE.md) | Erledigte Tasks (archiviert via `_tools/todo-archive`) |
+<!-- profiles:FULL -->
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Struktur & Modul-Graph (auto-generiert) |
+<!-- /profiles -->
+<!-- profiles:STANDARD,FULL -->
 | [`DECISIONS.md`](./DECISIONS.md) | Warum-Entscheidungen (ADRs) |
 | [`PATTERNS.md`](./PATTERNS.md) | Do/Don't mit Code-Beispielen |
+<!-- /profiles -->
+<!-- profiles:FULL -->
 | [`WORKFLOWS.md`](./WORKFLOWS.md) | Router zu Multi-Step-Playbooks |
 | [`TOOLS.md`](./TOOLS.md) | Router zu Admin-Utilities |
 | [`GLOSSARY.md`](./GLOSSARY.md) | Projekt-Jargon |
+<!-- /profiles -->
+<!-- profiles:STANDARD,FULL -->
 | [`CHANGELOG.md`](./CHANGELOG.md) | Chronik |
+<!-- /profiles -->
 
 ## Domain-Kontext
 
@@ -128,6 +140,7 @@ externer APIs, Lokale vs. Remote-Infrastruktur.]
 
 ---
 
+<!-- profiles:FULL -->
 ## Multi-Agent-Setup (optional, nur falls relevant)
 
 > **Wann ausfüllen:** Nur wenn dieses Projekt **mehrere AI-Agents** orchestriert
@@ -180,6 +193,7 @@ agents:
 
 **Verweis:** Siehe [`AGENTS.md`](./AGENTS.md) für den tool-agnostischen
 Einstiegspunkt, der auf diese Datei verweist.
+<!-- /profiles -->
 
 ---
 
@@ -187,7 +201,9 @@ Einstiegspunkt, der auf diese Datei verweist.
 
 - **YAML-Frontmatter oben** wird validiert via `_tools/doc-lint`
 - **Staleness-Check**: Wenn `last_verified` älter als 30 Tage → `doc-lint` warnt
+<!-- profiles:STANDARD,FULL -->
 - **Bei Version-Bumps** von Projekt-Code: `version` im Frontmatter nachziehen und in `CHANGELOG.md` eintragen
+<!-- /profiles -->
 
 ---
 
