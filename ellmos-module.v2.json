@@ -1,0 +1,51 @@
+{
+  "schema": "ellmos.module.v2",
+  "id": "project-docs-template",
+  "display_name": "project-docs-template",
+  "version": "0.1.0",
+  "description": "Agent-ready project documentation profiles with safe local generation and maintenance tools.",
+  "package": null,
+  "entrypoints": {
+    "init": "python template/_tools/init-project",
+    "test": "python -m unittest discover -s tests -v"
+  },
+  "category": "quality",
+  "kind": "template",
+  "status": "released",
+  "visibility": "public",
+  "provides": [
+    "quality.project-docs",
+    "quality.project-lint"
+  ],
+  "requires": [],
+  "optional": [],
+  "conflicts": [],
+  "surfaces": [
+    "template",
+    "cli"
+  ],
+  "profiles": [
+    "minimal",
+    "standard",
+    "full"
+  ],
+  "state": {
+    "ownership": "none",
+    "location": "none"
+  },
+  "boundaries": {
+    "network": "none",
+    "data": "public",
+    "platforms": [
+      "windows",
+      "macos",
+      "linux"
+    ]
+  },
+  "source_of_truth": {
+    "type": "git-repository",
+    "path": ".",
+    "repository": "https://github.com/ellmos-ai/project-docs-template.git"
+  },
+  "adapters": []
+}

@@ -7,7 +7,9 @@ desktop.ini
 
 # Python
 __pycache__/
+*.pyc
 *.py[cod]
+.venv/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
@@ -19,6 +21,10 @@ node_modules/
 dist/
 build/
 
+# IDE / local workspace
+.idea/
+.vscode/
+
 # Local environment and secrets
 .env
 .env.*
@@ -29,4 +35,9 @@ credentials.json
 # Local scratch
 tmp/
 temp/
+data/
+*.db
+*.db-wal
+*.db-shm
 *.log
+.*.todo-archive-*.json
