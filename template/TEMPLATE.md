@@ -204,9 +204,9 @@ Veraltete Doku ist schlechter als keine Doku, weil sie Vertrauen erzeugt das
 nicht gerechtfertigt ist. Lieber ein ehrliches „hier gibt's noch keine" als ein
 falsches „stand 2024-01-05".
 
-## Innovationen aus .SOFTWARE-Pipeline (2026-06-02)
+## Praxis-erprobte Erweiterungen (2026-06-02)
 
-Diese Konzepte wurden aus der aktiven .SOFTWARE-Pipeline zurückübertragen
+Diese Konzepte haben sich in einer produktiven Projekt-Pipeline bewährt
 und sind nun Teil des Template-Standards:
 
 ### Selbstheilungs-Passus (in alle Steuer-Dateien)
@@ -267,7 +267,7 @@ und Kontext-Fenster verstopfen.
 
 ## Historie
 
-- **2026-06-02** — Innovationen aus .SOFTWARE-Pipeline zurückübertragen
+- **2026-06-02** — Praxis-erprobte Erweiterungen in den Template-Standard übernommen
   - Selbstheilungs-Passus, REMEMBER-Footer, Header-Felder Zweck/Grund
   - Neue Template-Dateien: `HEADER-RULES.md`, `CUT-AND-CLUE.md`
   - `reason_last_change` ins YAML-Frontmatter von `CLAUDE.md` aufgenommen

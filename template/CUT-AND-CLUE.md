@@ -2,7 +2,7 @@
 
 **Version:** 1.0
 **Aktualisiert:** 2026-06-02
-**Grund:** Aus .SOFTWARE-Pipeline zurückübertragen
+**Grund:** Erprobt in einer produktiven Projekt-Pipeline und in den Template-Standard übernommen
 **Zweck:** Beschreibt das Pointer-Verfahren (Cut and Clue) zum Archivieren zu langer Dateien mit bidirektionalen Pfad-Verweisen.
 
 > **Selbstkorrektur:** Wenn du veraltete Passagen oder Verweise entdeckst, korrigiere diese Datei autonom.

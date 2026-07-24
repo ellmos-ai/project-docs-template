@@ -2,7 +2,7 @@
 
 **Version:** 1.0
 **Aktualisiert:** 2026-06-02
-**Grund:** Aus .SOFTWARE-Pipeline zurückübertragen
+**Grund:** Erprobt in einer produktiven Projekt-Pipeline und in den Template-Standard übernommen
 **Zweck:** Definiert den Standard-Header für alle Projekt-Steuerdateien — sorgt für Konsistenz, Maschinenlesbarkeit und autonome Selbstkorrektur.
 
 > **Selbstkorrektur:** Wenn du veraltete Passagen oder Verweise entdeckst, oder sogar missgeleitet wirst, korrigiere diese Datei autonom.
