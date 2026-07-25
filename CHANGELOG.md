@@ -2,6 +2,13 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-07-25
+
+- Added PEP 621 `pyproject.toml` with project metadata, Python >=3.10 requirement, and pytest configuration (`tool.pytest.ini_options`).
+- Updated `llms.txt` verification timestamp to 2026-07-25.
+- Added Pytest status badge and GFM LLM orientation callout (`> [!NOTE]`) to `README.md`.
+- Re-verified complete 18-test regression suite across template generation profiles.
+
 ## 2026-07-17
 
 - Promoted `init-project` from a concept to a staged generator with real Git

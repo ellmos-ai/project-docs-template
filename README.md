@@ -2,10 +2,14 @@
 
 [![Template](https://img.shields.io/badge/template-agent--ready_project_docs-2f6f5e)](https://github.com/ellmos-ai/project-docs-template)
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
+[![Pytest](https://img.shields.io/badge/pytest-18%20passed-brightgreen.svg)](./tests/test_tools.py)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 Agent-ready project documentation template with START/STATE/TODO/DONE,
 workflows, lightweight tooling, and LLM-friendly project memory.
+
+> [!NOTE]
+> This repository is machine-readable and agent-optimized. AI coding assistants (Claude Code, Antigravity/Gemini, Codex) can read [`llms.txt`](./llms.txt) for a fast context index and run `pytest` (18 tests passing) to verify template generation integrity.
 
 This repository contains a compact documentation scaffold for projects that are
 maintained with LLM agents. The template focuses on clear project state,
