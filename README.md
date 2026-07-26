@@ -3,6 +3,7 @@
 [![Template](https://img.shields.io/badge/template-agent--ready_project_docs-2f6f5e)](https://github.com/ellmos-ai/project-docs-template)
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Pytest](https://img.shields.io/badge/pytest-18%20passed-brightgreen.svg)](./tests/test_tools.py)
+[![Language: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 Agent-ready project documentation template with START/STATE/TODO/DONE,
@@ -15,6 +16,21 @@ This repository contains a compact documentation scaffold for projects that are
 maintained with LLM agents. The template focuses on clear project state,
 session handoff, task history, decision records, workflows, and small local
 utilities without turning the project into a heavy operating system.
+
+## Architecture & Flow
+
+```mermaid
+graph TD
+    A["LLM Coding Agent<br>(Claude Code / Antigravity / Codex)"] --> B["init-project CLI / Staging"]
+    B --> C{"Select Profile"}
+    C -->|MINIMAL| D["Core Docs<br>(CLAUDE.md, START.md, STATE.md, TODO.md)"]
+    C -->|STANDARD| E["Standard Suite<br>(Minimal + DECISIONS.md, CHANGELOG.md)"]
+    C -->|FULL| F["Enterprise Router<br>(Standard + WORKFLOWS.md, TOOLS.md, GLOSSARY.md)"]
+    D --> G["Validated Project Scaffold"]
+    E --> G
+    F --> G
+    G --> H["Deterministic Agent Handoff & Session Memory"]
+```
 
 ## Use This Template When
 

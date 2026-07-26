@@ -2,6 +2,13 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-07-26
+
+- Added German documentation `README_de.md` for multi-language access and international discoverability.
+- Added Mermaid System Architecture & Flow diagram (`Architecture & Flow`) to `README.md` and `README_de.md`.
+- Updated `llms.txt` verification timestamp to 2026-07-26.
+- Re-verified complete 18-test regression suite across all template generation profiles.
+
 ## 2026-07-25
 
 - Added PEP 621 `pyproject.toml` with project metadata, Python >=3.10 requirement, and pytest configuration (`tool.pytest.ini_options`).
