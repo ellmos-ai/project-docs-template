@@ -2,6 +2,11 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-07-27
+
+- Updated `llms.txt` verification timestamp to 2026-07-27.
+- Re-verified complete 18-test regression suite across all template generation profiles (`pytest` / `unittest`).
+
 ## 2026-07-26
 
 - Added German documentation `README_de.md` for multi-language access and international discoverability.
