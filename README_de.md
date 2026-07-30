@@ -84,6 +84,43 @@ python -m unittest discover -s tests -v
 
 Die Testsuite prüft alle Profile, reale Git-Initialisierung, Frontmatter-Reparatur und TODO/DONE Rollback-Verhalten auf Windows, Linux und macOS.
 
+<!-- BEGIN ELLMOS BUNDLE DISCOVERY DE -->
+
+## Bundles und Partner
+
+Geprüfte Discovery-Projektion für `module:project-docs-template` aus
+`catalog:v4-bundles`
+(`a52688938bcad21469beb546acfe6dd79ca40196a2bbaf246e5bd6aaac4bbbd7`).
+Das Ziel-Repository ist `public`. Die Bundle-Manifeste bleiben die Autorität
+für Mitgliedschaften; dieser Abschnitt installiert oder aktiviert keine
+Komponenten. Die Freigabe beruht auf einem öffentlichen Modul-Registry-Eintrag
+und einer ausdrücklichen Default-deny-Allowlist für Bundles.
+
+### `ellmos-dev-lifecycle-bundle`
+
+- Sichtbarkeit des Bundle-Rezepts: `private`; Rolle: `declared-component`;
+  Anforderung: `required`.
+- Modulpartner: `module:bundle-installer`, `module:ellmos-code-tools`,
+  `module:ellmos-tests`, `module:github-onedrive-mirror`,
+  `module:stack-system-installer`.
+- Skill-Partner: `skill:bugfix-protocol`, `skill:bugsweep`, `skill:dev-cycle`,
+  `skill:encoding-fix`, `skill:github-repo-care`, `skill:migrate-rename`,
+  `skill:nulcleaner`, `skill:pipeline-optimizer`, `skill:plugin-system`,
+  `skill:project-onboarding`, `skill:trampelpfadanalyse`.
+
+### `ellmos-knowledge-bundle`
+
+- Sichtbarkeit des Bundle-Rezepts: `private`; Rolle: `declared-component`;
+  Anforderung: `recommended`.
+- Modulpartner: `module:KnowledgeDigest`, `module:WikiStub-Seed`,
+  `module:report-forge`, `module:web-scraper`.
+- Skill-Partner: `skill:bilingual-doc-sync`, `skill:docs-analysis`,
+  `skill:document-chunker`.
+
+Kompositions- und Runtime-Details werden bewusst nicht offengelegt.
+
+<!-- END ELLMOS BUNDLE DISCOVERY DE -->
+
 ## Auffindbarkeit (SEO)
 
 Suchbegriffe:
