@@ -116,6 +116,30 @@ suite runs on Linux, Windows, and macOS; see [`RELEASE_GATE.md`](./RELEASE_GATE.
 Security reports belong in the private channel described in
 [`SECURITY.md`](./SECURITY.md), not in public issues.
 
+<!-- BEGIN GENERATED ELLMOS BUNDLE DISCOVERY -->
+
+## Bundles and partners
+
+Generated discovery projection for `module:project-docs-template` from `catalog:v4-bundles` (`a52688938bcad21469beb546acfe6dd79ca40196a2bbaf246e5bd6aaac4bbbd7`).
+Target repository visibility: `public`. Bundle manifests remain the membership authority; this section does not install or activate components.
+Discovery approval: `public` module-registry record, explicit default-deny bundle allowlist.
+
+### `ellmos-dev-lifecycle-bundle`
+
+- Bundle recipe visibility: `private`; role: `declared-component`; requirement: `required`.
+- module partners: `module:bundle-installer`, `module:ellmos-code-tools`, `module:ellmos-tests`, `module:github-onedrive-mirror`, `module:stack-system-installer`.
+- skill partners: `skill:bugfix-protocol`, `skill:bugsweep`, `skill:dev-cycle`, `skill:encoding-fix`, `skill:github-repo-care`, `skill:migrate-rename`, `skill:nulcleaner`, `skill:pipeline-optimizer`, `skill:plugin-system`, `skill:project-onboarding`, `skill:trampelpfadanalyse`.
+
+### `ellmos-knowledge-bundle`
+
+- Bundle recipe visibility: `private`; role: `declared-component`; requirement: `recommended`.
+- module partners: `module:KnowledgeDigest`, `module:WikiStub-Seed`, `module:report-forge`, `module:web-scraper`.
+- skill partners: `skill:bilingual-doc-sync`, `skill:docs-analysis`, `skill:document-chunker`.
+
+Composition and runtime details are intentionally omitted.
+
+<!-- END GENERATED ELLMOS BUNDLE DISCOVERY -->
+
 ## Discoverability
 
 Canonical search phrases:
