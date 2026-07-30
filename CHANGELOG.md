@@ -2,6 +2,11 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-07-30
+
+- Updated `llms.txt` verification timestamp to 2026-07-30.
+- Re-verified complete 18-test regression suite across all template generation profiles (`pytest` / 18 passed).
+
 ## 2026-07-29
 
 - Updated `llms.txt` verification timestamp to 2026-07-29.
