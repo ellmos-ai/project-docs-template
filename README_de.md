@@ -66,7 +66,10 @@ Verfügbare Profile:
 - `STANDARD`: 12 Stammdateien plus Entscheidungen & Changelog
 - `FULL`: 16 Stammdateien plus Workflow-, Tool- und Glossar-Router
 
-Erfordert Python 3.10 oder neuer.
+Alternativ können einzelne Dateien auch manuell aus [`template/`](./template/)
+kopiert werden, wenn nur ausgewählte Teile benötigt werden.
+
+Erfordert Python 3.10 oder neuer. Git wird nur für `--git` benötigt.
 
 ## Profil-Vergleich
 
@@ -76,13 +79,27 @@ Erfordert Python 3.10 oder neuer.
 | `STANDARD` | Ernsthafte Projekte mit Entscheidungs- & Pflegebedarf | Minimal-Set plus Changelog, Entscheidungen, Muster & Regeln |
 | `FULL` | Multi-Agenten- & Langzeitprojekte mit Routern & Workflows | Standard-Set plus Architektur, Workflow/Tool-Router & Glossar |
 
+## Design-Prinzipien
+
+- Jede Datei hat eine klar abgegrenzte Aufgabe.
+- Die Übergabe zwischen Sitzungen ist explizit und kurz.
+- Der Pflegeaufwand zählt mehr als die Vollständigkeit aller denkbaren Dokumente.
+- Router wie `WORKFLOWS.md` und `TOOLS.md` verweisen auf Details an anderer Stelle.
+- Abgeschlossene Aufgaben können automatisch archiviert werden, statt `TODO.md` aufzublähen.
+
+Die vollständige Begründung und eine Erklärung Datei für Datei bietet
+[`template/TEMPLATE.md`](./template/TEMPLATE.md).
+
 ## Verifizierung
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-Die Testsuite prüft alle Profile, reale Git-Initialisierung, Frontmatter-Reparatur und TODO/DONE Rollback-Verhalten auf Windows, Linux und macOS.
+Die Testsuite prüft alle Profile, reale Git-Initialisierung, Frontmatter-Reparatur und TODO/DONE Rollback-Verhalten auf Windows, Linux und macOS; siehe [`RELEASE_GATE.md`](./RELEASE_GATE.md).
+
+Sicherheitsmeldungen gehören in den privaten Kanal, der in
+[`SECURITY.md`](./SECURITY.md) beschrieben ist, nicht in öffentliche Issues.
 
 <!-- BEGIN ELLMOS BUNDLE DISCOVERY DE -->
 
