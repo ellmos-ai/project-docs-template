@@ -2,6 +2,12 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-08-01
+
+- Updated `llms.txt` verification timestamp to 2026-08-01.
+- Re-verified the complete 18-test regression suite (`pytest` and `unittest`,
+  including 7 subtests), `compileall`, and `doc-lint`.
+
 ## 2026-07-30
 
 - Updated `llms.txt` verification timestamp to 2026-07-30.
