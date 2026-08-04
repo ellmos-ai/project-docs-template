@@ -120,7 +120,7 @@ Security reports belong in the private channel described in
 
 ## Bundles and partners
 
-Generated discovery projection for `module:project-docs-template` from `catalog:v4-bundles` (`a52688938bcad21469beb546acfe6dd79ca40196a2bbaf246e5bd6aaac4bbbd7`).
+Generated discovery projection for `module:project-docs-template` from `catalog:v4-bundles` (`7f6121371fd05d85d32c2e75f8fbdb682aa76ebdf879dd40d36ceefb4aae18d3`).
 Target repository visibility: `public`. Bundle manifests remain the membership authority; this section does not install or activate components.
 Discovery approval: `public` module-registry record, explicit default-deny bundle allowlist.
 
