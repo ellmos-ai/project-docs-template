@@ -1,4 +1,4 @@
-## Last-checked: 2026-08-01
+## Last-checked: 2026-08-10
 
 # ellmos-ai/project-docs-template
 

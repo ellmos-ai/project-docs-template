@@ -1,7 +1,21 @@
 # Offene Befunde — project-docs-template
 
-**Erfasst am:** 2026-08-01
+**Erfasst am:** 2026-08-10
 **Rolle:** MAINTAINER (TaskMaster Loop)
+
+---
+
+## Aktueller Readback — 2026-08-10
+
+- Der geprüfte Ausgangsstand ist `5835895` auf `main`; der Branch stand zu
+  diesem Zeitpunkt zwei Commits vor und einen Commit hinter `origin/main`.
+  Der Arbeitsbaum war sauber, und es bestanden keine Projekt- oder Git-Locks.
+- Der Release-Gate-Satz ist frisch grün: `python -m unittest discover -s tests
+  -v` meldet 18 Tests bestanden, `python -m pytest -q` meldet 18 bestanden und
+  7 Subtests, Compileall ist erfolgreich, `doc-lint --root template` ist OK
+  und `git diff --check` ist sauber.
+- `llms.txt` wurde auf `Last-checked: 2026-08-10` aktualisiert. Es wurden keine
+  Generator-, Archivierungs-, Push- oder Release-Aktionen ausgeführt.
 
 ---
 
