@@ -1,5 +1,18 @@
 # Offene Befunde — project-docs-template
 
+## Aktueller Readback — 2026-08-12
+
+- Der lokale Checkout steht auf `b898d01888332bf5ccb908cc37bb948e3a990b78`
+  (`main`); der Arbeitsbaum ist sauber. Der lokale Tracking-Ref
+  `origin/main` steht auf `60ea17a73b1d57b9053be8cd94e5c858fcfe4acb`.
+- Die Branchlage ist lokal `ahead 3, behind 2`. Das ist keine Aussage über
+  den Live-Remote-Stand; es wurde kein Fetch, Merge oder Push ausgeführt.
+- Der dokumentierte Release-Gate-Satz ist frisch grün: `pytest` meldet 18
+  Tests und 7 Subtests, `unittest` 18 Tests, `compileall`, `doc-lint` und
+  `git diff --check` sind erfolgreich.
+- Es wurden keine Projekt- oder Git-Locks vorgefunden. Die Pflege blieb auf
+  den lokalen Checkout beschränkt.
+
 ## Live-/Release-Gate-Readback — 2026-08-10 16:29 Europe/Berlin
 
 - Der aktuelle lokale Checkout steht sauber auf `17ab46f` (`main`). Gegen den

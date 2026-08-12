@@ -2,6 +2,14 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-08-12
+
+- Updated `llms.txt` verification timestamp to 2026-08-12.
+- Re-verified the complete 18-test regression suite (`pytest` and `unittest`,
+  including 7 subtests), `compileall`, `doc-lint`, and `git diff --check`.
+- Recorded the current local branch divergence in `BEFUNDE.md`; no merge or
+  push was performed.
+
 ## 2026-08-10
 
 - Updated `llms.txt` verification timestamp to 2026-08-10.
