@@ -17,6 +17,10 @@ The regression suite must prove:
 - Generated project frontmatter passes `doc-lint`.
 - `--git` creates a clean `main` repository with an initial commit.
 - A non-empty target is rejected without mutation.
+- Every generated project records a `.project-docs-template.json` ownership
+  manifest, and the next profile upgrade replaces only unchanged managed files,
+  rejects changed/unowned collisions without mutation, and rolls back on
+  commit failure.
 - FULL generation leaves `WORKFLOWS.md` synchronized.
 - Markdown table metadata cannot corrupt workflow synchronization.
 - A successful TODO archival is idempotent on rerun, recurring task text is

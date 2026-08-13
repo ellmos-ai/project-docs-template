@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
-"""Create an agent-ready project documentation scaffold.
+"""Create or safely upgrade an agent-ready project documentation scaffold.
 
 The command renders one of the MINIMAL, STANDARD, or FULL profiles into a new
 or empty directory. Rendering happens in a sibling staging directory and is
 promoted only after placeholder and link validation succeeds. With ``--git``
 the staged result is initialized and committed before promotion.
+
+``--upgrade`` applies the next profile to an existing project only when the
+project carries this tool's manifest and every managed file still has the
+recorded hash. Existing user-edited files therefore cause a no-write failure;
+the command never performs an implicit merge.
 """
 
 from __future__ import annotations
 
 import argparse
 import getpass
+import hashlib
 import json
 import os
 import re
@@ -19,7 +25,7 @@ import subprocess
 import sys
 import tempfile
 from datetime import date, datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from urllib.parse import unquote
 
 
@@ -63,6 +69,8 @@ PROFILES = {
 
 TEMPLATE_ROOT = Path(__file__).resolve().parent.parent
 SUPPORT_FILES = [".gitignore"]
+MANIFEST_NAME = ".project-docs-template.json"
+PROFILE_ORDER = ("MINIMAL", "STANDARD", "FULL")
 PROFILE_START = re.compile(r"^\s*<!-- profiles:([A-Z,]+) -->\s*$")
 PROFILE_END = re.compile(r"^\s*<!-- /profiles -->\s*$")
 MARKDOWN_LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
@@ -75,6 +83,155 @@ GENERATOR_PLACEHOLDERS = (
 
 class GenerationError(RuntimeError):
     """Raised when a scaffold cannot be generated safely."""
+
+
+def iter_profile_sources(profile: str):
+    """Yield ``(source, relative_target, render)`` for one profile."""
+    definition = PROFILES[profile]
+    for filename in definition["root_files"] + SUPPORT_FILES:
+        yield TEMPLATE_ROOT / filename, Path(filename), True
+
+    for subdir_name in definition["subdirs"]:
+        src_dir = TEMPLATE_ROOT / subdir_name
+        if not src_dir.is_dir():
+            raise GenerationError(f"Template-Ordner fehlt: {src_dir}")
+        if subdir_name == "_tools":
+            yield src_dir / "README.md", Path(subdir_name) / "README.md", True
+            for tool in definition["tools"]:
+                yield src_dir / tool, Path(subdir_name) / tool, False
+            continue
+        if subdir_name == "workflows":
+            yield src_dir / "README.md", Path(subdir_name) / "README.md", True
+            yield (
+                src_dir / "_example-workflow.md",
+                Path(subdir_name) / "_example-workflow.md",
+                True,
+            )
+            continue
+        for item in sorted(src_dir.rglob("*")):
+            if item.is_file():
+                yield item, Path(subdir_name) / item.relative_to(src_dir), True
+
+
+def profile_relative_paths(profile: str) -> list[Path]:
+    return [relative for _, relative, _ in iter_profile_sources(profile)]
+
+
+def manifest_key(relative: Path) -> str:
+    return relative.as_posix()
+
+
+def sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write_manifest(
+    target: Path,
+    context: dict[str, str | Path],
+    profile: str,
+    *,
+    upgraded_from: str | None = None,
+) -> Path:
+    files: dict[str, dict[str, str]] = {}
+    for relative in profile_relative_paths(profile):
+        path = target / relative
+        if not path.is_file():
+            raise GenerationError(f"Generierte Datei fehlt vor Manifest-Erstellung: {relative}")
+        files[manifest_key(relative)] = {"sha256": sha256_file(path)}
+
+    payload: dict[str, object] = {
+        "manifest_version": 1,
+        "tool": "project-docs-template",
+        "project_name": str(context["name"]),
+        "author": str(context["author"]),
+        "profile": profile,
+        "files": files,
+    }
+    if upgraded_from:
+        payload["upgraded_from"] = upgraded_from
+    path = target / MANIFEST_NAME
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    return path
+
+
+def _manifest_relative_path(value: object) -> Path:
+    if not isinstance(value, str) or not value:
+        raise GenerationError("Manifest-Dateipfad ist ungültig")
+    pure = PurePosixPath(value)
+    if (
+        pure.is_absolute()
+        or value != pure.as_posix()
+        or ":" in pure.parts[0]
+        or any(part in ("", ".", "..") for part in pure.parts)
+    ):
+        raise GenerationError(f"Unsicherer Manifest-Dateipfad: {value!r}")
+    return Path(*pure.parts)
+
+
+def load_manifest(target: Path) -> tuple[dict[str, object], dict[str, str]]:
+    path = target / MANIFEST_NAME
+    if not path.is_file():
+        raise GenerationError(
+            f"Merge-sicheres Upgrade verweigert: {MANIFEST_NAME} fehlt in {target}. "
+            "Nur mit einem von init-project erzeugten Manifest ist Eigentum belegbar."
+        )
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise GenerationError(f"Manifest kann nicht gelesen werden: {path}") from exc
+    if not isinstance(payload, dict):
+        raise GenerationError("Manifest muss ein JSON-Objekt sein")
+    if payload.get("manifest_version") != 1 or payload.get("tool") != "project-docs-template":
+        raise GenerationError("Nicht unterstütztes project-docs-template-Manifest")
+    profile = payload.get("profile")
+    if not isinstance(profile, str) or profile not in PROFILES:
+        raise GenerationError(f"Manifest-Profil ist ungültig: {profile!r}")
+    raw_files = payload.get("files")
+    if not isinstance(raw_files, dict):
+        raise GenerationError("Manifest enthält keine gültige Dateiliste")
+    hashes: dict[str, str] = {}
+    for raw_relative, raw_meta in raw_files.items():
+        relative = _manifest_relative_path(raw_relative)
+        if not isinstance(raw_meta, dict) or not isinstance(raw_meta.get("sha256"), str):
+            raise GenerationError(f"Manifest-Hash fehlt für {raw_relative!r}")
+        digest = raw_meta["sha256"]
+        if not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise GenerationError(f"Manifest-Hash ist ungültig für {raw_relative!r}")
+        hashes[manifest_key(relative)] = digest
+    if set(hashes) != {manifest_key(path) for path in profile_relative_paths(str(profile))}:
+        raise GenerationError(
+            "Manifest-Dateiliste passt nicht zum gespeicherten Profil; "
+            "kein sicheres Upgrade möglich"
+        )
+    return payload, hashes
+
+
+def verify_managed_hashes(target: Path, hashes: dict[str, str]) -> list[str]:
+    conflicts: list[str] = []
+    for raw_relative, expected in sorted(hashes.items()):
+        relative = _manifest_relative_path(raw_relative)
+        path = target / relative
+        if not path.is_file():
+            conflicts.append(f"fehlt: {raw_relative}")
+        elif sha256_file(path) != expected:
+            conflicts.append(f"geändert: {raw_relative}")
+    return conflicts
+
+
+def _copy_atomic(source: Path, destination: Path) -> None:
+    temporary = destination.with_name(
+        f".{destination.name}.project-docs-template-{os.getpid()}"
+    )
+    try:
+        shutil.copy2(source, temporary)
+        os.replace(temporary, destination)
+    finally:
+        if temporary.exists():
+            temporary.unlink()
 
 
 def validate_single_line(value: str, label: str) -> str:
@@ -185,35 +342,13 @@ def copy_template_file(
 
 
 def instantiate_profile(context: dict[str, str | Path]) -> None:
-    profile = PROFILES[str(context["profile"])]
+    profile = str(context["profile"])
     target = Path(context["target"])
     print(f"\n==> Profil: {context['profile']}")
-    print(f"    {profile['description']}")
+    print(f"    {PROFILES[profile]['description']}")
 
-    for filename in profile["root_files"] + SUPPORT_FILES:
-        copy_template_file(TEMPLATE_ROOT / filename, target / filename, context)
-
-    for subdir_name in profile["subdirs"]:
-        src_dir = TEMPLATE_ROOT / subdir_name
-        dst_dir = target / subdir_name
-        if not src_dir.is_dir():
-            raise GenerationError(f"Template-Ordner fehlt: {src_dir}")
-        if subdir_name == "_tools":
-            copy_template_file(src_dir / "README.md", dst_dir / "README.md", context)
-            for tool in profile["tools"]:
-                copy_template_file(src_dir / tool, dst_dir / tool, context, render=False)
-            continue
-        if subdir_name == "workflows":
-            copy_template_file(src_dir / "README.md", dst_dir / "README.md", context)
-            copy_template_file(
-                src_dir / "_example-workflow.md",
-                dst_dir / "_example-workflow.md",
-                context,
-            )
-            continue
-        for item in sorted(src_dir.rglob("*")):
-            if item.is_file():
-                copy_template_file(item, dst_dir / item.relative_to(src_dir), context)
+    for source, relative, render in iter_profile_sources(profile):
+        copy_template_file(source, target / relative, context, render=render)
 
 
 def run_tool(command: list[str], cwd: Path) -> None:
@@ -290,6 +425,7 @@ def promote_staging(staging: Path, target: Path, target_existed: bool) -> None:
 
 def generate(args: argparse.Namespace) -> Path:
     target = args.target.resolve()
+    profile = args.profile or "STANDARD"
     name = validate_single_line(args.name, "Projekt-Name")
     author = resolve_author(args.author)
     target_existed = target.exists()
@@ -299,7 +435,7 @@ def generate(args: argparse.Namespace) -> Path:
     context: dict[str, str | Path] = {
         "target": target,
         "name": name,
-        "profile": args.profile,
+        "profile": profile,
         "author": author,
         "today": date.today().isoformat(),
     }
@@ -310,7 +446,7 @@ def generate(args: argparse.Namespace) -> Path:
 
     if args.dry_run:
         print("==> MODE:    DRY-RUN (keine Änderungen)")
-        print(f"==> Profil:  {args.profile} ({len(PROFILES[args.profile]['root_files'])} Root-Dateien)")
+        print(f"==> Profil:  {profile} ({len(PROFILES[profile]['root_files'])} Root-Dateien)")
         if args.git:
             print("==> Git:     würde Repository und initialen Commit anlegen")
         return target
@@ -320,8 +456,9 @@ def generate(args: argparse.Namespace) -> Path:
     context["target"] = staging
     try:
         instantiate_profile(context)
-        prepare_generated_files(staging, args.profile)
+        prepare_generated_files(staging, profile)
         validate_rendered_output(staging)
+        write_manifest(staging, context, profile)
         if args.git:
             init_git(staging, author)
         promote_staging(staging, target, target_existed)
@@ -332,20 +469,217 @@ def generate(args: argparse.Namespace) -> Path:
     return target
 
 
+def _rollback_upgrade(
+    target: Path,
+    backup: Path,
+    replaced: list[tuple[Path, str]],
+    created: list[tuple[Path, str]],
+    manifest_replaced: bool,
+    original_manifest: Path,
+    new_manifest_hash: str | None,
+) -> None:
+    """Restore only files changed by this invocation."""
+    for path, expected_new_hash in reversed(created):
+        if path.is_file() and sha256_file(path) == expected_new_hash:
+            path.unlink()
+    for path, expected_new_hash in reversed(replaced):
+        if not path.is_file() or sha256_file(path) != expected_new_hash:
+            continue
+        relative = path.relative_to(target)
+        saved = backup / relative
+        if saved.is_file():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            _copy_atomic(saved, path)
+    if (
+        manifest_replaced
+        and new_manifest_hash
+        and original_manifest.is_file()
+        and sha256_file(original_manifest) == new_manifest_hash
+    ):
+        saved_manifest = backup / MANIFEST_NAME
+        if saved_manifest.is_file():
+            _copy_atomic(saved_manifest, original_manifest)
+
+
+def _commit_upgrade(
+    target: Path,
+    staging: Path,
+    hashes: dict[str, str],
+    replace_paths: list[Path],
+    add_paths: list[Path],
+) -> None:
+    """Commit staged profile files with rollback and concurrent-change guards."""
+    manifest = target / MANIFEST_NAME
+    original_manifest_hash = sha256_file(manifest)
+    backup = Path(tempfile.mkdtemp(prefix=f".{target.name}.upgrade-backup-", dir=target.parent))
+    replaced: list[tuple[Path, str]] = []
+    created: list[tuple[Path, str]] = []
+    manifest_replaced = False
+    new_manifest_hash: str | None = None
+    try:
+        shutil.copy2(manifest, backup / MANIFEST_NAME)
+        for relative in replace_paths:
+            path = target / relative
+            expected = hashes[manifest_key(relative)]
+            if not path.is_file() or sha256_file(path) != expected:
+                raise GenerationError(
+                    f"Merge-sicheres Upgrade abgebrochen: Datei änderte sich vor dem Schreiben: {relative}"
+                )
+            saved = backup / relative
+            saved.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(path, saved)
+
+        if sha256_file(manifest) != original_manifest_hash:
+            raise GenerationError("Manifest änderte sich vor dem Schreiben; Upgrade abgebrochen")
+
+        for relative in replace_paths:
+            source = staging / relative
+            destination = target / relative
+            if sha256_file(source) != sha256_file(destination):
+                _copy_atomic(source, destination)
+                replaced.append((destination, sha256_file(source)))
+
+        for relative in add_paths:
+            destination = target / relative
+            if destination.exists():
+                raise GenerationError(
+                    f"Merge-sicheres Upgrade abgebrochen: neue Datei ist inzwischen vorhanden: {relative}"
+                )
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            _copy_atomic(staging / relative, destination)
+            created.append((destination, sha256_file(staging / relative)))
+
+        _copy_atomic(staging / MANIFEST_NAME, manifest)
+        manifest_replaced = True
+        new_manifest_hash = sha256_file(staging / MANIFEST_NAME)
+    except BaseException:
+        _rollback_upgrade(
+            target,
+            backup,
+            replaced,
+            created,
+            manifest_replaced,
+            manifest,
+            new_manifest_hash,
+        )
+        raise
+    finally:
+        shutil.rmtree(backup, ignore_errors=True)
+
+
+def upgrade(args: argparse.Namespace) -> Path:
+    target = args.target.resolve()
+    if not target.is_dir() or not any(target.iterdir()):
+        raise GenerationError(f"Upgrade-Ziel muss ein vorhandener, nichtleerer Ordner sein: {target}")
+    if getattr(args, "git", False) or getattr(args, "name", "") or getattr(args, "author", ""):
+        raise GenerationError(
+            "--upgrade verwendet ausschließlich Metadaten aus dem Manifest; "
+            "--name, --author und --git entfallen"
+        )
+    if not args.profile:
+        raise GenerationError("--upgrade benötigt das Zielprofil via --profile STANDARD oder --profile FULL")
+
+    manifest, hashes = load_manifest(target)
+    current_profile = str(manifest["profile"])
+    target_profile = args.profile
+    current_index = PROFILE_ORDER.index(current_profile)
+    target_index = PROFILE_ORDER.index(target_profile)
+    if target_index != current_index + 1:
+        raise GenerationError(
+            f"Nur der nächste Profil-Schritt ist erlaubt: {current_profile} -> "
+            f"{PROFILE_ORDER[current_index + 1] if current_index + 1 < len(PROFILE_ORDER) else 'kein weiteres Profil'}"
+        )
+
+    conflicts = verify_managed_hashes(target, hashes)
+    if conflicts:
+        raise GenerationError(
+            "Merge-sicheres Upgrade verweigert; verwaltete Dateien wurden seit "
+            "dem letzten Manifest verändert:\n  - " + "\n  - ".join(conflicts)
+        )
+
+    raw_name = manifest.get("project_name")
+    raw_author = manifest.get("author")
+    if not isinstance(raw_name, str) or not isinstance(raw_author, str):
+        raise GenerationError("Manifest enthält keine gültige Projekt-/Autorangabe")
+    name = validate_single_line(raw_name, "Projekt-Name im Manifest")
+    author = validate_single_line(raw_author, "Autor im Manifest")
+    context: dict[str, str | Path] = {
+        "target": target,
+        "name": name,
+        "profile": target_profile,
+        "author": author,
+        "today": date.today().isoformat(),
+    }
+    staging = Path(tempfile.mkdtemp(prefix=f".{target.name}.upgrade-staging-", dir=target.parent))
+    try:
+        context["target"] = staging
+        instantiate_profile(context)
+        prepare_generated_files(staging, target_profile)
+        validate_rendered_output(staging)
+        write_manifest(staging, context, target_profile, upgraded_from=current_profile)
+
+        old_paths = set(hashes)
+        desired_paths = {manifest_key(path): path for path in profile_relative_paths(target_profile)}
+        replace_paths: list[Path] = []
+        add_paths: list[Path] = []
+        collisions: list[str] = []
+        for raw_relative, relative in sorted(desired_paths.items()):
+            destination = target / relative
+            if raw_relative in old_paths:
+                replace_paths.append(relative)
+            elif destination.exists():
+                collisions.append(raw_relative)
+            else:
+                add_paths.append(relative)
+        if collisions:
+            raise GenerationError(
+                "Merge-sicheres Upgrade verweigert; vorhandene Dateien ohne "
+                "Generator-Eigentumsnachweis würden überschrieben:\n  - "
+                + "\n  - ".join(collisions)
+            )
+
+        print(f"==> Upgrade: {current_profile} -> {target_profile}")
+        print("==> Ersetze unveränderte Generator-Dateien:")
+        for relative in replace_paths:
+            print(f"  UPDATE {relative}")
+        print("==> Lege fehlende Profil-Dateien an:")
+        for relative in add_paths:
+            print(f"  ADD    {relative}")
+        if args.dry_run:
+            print("==> MODE: DRY-RUN (keine Änderungen)")
+            return target
+
+        context["target"] = target
+        _commit_upgrade(target, staging, hashes, replace_paths, add_paths)
+    finally:
+        shutil.rmtree(staging, ignore_errors=True)
+    print(f"\n==> Upgrade abgeschlossen: {target}")
+    return target
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--target", type=Path, required=True, help="Neuer oder leerer Zielordner")
-    parser.add_argument("--name", required=True, help="Projekt-Name")
-    parser.add_argument("--profile", choices=tuple(PROFILES), default="STANDARD")
+    parser.add_argument("--target", type=Path, required=True, help="Zielordner")
+    parser.add_argument("--name", default="", help="Projekt-Name (bei neuer Anlage erforderlich)")
+    parser.add_argument("--profile", choices=tuple(PROFILES), default="", help="Profil bzw. Upgrade-Zielprofil")
     parser.add_argument("--author", default="", help="Autor (Standard: git config oder OS-User)")
     parser.add_argument("--git", action="store_true", help="Git-Repository mit initialem Commit anlegen")
     parser.add_argument("--dry-run", action="store_true", help="Plan anzeigen, nichts schreiben")
+    parser.add_argument(
+        "--upgrade",
+        action="store_true",
+        help="Bestehendes init-project-Projekt merge-sicher auf das nächste Profil heben",
+    )
     return parser
 
 
 def main() -> None:
     try:
-        generate(build_parser().parse_args())
+        args = build_parser().parse_args()
+        if args.upgrade:
+            upgrade(args)
+        else:
+            generate(args)
     except GenerationError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         raise SystemExit(1) from exc

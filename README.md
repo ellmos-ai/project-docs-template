@@ -73,6 +73,24 @@ Generation is staged beside the target. The result is promoted only after its
 profile markers, generator-owned placeholders, and relative Markdown links
 have been validated. Existing non-empty targets are never overwritten.
 
+### Merge-safe profile upgrades
+
+Every generated project carries `.project-docs-template.json`, a manifest of
+the generated profile and SHA-256 hashes for its managed files. Upgrade one
+step at a time with:
+
+```bash
+python template/_tools/init-project --target ../my-project \
+  --profile STANDARD --upgrade
+```
+
+The command stages the next profile first. It replaces only files whose
+manifest hash still matches, adds only missing profile files, and updates the
+manifest last. A changed managed file, an unowned filename collision, a
+missing manifest, or any unsupported profile jump aborts before mutation.
+There is no implicit merge; resolve user changes explicitly and rerun. Use
+`--dry-run` to inspect the planned updates and additions.
+
 Available profiles:
 
 - `MINIMAL`: 7 root files plus essential tools

@@ -2,6 +2,17 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-08-13
+
+- Added `init-project --upgrade --profile <STANDARD|FULL>` with a staged,
+  manifest/hash-verified contract for existing generated projects.
+- Profile upgrades are one-step only, never implicitly merge user changes,
+  reject unowned filename collisions before mutation, and roll back their own
+  writes if the final manifest commit fails.
+- Added regression coverage for successful upgrades, dry-run/no-write safety,
+  modified-file conflicts, unowned collisions, and legacy projects without a
+  manifest.
+
 ## 2026-08-12
 
 - Updated `llms.txt` verification timestamp to 2026-08-12.

@@ -133,6 +133,29 @@ kann FULL werden. **Reihenfolge für Upgrades:**
 **Niemals prophylaktisch upgraden.** Bis der konkrete Bedarf da ist, ist die
 Zusatzdatei nur Wartungsballast.
 
+Für ein erzeugtes Projekt führt `init-project --upgrade --profile <ZIEL>` den
+nächsten Schritt aus. Jede Anlage schreibt dafür
+`.project-docs-template.json` mit Profil, Projekt-/Autorangabe und SHA-256-
+Hashes aller Generator-Dateien. Der Upgrade-Vertrag ist absichtlich
+merge-sicher:
+
+- Es ist nur der unmittelbar nächste Schritt erlaubt (`MINIMAL → STANDARD` oder
+  `STANDARD → FULL`); Downgrades und Überspringen werden abgelehnt.
+- Vor dem Schreiben müssen alle verwalteten Dateien exakt zum Manifest passen.
+  Eine Nutzeränderung, eine fehlende Datei oder ein ungültiges Manifest beendet
+  den Lauf ohne Änderung.
+- Dateien des neuen Profils werden zunächst in einem Geschwister-Staging
+  erzeugt und geprüft. Verwaltete, unveränderte Dateien dürfen daraus
+  aktualisiert werden; fehlende Dateien werden neu angelegt. Eine bereits
+  vorhandene Datei ohne Generator-Eigentumsnachweis ist eine Kollision und
+  wird niemals überschrieben.
+- Das Manifest wird zuletzt geschrieben. Bei einem Fehler stellt der Befehl
+  seine eigenen Änderungen zurück; es gibt keinen impliziten Merge.
+
+Mit `--dry-run` lässt sich der konkrete Update-/Add-Plan ohne Schreibvorgang
+prüfen. Projekte ohne dieses Manifest werden bewusst abgelehnt, weil ihr
+Dateieigentum nicht sicher rekonstruiert werden kann.
+
 ## Die Gold-Set-Logik in 6 Sätzen
 
 1. **Jede Datei hat eine eigene, nicht-überlappende Rolle** — keine Dubletten wie DECISIONS.md + DECIDED.md

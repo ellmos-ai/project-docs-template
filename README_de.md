@@ -60,6 +60,25 @@ python template/_tools/init-project --target ../mein-projekt --name MeinProjekt 
 
 Optionale Flag `--author "Ihr Name"` zur Festlegung des Autors oder `--git` zur Erstellung eines `main`-Repositories mit Initial-Commit.
 
+### Merge-sichere Profil-Upgrades
+
+Jedes generierte Projekt erhält `.project-docs-template.json` mit dem Profil
+und SHA-256-Hashes der vom Generator verwalteten Dateien. Das nächste Profil
+wird ausdrücklich und schrittweise angefordert:
+
+```bash
+python template/_tools/init-project --target ../mein-projekt \
+  --profile STANDARD --upgrade
+```
+
+Der Befehl baut das Zielprofil zunächst in einem Staging-Ordner. Er ersetzt
+nur Dateien, deren Manifest-Hash noch stimmt, legt nur fehlende Profil-Dateien
+an und schreibt das Manifest zuletzt. Geänderte verwaltete Dateien,
+unbekannte Dateikollisionen, ein fehlendes Manifest oder ein übersprungener
+Profil-Schritt führen vor jeder Änderung zum Abbruch. Es gibt keinen
+automatischen Merge; eigene Änderungen müssen bewusst aufgelöst werden.
+Mit `--dry-run` lässt sich der Plan ohne Schreibvorgang anzeigen.
+
 Verfügbare Profile:
 
 - `MINIMAL`: 7 Stammdateien plus essentielle Werkzeuge

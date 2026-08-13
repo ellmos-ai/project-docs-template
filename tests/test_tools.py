@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import importlib.util
+import json
 import os
 import re
 import subprocess
@@ -29,18 +30,20 @@ GENERATOR_PLACEHOLDERS = (
 PROFILE_ROOT_FILES = {
     "MINIMAL": {
         "AGENTS.md", "CLAUDE.md", "README.md", "START.md", "STATE.md",
-        "TODO.md", "DONE.md", ".gitignore",
+        "TODO.md", "DONE.md", ".gitignore", ".project-docs-template.json",
     },
     "STANDARD": {
         "AGENTS.md", "CLAUDE.md", "README.md", "START.md", "STATE.md",
         "CHANGELOG.md", "HEADER-RULES.md", "CUT-AND-CLUE.md",
         "DECISIONS.md", "PATTERNS.md", "TODO.md", "DONE.md", ".gitignore",
+        ".project-docs-template.json",
     },
     "FULL": {
         "CLAUDE.md", "AGENTS.md", "README.md", "START.md", "STATE.md",
         "ARCHITECTURE.md", "CHANGELOG.md", "HEADER-RULES.md",
         "CUT-AND-CLUE.md", "DECISIONS.md", "PATTERNS.md", "WORKFLOWS.md",
         "TOOLS.md", "TODO.md", "DONE.md", "GLOSSARY.md", ".gitignore",
+        ".project-docs-template.json",
     },
 }
 
@@ -216,6 +219,115 @@ class InitProjectTests(unittest.TestCase):
             )
             self.assertEqual(1, result.returncode)
             self.assertFalse(target.exists())
+
+    def test_profile_upgrade_adds_next_profile_and_updates_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = self.generate(Path(temp), "MINIMAL")
+            result = run(
+                sys.executable, INIT,
+                "--target", target,
+                "--profile", "STANDARD",
+                "--upgrade",
+            )
+            self.assertIn("Upgrade abgeschlossen", result.stdout)
+            manifest = json.loads(
+                (target / ".project-docs-template.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual("STANDARD", manifest["profile"])
+            self.assertEqual("MINIMAL", manifest["upgraded_from"])
+            self.assertTrue((target / "DECISIONS.md").is_file())
+            self.assertIn("STANDARD", (target / "CLAUDE.md").read_text(encoding="utf-8"))
+
+    def test_profile_upgrade_refuses_modified_file_without_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = self.generate(Path(temp), "STANDARD")
+            manifest_before = (target / ".project-docs-template.json").read_bytes()
+            original = (target / "README.md").read_bytes()
+            (target / "README.md").write_bytes(original + b"\nuser change\n")
+            result = run(
+                sys.executable, INIT,
+                "--target", target,
+                "--profile", "FULL",
+                "--upgrade",
+                check=False,
+            )
+            self.assertEqual(1, result.returncode)
+            self.assertIn("Merge-sicheres Upgrade verweigert", result.stderr)
+            self.assertFalse((target / "ARCHITECTURE.md").exists())
+            self.assertEqual(manifest_before, (target / ".project-docs-template.json").read_bytes())
+            self.assertEqual(original + b"\nuser change\n", (target / "README.md").read_bytes())
+
+    def test_profile_upgrade_refuses_unowned_collision(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = self.generate(Path(temp), "MINIMAL")
+            collision = target / "DECISIONS.md"
+            collision.write_text("user-owned\n", encoding="utf-8")
+            manifest_before = (target / ".project-docs-template.json").read_bytes()
+            result = run(
+                sys.executable, INIT,
+                "--target", target,
+                "--profile", "STANDARD",
+                "--upgrade",
+                check=False,
+            )
+            self.assertEqual(1, result.returncode)
+            self.assertIn("ohne Generator-Eigentumsnachweis", result.stderr)
+            self.assertEqual("user-owned\n", collision.read_text(encoding="utf-8"))
+            self.assertEqual(manifest_before, (target / ".project-docs-template.json").read_bytes())
+            self.assertFalse((target / "CHANGELOG.md").exists())
+
+    def test_profile_upgrade_requires_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            target = Path(temp) / "legacy"
+            target.mkdir()
+            sentinel = target / "README.md"
+            sentinel.write_text("legacy\n", encoding="utf-8")
+            result = run(
+                sys.executable, INIT,
+                "--target", target,
+                "--profile", "STANDARD",
+                "--upgrade",
+                check=False,
+            )
+            self.assertEqual(1, result.returncode)
+            self.assertIn("Manifest", result.stderr)
+            self.assertEqual({"README.md"}, {path.name for path in target.iterdir()})
+
+    def test_profile_upgrade_rolls_back_when_manifest_commit_fails(self) -> None:
+        module = load_script("init_project_upgrade_test", INIT)
+        with tempfile.TemporaryDirectory() as temp:
+            target = self.generate(Path(temp), "MINIMAL")
+            before = {
+                path.relative_to(target): path.read_bytes()
+                for path in target.rglob("*")
+                if path.is_file()
+            }
+            manifest = target / ".project-docs-template.json"
+            real_replace = module.os.replace
+            failed = False
+
+            def fail_manifest_once(source, destination):
+                nonlocal failed
+                if Path(destination) == manifest and not failed:
+                    failed = True
+                    raise OSError("injected manifest commit failure")
+                return real_replace(source, destination)
+
+            with mock.patch.object(module.os, "replace", side_effect=fail_manifest_once):
+                with self.assertRaises(OSError):
+                    module.upgrade(
+                        module.argparse.Namespace(
+                            target=target,
+                            profile="STANDARD",
+                            dry_run=False,
+                        )
+                    )
+            after = {
+                path.relative_to(target): path.read_bytes()
+                for path in target.rglob("*")
+                if path.is_file()
+            }
+            self.assertEqual(before, after)
 
 
 class DocLintTests(unittest.TestCase):

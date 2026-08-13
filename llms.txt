@@ -18,6 +18,9 @@ Important files:
 - `README.md`: human-facing overview and quick start.
 - `template/TEMPLATE.md`: rationale, profile definitions, and file-by-file explanation.
 - `template/_tools/init-project`: profile-based scaffold generator.
+- `template/_tools/init-project --upgrade`: one-step, manifest/hash-verified
+  profile upgrade for existing generated projects; changed or unowned files
+  fail closed rather than being merged.
 - `tests/test_tools.py`: cross-profile and tool-integrity regression contract.
 - `RELEASE_GATE.md`: commands and evidence required before release.
 - `SECURITY.md`: private vulnerability-reporting policy.

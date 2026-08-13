@@ -15,8 +15,8 @@ Project-level maintenance checklist for `project-docs-template`.
 
 - [ ] Decide when the first semantic version tag should be cut; do not infer a
   version from generated projects' independent changelogs.
-- [ ] Add an explicit profile-upgrade command only after a merge-safe contract
-  for existing project files has been designed and tested.
+- [x] Add an explicit profile-upgrade command with a merge-safe manifest/hash
+  contract for existing project files; covered by the upgrade regression tests.
 
 ## Notes
 
