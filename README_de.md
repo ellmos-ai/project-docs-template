@@ -126,7 +126,7 @@ Sicherheitsmeldungen gehören in den privaten Kanal, der in
 
 Geprüfte Discovery-Projektion für `module:project-docs-template` aus
 `catalog:v4-bundles`
-(`a52688938bcad21469beb546acfe6dd79ca40196a2bbaf246e5bd6aaac4bbbd7`).
+(`546290dafbaafd810df1d59ef5a3d7183738472b48cd5a8a81f1e8f2b64d852e`).
 Das Ziel-Repository ist `public`. Die Bundle-Manifeste bleiben die Autorität
 für Mitgliedschaften; dieser Abschnitt installiert oder aktiviert keine
 Komponenten. Die Freigabe beruht auf einem öffentlichen Modul-Registry-Eintrag
