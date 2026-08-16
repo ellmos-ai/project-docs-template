@@ -1,8 +1,11 @@
 # Project Docs Template (Deutsche Dokumentation)
 
 [![Template](https://img.shields.io/badge/template-agent--ready_project_docs-2f6f5e)](https://github.com/ellmos-ai/project-docs-template)
+[![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
+[![Umbrella: open--bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
+[![LLM--Ready: llms.txt](https://img.shields.io/badge/LLM--Ready-llms.txt-orange.svg)](./llms.txt)
+[![Pytest](https://img.shields.io/badge/pytest-29%20passed-brightgreen.svg)](./tests)
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
-[![Pytest](https://img.shields.io/badge/pytest-18%20passed-brightgreen.svg)](./tests/test_tools.py)
 [![Language: English](https://img.shields.io/badge/Language-English-blue.svg)](./README.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
@@ -10,7 +13,7 @@ Agenten-optimierte Projektdokumentations-Vorlage mit START/STATE/TODO/DONE,
 Workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
 
 > [!NOTE]
-> Dieses Repository ist maschinenlesbar und für KI-Agenten optimiert. KI-Coding-Assistenten (Claude Code, Antigravity/Gemini, Codex) können [`llms.txt`](./llms.txt) als schnellen Kontext-Index nutzen und `pytest` (18 bestandene Tests) ausführen, um die Integrität der Vorlagengenerierung zu überprüfen.
+> Dieses Repository ist maschinenlesbar und für KI-Agenten optimiert. KI-Coding-Assistenten (Claude Code, Antigravity/Gemini, Codex) können [`llms.txt`](./llms.txt) als schnellen Kontext-Index nutzen und `pytest` (29 bestandene Tests, 7 Subtests) ausführen, um die Integrität der Vorlagengenerierung zu überprüfen.
 
 Dieses Repository enthält ein kompaktes Dokumentations-Scaffold für Software-, Forschungs- und Betriebsprojekte, die mit LLM-Agenten gepflegt werden. Die Vorlage konzentriert sich auf klaren Projektstatus, Übergaben zwischen Sitzungen, Aufgabenhistorie, Entscheidungsaufzeichnungen und Workflows, ohne das Projekt in ein schwerfälliges Betriebssystem zu verwandeln.
 
@@ -169,6 +172,19 @@ multi-agent repo handoff documentation template
 ```
 
 Für crawler- und LLM-orientierte Metadaten siehe [`llms.txt`](./llms.txt).
+
+## Ökosystem & Geschwisterwerkzeuge
+
+`project-docs-template` ist Teil der Open-Source-Ökosysteme [`ellmos-ai`](https://github.com/ellmos-ai) und [`open-bricks`](https://github.com/open-bricks).
+
+| Repository | Zweck | Primäre Schnittstelle |
+|---|---|---|
+| [`policy-registry`](https://github.com/ellmos-ai/policy-registry) | Maschinenlesbare Policy-Registry mit signierten Delegationen | CLI / API / MCP |
+| [`automation-master`](https://github.com/dev-bricks/automation-master) | Lokales Credit- & Rate-Limit-Orchestrierungs-Ledger | CLI / SQLite / API |
+| [`companion-for-agy`](https://github.com/ellmos-ai/companion-for-agy) | Erweiterungs- & Begleitsystem für Antigravity-Agenten | CLI / Node.js |
+| [`system-gap-master`](https://github.com/ellmos-ai/system-gap-master) | Cross-System-Synchronisations- & Divergenz-Prüfer | CLI / Python |
+| [`lock-master`](https://github.com/ellmos-ai/lock-master) | Datei- & Ressourcen-Nebenläufigkeits-Sperren | CLI / Python |
+| [`open-bricks`](https://github.com/open-bricks) | Dachorganisation für Entwickler- & KI-Werkzeuge | Portal |
 
 ## Lizenz
 

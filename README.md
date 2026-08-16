@@ -1,8 +1,11 @@
 # Project Docs Template
 
 [![Template](https://img.shields.io/badge/template-agent--ready_project_docs-2f6f5e)](https://github.com/ellmos-ai/project-docs-template)
+[![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
+[![Umbrella: open--bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
+[![LLM--Ready: llms.txt](https://img.shields.io/badge/LLM--Ready-llms.txt-orange.svg)](./llms.txt)
+[![Pytest](https://img.shields.io/badge/pytest-29%20passed-brightgreen.svg)](./tests)
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
-[![Pytest](https://img.shields.io/badge/pytest-18%20passed-brightgreen.svg)](./tests/test_tools.py)
 [![Language: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
@@ -10,7 +13,7 @@ Agent-ready project documentation template with START/STATE/TODO/DONE,
 workflows, lightweight tooling, and LLM-friendly project memory.
 
 > [!NOTE]
-> This repository is machine-readable and agent-optimized. AI coding assistants (Claude Code, Antigravity/Gemini, Codex) can read [`llms.txt`](./llms.txt) for a fast context index and run `pytest` (18 tests passing) to verify template generation integrity.
+> This repository is machine-readable and agent-optimized. AI coding assistants (Claude Code, Antigravity/Gemini, Codex) can read [`llms.txt`](./llms.txt) for a fast context index and run `pytest` (29 tests passing, 7 subtests) to verify template generation integrity.
 
 This repository contains a compact documentation scaffold for projects that are
 maintained with LLM agents. The template focuses on clear project state,
@@ -171,9 +174,20 @@ multi-agent repo handoff documentation template
 
 For LLM and crawler-oriented metadata, see [`llms.txt`](./llms.txt).
 
-## License
+## Ecosystem & Sibling Tools
 
-MIT License. See [LICENSE](./LICENSE).
+`project-docs-template` is part of the [`ellmos-ai`](https://github.com/ellmos-ai) and [`open-bricks`](https://github.com/open-bricks) open-source ecosystems.
+
+| Repository | Purpose | Primary Surface |
+|---|---|---|
+| [`policy-registry`](https://github.com/ellmos-ai/policy-registry) | Machine-readable policy registry with signed delegations | CLI / API / MCP |
+| [`automation-master`](https://github.com/dev-bricks/automation-master) | Local-first credit & rate-limit orchestration ledger | CLI / SQLite / API |
+| [`companion-for-agy`](https://github.com/ellmos-ai/companion-for-agy) | Extension & companion suite for Antigravity AI agents | CLI / Node.js |
+| [`system-gap-master`](https://github.com/ellmos-ai/system-gap-master) | Cross-system sync & divergence analyzer | CLI / Python |
+| [`lock-master`](https://github.com/ellmos-ai/lock-master) | File & resource concurrency lock manager | CLI / Python |
+| [`open-bricks`](https://github.com/open-bricks) | Umbrella organization for developer & AI tools | Portal |
+
+## License
 
 This project is an unpaid open-source donation. Liability is limited to intent
 and gross negligence under Section 521 of the German Civil Code. Use at your

@@ -1,4 +1,4 @@
-## Last-checked: 2026-08-12
+## Last-checked: 2026-08-16
 
 # ellmos-ai/project-docs-template
 
@@ -10,24 +10,32 @@ https://github.com/ellmos-ai/project-docs-template
 
 Primary audience:
 - Maintainers who want predictable LLM-agent handoff files in a repo root.
-- Claude Code, Codex, Gemini CLI, and other coding-agent users.
+- Claude Code, Antigravity/Gemini, Codex, and other AI coding-agent users.
 - Teams that need lightweight project state, decision, task, and workflow docs.
 - Template authors looking for a small alternative to heavy agent OS scaffolds.
 
 Important files:
 - `README.md`: human-facing overview and quick start.
+- `README_de.md`: complete German documentation and user guide.
 - `template/TEMPLATE.md`: rationale, profile definitions, and file-by-file explanation.
-- `template/_tools/init-project`: profile-based scaffold generator.
+- `template/_tools/init-project`: profile-based scaffold generator (`MINIMAL`, `STANDARD`, `FULL`).
 - `template/_tools/init-project --upgrade`: one-step, manifest/hash-verified
   profile upgrade for existing generated projects; changed or unowned files
   fail closed rather than being merged.
 - `tests/test_tools.py`: cross-profile and tool-integrity regression contract.
+- `tests/test_metadata.py`: automated metadata, schema, and manifest parity test suite.
 - `RELEASE_GATE.md`: commands and evidence required before release.
 - `SECURITY.md`: private vulnerability-reporting policy.
 - `template/START.md`: session bootstrap pattern.
 - `template/STATE.md`: current-state snapshot pattern.
 - `template/TODO.md` and `template/DONE.md`: active and completed task surfaces.
 - `template/DECISIONS.md` and `template/PATTERNS.md`: decision and practice logs.
+
+## Verification
+
+- `pytest` (29 passed, 7 subtests passed, 100% green)
+- `ruff check .` (100% clean)
+- `compileall` (100% clean)
 
 ## Search Phrases
 

@@ -2,6 +2,16 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-08-16 - 0.1.1
+
+- Bumped package and manifest version to `0.1.1` across `pyproject.toml` and `ellmos-module.v2.json`.
+- Added automated metadata, schema, and manifest parity test suite in `tests/test_metadata.py` (29 total tests, 7 subtests, 100% green).
+- Integrated `[tool.ruff]` and `[tool.ruff.lint]` configuration in `pyproject.toml` (`target-version = "py310"`, `line-length = 120`, `ruff check` 100% clean).
+- Cleaned unused import in `tests/test_tools.py`.
+- Synchronized Shields.io badges in `README.md` and `README_de.md` (`pytest 29 passed`, `ellmos-ai` ecosystem, `open-bricks` umbrella, `LLM-Ready`).
+- Added Ecosystem & Sibling Tools cross-link matrix to English and German documentation.
+- Updated `llms.txt` verification timestamp to 2026-08-16 with comprehensive verification summary.
+
 ## 2026-08-13
 
 - Added `init-project --upgrade --profile <STANDARD|FULL>` with a staged,
