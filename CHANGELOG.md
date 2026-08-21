@@ -2,6 +2,15 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-08-21 - 0.1.1 (Discoverability & Security Parity)
+
+- **Shields.io Badges & Discoverability**: Synchronized badges across `README.md` and `README_de.md` (32 passed tests, 100% green, version `0.1.1`, Python `3.10 | 3.11 | 3.12 | 3.13`, `Windows | Linux | macOS`, `100% Offline / Zero-Egress`, `Local-First / Deterministic Staging`, `ellmos-ai` ecosystem, `open-bricks` umbrella, `llms.txt` discovery).
+- **Interactive Mermaid Lifecycle Sequence Diagrams**: Added bilingual Mermaid sequence diagrams illustrating the staged, hash-verified profile upgrade lifecycle with fail-closed safeguards, unowned file collision prevention, and zero implicit merges.
+- **Bilingual Hardened Security Policy (`SECURITY.md`)**: Implemented full German and English security policies with Local-First & Zero-Egress invariants, deterministic staging isolation, SHA-256 manifest integrity, non-elevation execution, and direct security contacts (`security@ellmos.ai` & `support@lukasgeiger.com`) alongside GitHub Private Security Advisories.
+- **Ecosystem & Sibling Tools Matrix**: Expanded cross-linking matrix across 16 sibling repositories in `ellmos-ai`, `dev-bricks`, and `open-bricks`.
+- **Contract & Parity Test Suite (`tests/test_metadata.py`)**: Added 3 new comprehensive test cases (32 passed tests total) asserting bilingual README badge and diagram parity, SECURITY.md invariants/contacts, and CI matrix/Ruff configuration consistency.
+- **LLM Discovery Index (`llms.txt`)**: Updated `Last-checked: 2026-08-21` and refreshed verification status.
+
 ## 2026-08-16 - 0.1.1
 
 - Bumped package and manifest version to `0.1.1` across `pyproject.toml` and `ellmos-module.v2.json`.

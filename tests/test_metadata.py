@@ -15,7 +15,9 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.changelog_path = REPO_ROOT / "CHANGELOG.md"
         self.readme_en_path = REPO_ROOT / "README.md"
         self.readme_de_path = REPO_ROOT / "README_de.md"
+        self.security_path = REPO_ROOT / "SECURITY.md"
         self.llms_txt_path = REPO_ROOT / "llms.txt"
+        self.ci_workflow_path = REPO_ROOT / ".github" / "workflows" / "ci.yml"
 
     def _extract_pyproject_version(self) -> str:
         content = self.pyproject_path.read_text(encoding="utf-8")
@@ -35,6 +37,8 @@ class MetadataAndManifestTests(unittest.TestCase):
             module_ver,
             f"pyproject.toml version ({pyproject_ver}) != ellmos-module.v2.json version ({module_ver})",
         )
+        changelog_content = self.changelog_path.read_text(encoding="utf-8")
+        self.assertIn(pyproject_ver, changelog_content, f"Version {pyproject_ver} missing in CHANGELOG.md")
 
     def test_required_root_documents_exist(self) -> None:
         required_files = [
@@ -68,6 +72,7 @@ class MetadataAndManifestTests(unittest.TestCase):
     def test_llms_txt_integrity(self) -> None:
         content = self.llms_txt_path.read_text(encoding="utf-8")
         self.assertTrue(content.startswith("## Last-checked:"), "llms.txt must start with ## Last-checked:")
+        self.assertIn("2026-08-21", content, "llms.txt must reflect current verification date 2026-08-21")
         self.assertIn("https://github.com/ellmos-ai/project-docs-template", content)
         self.assertIn("## Search Phrases", content)
         self.assertIn("## Disambiguation", content)
@@ -78,18 +83,56 @@ class MetadataAndManifestTests(unittest.TestCase):
         de_content = self.readme_de_path.read_text(encoding="utf-8")
 
         # Badges
-        for badge_pattern in ["pytest", "license-MIT", "Language-"]:
+        for badge_pattern in ["pytest", "license-MIT", "Language-", "Ecosystem-ellmos", "Umbrella-open", "LLM--Ready"]:
             self.assertIn(badge_pattern, en_content, f"Badge {badge_pattern} missing in README.md")
             self.assertIn(badge_pattern, de_content, f"Badge {badge_pattern} missing in README_de.md")
 
-        # Mermaid diagrams
-        self.assertIn("```mermaid", en_content, "Mermaid diagram missing in README.md")
-        self.assertIn("```mermaid", de_content, "Mermaid diagram missing in README_de.md")
+        # Mermaid diagrams (2 diagrams in each)
+        self.assertEqual(en_content.count("```mermaid"), 2, "README.md must contain 2 Mermaid diagrams")
+        self.assertEqual(de_content.count("```mermaid"), 2, "README_de.md must contain 2 Mermaid diagrams")
 
         # Profiles
         for profile in ["MINIMAL", "STANDARD", "FULL"]:
             self.assertIn(profile, en_content, f"Profile {profile} missing in README.md")
             self.assertIn(profile, de_content, f"Profile {profile} missing in README_de.md")
+
+    def test_security_policy_bilingual_parity_and_contacts(self) -> None:
+        content = self.security_path.read_text(encoding="utf-8")
+        self.assertIn("# Security Policy", content, "SECURITY.md missing English heading")
+        self.assertIn("Sicherheitsrichtlinie", content, "SECURITY.md missing German section")
+        self.assertIn("security@ellmos.ai", content, "SECURITY.md missing security@ellmos.ai contact")
+        self.assertIn("support@lukasgeiger.com", content, "SECURITY.md missing support@lukasgeiger.com contact")
+        self.assertIn("Zero-Egress", content, "SECURITY.md missing Zero-Egress invariant")
+        self.assertIn("Local-First", content, "SECURITY.md missing Local-First invariant")
+
+    def test_sibling_tools_ecosystem_matrix(self) -> None:
+        en_content = self.readme_en_path.read_text(encoding="utf-8")
+        de_content = self.readme_de_path.read_text(encoding="utf-8")
+
+        key_siblings = [
+            "policy-registry",
+            "automation-master",
+            "companion-for-agy",
+            "lock-master",
+            "system-gap-master",
+            "open-bricks",
+        ]
+        for sibling in key_siblings:
+            self.assertIn(sibling, en_content, f"Sibling tool {sibling} missing in README.md matrix")
+            self.assertIn(sibling, de_content, f"Sibling tool {sibling} missing in README_de.md matrix")
+
+    def test_ci_workflow_and_ruff_configuration(self) -> None:
+        self.assertTrue(self.ci_workflow_path.is_file(), "CI workflow file missing")
+        ci_content = self.ci_workflow_path.read_text(encoding="utf-8")
+        self.assertIn("ubuntu-latest", ci_content)
+        self.assertIn("windows-latest", ci_content)
+        self.assertIn("macos-latest", ci_content)
+        self.assertIn("3.10", ci_content)
+        self.assertIn("3.13", ci_content)
+
+        pyproject_content = self.pyproject_path.read_text(encoding="utf-8")
+        self.assertIn("[tool.ruff]", pyproject_content)
+        self.assertIn("[tool.ruff.lint]", pyproject_content)
 
     def test_template_directory_completeness(self) -> None:
         template_dir = REPO_ROOT / "template"

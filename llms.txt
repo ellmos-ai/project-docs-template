@@ -1,4 +1,4 @@
-## Last-checked: 2026-08-16
+## Last-checked: 2026-08-21
 
 # ellmos-ai/project-docs-template
 
@@ -25,7 +25,7 @@ Important files:
 - `tests/test_tools.py`: cross-profile and tool-integrity regression contract.
 - `tests/test_metadata.py`: automated metadata, schema, and manifest parity test suite.
 - `RELEASE_GATE.md`: commands and evidence required before release.
-- `SECURITY.md`: private vulnerability-reporting policy.
+- `SECURITY.md`: bilingual vulnerability-reporting policy with Zero-Egress and Local-First guarantees.
 - `template/START.md`: session bootstrap pattern.
 - `template/STATE.md`: current-state snapshot pattern.
 - `template/TODO.md` and `template/DONE.md`: active and completed task surfaces.
@@ -33,7 +33,7 @@ Important files:
 
 ## Verification
 
-- `pytest` (29 passed, 7 subtests passed, 100% green)
+- `pytest` (32 passed, 7 subtests passed, 100% green)
 - `ruff check .` (100% clean)
 - `compileall` (100% clean)
 
@@ -54,3 +54,4 @@ This repository is a documentation scaffold for software, research, and
 operations projects that are maintained with LLM agents. It is not a runtime
 agent framework, not a task runner, and not a replacement for project-specific
 source code or CI.
+

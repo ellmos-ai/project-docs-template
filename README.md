@@ -1,10 +1,15 @@
 # Project Docs Template
 
 [![Template](https://img.shields.io/badge/template-agent--ready_project_docs-2f6f5e)](https://github.com/ellmos-ai/project-docs-template)
-[![Ecosystem: ellmos--ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
-[![Umbrella: open--bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
-[![LLM--Ready: llms.txt](https://img.shields.io/badge/LLM--Ready-llms.txt-orange.svg)](./llms.txt)
-[![Pytest](https://img.shields.io/badge/pytest-29%20passed-brightgreen.svg)](./tests)
+[![Version](https://img.shields.io/badge/version-0.1.1-blue.svg)](./pyproject.toml)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
+[![Pytest](https://img.shields.io/badge/pytest-32%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Privacy](https://img.shields.io/badge/privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](./SECURITY.md)
+[![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
+[![Ecosystem: ellmos-ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
+[![Umbrella: open-bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
+[![LLM-Ready: llms.txt](https://img.shields.io/badge/LLM--Ready-llms.txt-orange.svg)](./llms.txt)
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
@@ -13,7 +18,7 @@ Agent-ready project documentation template with START/STATE/TODO/DONE,
 workflows, lightweight tooling, and LLM-friendly project memory.
 
 > [!NOTE]
-> This repository is machine-readable and agent-optimized. AI coding assistants (Claude Code, Antigravity/Gemini, Codex) can read [`llms.txt`](./llms.txt) for a fast context index and run `pytest` (29 tests passing, 7 subtests) to verify template generation integrity.
+> This repository is machine-readable and agent-optimized. AI coding assistants (Claude Code, Antigravity/Gemini, Codex) can read [`llms.txt`](./llms.txt) for a fast context index and run `pytest` (32 tests passing, 7 subtests) to verify template generation and upgrade integrity.
 
 This repository contains a compact documentation scaffold for projects that are
 maintained with LLM agents. The template focuses on clear project state,
@@ -85,6 +90,32 @@ step at a time with:
 ```bash
 python template/_tools/init-project --target ../my-project \
   --profile STANDARD --upgrade
+```
+
+The upgrade process follows a strict staging and validation lifecycle:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Agent / Maintainer
+    participant CLI as init-project CLI
+    participant Stage as Isolated Staging Dir
+    participant Manifest as .project-docs-template.json
+    participant Target as Target Project Root
+
+    User->>CLI: init-project --target <dir> --upgrade --profile STANDARD
+    CLI->>Manifest: Load manifest & profile metadata
+    CLI->>Target: Calculate disk SHA-256 hashes for managed files
+    alt Hashes Mismatch or Unowned File Collision
+        CLI-->>User: Abort: modified files detected (Fail-Closed, zero mutation)
+    else Hashes Match & Clean State
+        CLI->>Stage: Generate next profile files in isolated staging
+        CLI->>Stage: Validate relative links & placeholders
+        CLI->>Target: Atomically replace matching files & add new profile docs
+        CLI->>Manifest: Commit updated SHA-256 manifest
+        CLI->>Stage: Purge temporary staging directory
+        CLI-->>User: Success: Profile upgraded safely
+    end
 ```
 
 The command stages the next profile first. It replaces only files whose
@@ -176,15 +207,25 @@ For LLM and crawler-oriented metadata, see [`llms.txt`](./llms.txt).
 
 ## Ecosystem & Sibling Tools
 
-`project-docs-template` is part of the [`ellmos-ai`](https://github.com/ellmos-ai) and [`open-bricks`](https://github.com/open-bricks) open-source ecosystems.
+`project-docs-template` is part of the [`ellmos-ai`](https://github.com/ellmos-ai), [`dev-bricks`](https://github.com/dev-bricks), and [`open-bricks`](https://github.com/open-bricks) open-source ecosystems.
 
 | Repository | Purpose | Primary Surface |
 |---|---|---|
 | [`policy-registry`](https://github.com/ellmos-ai/policy-registry) | Machine-readable policy registry with signed delegations | CLI / API / MCP |
 | [`automation-master`](https://github.com/dev-bricks/automation-master) | Local-first credit & rate-limit orchestration ledger | CLI / SQLite / API |
+| [`DevCenter`](https://github.com/dev-bricks/DevCenter) | Developer workspace hub & tool launcher | GUI / PySide6 |
+| [`CodeBox`](https://github.com/dev-bricks/CodeBox) | Isolated code playground and execution environment | GUI / CLI |
 | [`companion-for-agy`](https://github.com/ellmos-ai/companion-for-agy) | Extension & companion suite for Antigravity AI agents | CLI / Node.js |
+| [`safe-start-for-codex`](https://github.com/dev-bricks/safe-start-for-codex) | Defensive bootstrapping and environment verifier | CLI / Python |
+| [`automizer-for-claude-desktop`](https://github.com/dev-bricks/automizer-for-claude-desktop) | Bridge & automation toolkit for Claude Desktop | CLI / Python |
 | [`system-gap-master`](https://github.com/ellmos-ai/system-gap-master) | Cross-system sync & divergence analyzer | CLI / Python |
 | [`lock-master`](https://github.com/ellmos-ai/lock-master) | File & resource concurrency lock manager | CLI / Python |
+| [`ticket-master`](https://github.com/ellmos-ai/ticket-master) | Local-first issue & ticketing orchestrator | CLI / Python |
+| [`clutch`](https://github.com/ellmos-ai/clutch) | Safe Git operation wrapper & branch protection guard | CLI / Python |
+| [`memoryhooker`](https://github.com/ellmos-ai/memoryhooker) | Session memory extraction & hook injector | CLI / Python |
+| [`workflowhooker`](https://github.com/ellmos-ai/workflowhooker) | Workflow automation lifecycle triggers | CLI / Python |
+| [`ellmos-controlcenter-mcp`](https://github.com/ellmos-ai/ellmos-controlcenter-mcp) | MCP server for system inspection and skill discovery | MCP / Python |
+| [`ellmos-filecommander-mcp`](https://github.com/ellmos-ai/ellmos-filecommander-mcp) | MCP server for safe local file operations | MCP / Python |
 | [`open-bricks`](https://github.com/open-bricks) | Umbrella organization for developer & AI tools | Portal |
 
 ## License
@@ -193,3 +234,4 @@ This project is an unpaid open-source donation. Liability is limited to intent
 and gross negligence under Section 521 of the German Civil Code. Use at your
 own risk. No warranty, maintenance guarantee, availability guarantee, or
 fitness-for-purpose guarantee is provided.
+
