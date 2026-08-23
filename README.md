@@ -1,10 +1,10 @@
 # Project Docs Template
 
 [![Template](https://img.shields.io/badge/template-agent--ready_project_docs-2f6f5e)](https://github.com/ellmos-ai/project-docs-template)
-[![Version](https://img.shields.io/badge/version-0.1.1-blue.svg)](./pyproject.toml)
+[![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-32%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-34%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
 [![Ecosystem: ellmos-ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
@@ -18,7 +18,7 @@ Agent-ready project documentation template with START/STATE/TODO/DONE,
 workflows, lightweight tooling, and LLM-friendly project memory.
 
 > [!NOTE]
-> This repository is machine-readable and agent-optimized. AI coding assistants (Claude Code, Antigravity/Gemini, Codex) can read [`llms.txt`](./llms.txt) for a fast context index and run `pytest` (32 tests passing, 7 subtests) to verify template generation and upgrade integrity.
+> This repository is machine-readable and agent-optimized. AI coding assistants (Claude Code, Antigravity/Gemini, Codex) can read [`llms.txt`](./llms.txt) for a fast context index and run `pytest` (34 tests passing, 7 subtests) to verify template generation and upgrade integrity.
 
 This repository contains a compact documentation scaffold for projects that are
 maintained with LLM agents. The template focuses on clear project state,

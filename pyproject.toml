@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "project-docs-template"
-version = "0.1.1"
+version = "0.1.2"
 description = "Agent-ready project documentation template with START/STATE/TODO/DONE, workflows, lightweight tooling, and LLM-friendly project memory."
 readme = "README.md"
 authors = [
@@ -15,12 +15,17 @@ requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
     "Topic :: Software Development :: Documentation",
     "Topic :: Software Development :: Build Tools",
 ]
@@ -28,9 +33,12 @@ keywords = ["llm", "claude-code", "antigravity", "codex", "documentation-templat
 
 [project.urls]
 Homepage = "https://github.com/ellmos-ai/project-docs-template"
+Documentation = "https://github.com/ellmos-ai/project-docs-template#readme"
 Repository = "https://github.com/ellmos-ai/project-docs-template"
 Issues = "https://github.com/ellmos-ai/project-docs-template/issues"
 Changelog = "https://github.com/ellmos-ai/project-docs-template/blob/main/CHANGELOG.md"
+Security = "https://github.com/ellmos-ai/project-docs-template/blob/main/SECURITY.md"
+Umbrella = "https://open-bricks.org"
 
 [tool.pytest.ini_options]
 minversion = "7.0"

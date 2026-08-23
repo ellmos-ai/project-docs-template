@@ -17,6 +17,7 @@ If you discover a potential security vulnerability, please report it responsibly
 2. **Direct Maintainer Contacts:**
    - Primary: `security@ellmos.ai`
    - Secondary: `support@lukasgeiger.com`
+   - Umbrella: `lukas@open-bricks.org`
 
 Please include the affected profile (`MINIMAL`, `STANDARD`, `FULL`), reproduction steps, expected impact, and a minimal sanitized example. Reports are handled with high priority. Coordinated disclosure is requested until a patch is released.
 
@@ -48,6 +49,7 @@ Bitte melden Sie Sicherheitslücken diskret und verantwortungsvoll:
 2. **Direkter Kontakt zum Maintainer-Team:**
    - Primär: `security@ellmos.ai`
    - Sekundär: `support@lukasgeiger.com`
+   - Dachverband: `lukas@open-bricks.org`
 
 Bitte nennen Sie das betroffene Profil (`MINIMAL`, `STANDARD`, `FULL`), Schritte zur Reproduktion sowie ein bereinigtes Minimalbeispiel. Bitte öffnen Sie keine öffentlichen GitHub-Issues für ungepatchte Schwachstellen.
 

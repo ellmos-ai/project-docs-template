@@ -2,6 +2,15 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-08-23 - 0.1.2 (Multi-OS CI Hardening, PEP 621 Classifiers & Metadata Contract Expansion)
+
+- **Version Bump & Manifest Parity**: Released `0.1.2` across `pyproject.toml` and `ellmos-module.v2.json`.
+- **PEP 621 Metadata & URLs**: Added `Operating System :: OS Independent`, Windows, Linux, and macOS classifiers, along with `Documentation`, `Security`, and `Umbrella` URLs in `pyproject.toml`.
+- **Hardened GitHub Actions CI (`.github/workflows/ci.yml`)**: Updated actions to `actions/checkout@v4` and `actions/setup-python@v5` with `cache: 'pip'`; expanded matrix across Python `3.10`, `3.11`, `3.12`, and `3.13` on `ubuntu-latest`, `windows-latest`, and `macos-latest`; added explicit `ruff check .` linting step before test discovery.
+- **Contract & Metadata Test Expansion (`tests/test_metadata.py`)**: Added automated contract tests for PEP 621 classifiers, offline/zero-egress invariants, and full CI matrix parity (34 tests passed, 7 subtests, 100% green).
+- **Security & Umbrella Governance (`SECURITY.md`)**: Added direct umbrella contact `lukas@open-bricks.org` in both German and English vulnerability disclosure policies.
+- **LLM Discovery Index (`llms.txt`)**: Updated `Last-checked: 2026-08-23` and synchronized verification status.
+
 ## 2026-08-21 - 0.1.1 (Discoverability & Security Parity)
 
 - **Shields.io Badges & Discoverability**: Synchronized badges across `README.md` and `README_de.md` (32 passed tests, 100% green, version `0.1.1`, Python `3.10 | 3.11 | 3.12 | 3.13`, `Windows | Linux | macOS`, `100% Offline / Zero-Egress`, `Local-First / Deterministic Staging`, `ellmos-ai` ecosystem, `open-bricks` umbrella, `llms.txt` discovery).

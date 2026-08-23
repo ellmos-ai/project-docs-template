@@ -1,4 +1,4 @@
-## Last-checked: 2026-08-21
+## Last-checked: 2026-08-23
 
 # ellmos-ai/project-docs-template
 
@@ -33,7 +33,7 @@ Important files:
 
 ## Verification
 
-- `pytest` (32 passed, 7 subtests passed, 100% green)
+- `pytest` (34 passed, 7 subtests passed, 100% green)
 - `ruff check .` (100% clean)
 - `compileall` (100% clean)
 

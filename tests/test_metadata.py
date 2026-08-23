@@ -72,7 +72,7 @@ class MetadataAndManifestTests(unittest.TestCase):
     def test_llms_txt_integrity(self) -> None:
         content = self.llms_txt_path.read_text(encoding="utf-8")
         self.assertTrue(content.startswith("## Last-checked:"), "llms.txt must start with ## Last-checked:")
-        self.assertIn("2026-08-21", content, "llms.txt must reflect current verification date 2026-08-21")
+        self.assertIn("2026-08-23", content, "llms.txt must reflect current verification date 2026-08-23")
         self.assertIn("https://github.com/ellmos-ai/project-docs-template", content)
         self.assertIn("## Search Phrases", content)
         self.assertIn("## Disambiguation", content)
@@ -102,6 +102,7 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("Sicherheitsrichtlinie", content, "SECURITY.md missing German section")
         self.assertIn("security@ellmos.ai", content, "SECURITY.md missing security@ellmos.ai contact")
         self.assertIn("support@lukasgeiger.com", content, "SECURITY.md missing support@lukasgeiger.com contact")
+        self.assertIn("lukas@open-bricks.org", content, "SECURITY.md missing lukas@open-bricks.org contact")
         self.assertIn("Zero-Egress", content, "SECURITY.md missing Zero-Egress invariant")
         self.assertIn("Local-First", content, "SECURITY.md missing Local-First invariant")
 
@@ -128,11 +129,45 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("windows-latest", ci_content)
         self.assertIn("macos-latest", ci_content)
         self.assertIn("3.10", ci_content)
+        self.assertIn("3.11", ci_content)
+        self.assertIn("3.12", ci_content)
         self.assertIn("3.13", ci_content)
+        self.assertIn("actions/checkout@v4", ci_content)
+        self.assertIn("actions/setup-python@v5", ci_content)
+        self.assertIn("ruff check", ci_content)
+        self.assertIn("compileall", ci_content)
+        self.assertIn("pytest", ci_content)
 
         pyproject_content = self.pyproject_path.read_text(encoding="utf-8")
         self.assertIn("[tool.ruff]", pyproject_content)
         self.assertIn("[tool.ruff.lint]", pyproject_content)
+
+    def test_pyproject_pep621_classifiers_and_urls(self) -> None:
+        content = self.pyproject_path.read_text(encoding="utf-8")
+        self.assertIn("Operating System :: OS Independent", content)
+        self.assertIn("Operating System :: Microsoft :: Windows", content)
+        self.assertIn("Operating System :: POSIX :: Linux", content)
+        self.assertIn("Operating System :: MacOS", content)
+        self.assertIn("Documentation =", content)
+        self.assertIn("Security =", content)
+        self.assertIn("Umbrella =", content)
+        self.assertIn("https://open-bricks.org", content)
+
+    def test_offline_and_privacy_invariants(self) -> None:
+        sec_content = self.security_path.read_text(encoding="utf-8")
+        readme_en = self.readme_en_path.read_text(encoding="utf-8")
+        readme_de = self.readme_de_path.read_text(encoding="utf-8")
+
+        self.assertIn("Zero-Egress", sec_content)
+        self.assertIn("Local-First", sec_content)
+        self.assertIn("Deterministic Staging", sec_content)
+        self.assertIn("Fail-Closed", sec_content)
+        self.assertIn("Non-Elevation", sec_content)
+
+        self.assertIn("100%25%20Offline", readme_en)
+        self.assertIn("Zero--Egress", readme_en)
+        self.assertIn("100%25%20Offline", readme_de)
+        self.assertIn("Zero--Egress", readme_de)
 
     def test_template_directory_completeness(self) -> None:
         template_dir = REPO_ROOT / "template"
