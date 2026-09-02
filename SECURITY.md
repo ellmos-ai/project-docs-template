@@ -6,7 +6,7 @@ Security fixes are actively applied to the current `main` branch.
 
 | Version | Supported | Security Policy |
 |---|---|---|
-| `0.1.x` (`main`) | :white_check_mark: | Full active support & immediate hotfixes |
+| `0.1.x` (`main`) | :white_check_mark: | Best-effort maintenance; security fixes prioritised, no guaranteed response time |
 | `< 0.1.0` | :x: | Unsupported |
 
 ## Reporting a Vulnerability
@@ -38,7 +38,7 @@ Sicherheitsupdates werden auf dem aktuellen `main`-Branch bereitgestellt.
 
 | Version | Unterstützt | Status |
 |---|---|---|
-| `0.1.x` (`main`) | :white_check_mark: | Vollständige aktive Pflege & sofortige Patches |
+| `0.1.x` (`main`) | :white_check_mark: | Pflege nach bestem Bemühen; Sicherheitskorrekturen vorrangig, keine zugesicherte Reaktionszeit |
 | `< 0.1.0` | :x: | Nicht unterstützt |
 
 ## Sicherheitslücken melden
@@ -55,7 +55,7 @@ Bitte nennen Sie das betroffene Profil (`MINIMAL`, `STANDARD`, `FULL`), Schritte
 
 ## Sicherheits- und Architektur-Invarianten
 
-- **Local-First- & Zero-Egress-Garantie**: Die Vorlagengenerierung (`init-project`) sowie alle Begleitwerkzeuge (`doc-lint`, `todo-archive`, `workflows-sync`) laufen vollständig lokal und offline ab. Es werden keinerlei Telemetrie- oder Netzwerkverbindungen aufgebaut.
+- **Local-First- & Zero-Egress-Architektur**: Die Vorlagengenerierung (`init-project`) sowie alle Begleitwerkzeuge (`doc-lint`, `todo-archive`, `workflows-sync`) laufen vollständig lokal und offline ab. Es werden keinerlei Telemetrie- oder Netzwerkverbindungen aufgebaut.
 - **Deterministische Staging-Isolation**: Vorlagendateien werden zuerst in einem isolierten Staging-Ordner neben dem Zielverzeichnis aufgebaut und auf Integrität geprüft. Ein bestehendes, nicht-leeres Zielverzeichnis wird niemals versehentlich überschrieben.
 - **SHA-256-Manifest-Integrität & Fail-Closed-Upgrade**: Profil-Upgrades gleichen Prüfsummen in `.project-docs-template.json` bitgenau ab. Bei Benutzeranpassungen oder Dateikollisionen bricht der Prozess deterministisch ab (*Fail-Closed*), ohne das Zielverzeichnis zu beschädigen.
 - **Standard-Benutzerkontext**: Alle Werkzeuge laufen ohne Administrator- oder Root-Rechte.

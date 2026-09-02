@@ -23,6 +23,9 @@ workflows, lightweight tooling, and LLM-friendly project memory.
 > [!NOTE]
 > This repository is machine-readable and agent-optimized. AI coding assistants (Claude Code, Antigravity/Gemini, Codex) can read [`llms.txt`](./llms.txt) for a fast context index and run `pytest` (34 tests passing, 7 subtests) to verify template generation and upgrade integrity.
 
+> Independent project — not affiliated with Anthropic, OpenAI, or Google.
+> See [Trademarks](#trademarks).
+
 This repository contains a compact documentation scaffold for projects that are
 maintained with LLM agents. The template focuses on clear project state,
 session handoff, task history, decision records, workflows, and small local
@@ -140,6 +143,12 @@ need selected pieces.
 Requires Python 3.10 or newer. Git is required only for `--git`.
 
 > [!IMPORTANT]
+> This package is **not** published on PyPI. `pyproject.toml` exists for local
+> tooling and metadata only. Install by cloning this repository — do **not**
+> run `pip install project-docs-template`; any package under that name on a
+> public index is not ours.
+
+> [!IMPORTANT]
 > **The generated documentation is currently German.** This repository's own
 > documentation is English, but the template bodies under [`template/`](./template/)
 > — `CLAUDE.md`, `START.md`, `STATE.md`, `TODO.md` and the rest — and the CLI
@@ -207,6 +216,9 @@ Composition and runtime details are intentionally omitted.
 
 ## Discoverability
 
+> Independent project — not affiliated with Anthropic, OpenAI, or Google.
+> See [Trademarks](#trademarks).
+
 Canonical search phrases:
 
 ```text
@@ -240,12 +252,29 @@ For LLM and crawler-oriented metadata, see [`llms.txt`](./llms.txt).
 | [`ellmos-filecommander-mcp`](https://github.com/ellmos-ai/ellmos-filecommander-mcp) | MCP server for safe local file operations | MCP / Python |
 | [`open-bricks`](https://github.com/open-bricks) | Umbrella organization for developer & AI tools | Portal |
 
+## Trademarks
+
+This project is an independent, community-maintained documentation template.
+It is **not** affiliated with, endorsed by, sponsored by, or otherwise connected
+to Anthropic, OpenAI, or Google.
+
+"Claude" and "Claude Code", "Codex", "Gemini" and "Antigravity" are trademarks
+or registered trademarks of their respective owners (Anthropic PBC, OpenAI,
+Google LLC). All other product names, logos, and brands are the property of
+their respective owners. They are used here solely to describe compatibility
+and interoperability, and their use does not imply any endorsement,
+authorisation, or business relationship.
+
 ## License
 
 MIT License. See [LICENSE](./LICENSE).
 
-This project is an unpaid open-source donation. Liability is limited to intent
-and gross negligence under Section 521 of the German Civil Code. Use at your
-own risk. No warranty, maintenance guarantee, availability guarantee, or
-fitness-for-purpose guarantee is provided.
+This project is an unpaid open-source contribution. The MIT license applies.
+Where German law governs and the transfer qualifies as a gift (Schenkung),
+liability is limited to intent and gross negligence under Section 521 of the
+German Civil Code (BGB). Mandatory statutory liability — in particular for
+intent (Section 276(3) BGB) and for injury to life, body, or health — remains
+unaffected and is not excluded by the MIT disclaimer. Use at your own risk. No
+warranty, maintenance guarantee, availability guarantee, or fitness-for-purpose
+guarantee is provided.
 

@@ -33,6 +33,23 @@ All notable public-facing changes to this repository are documented here.
   German README had it, the English one did not.
 - **Stopped tracking `BEFUNDE.md`**, an internal maintenance journal that
   exposed the local working path and stale test counts.
+- **Added a trademark and independence notice.** The project names Claude Code,
+  Codex, Antigravity and Gemini thirteen times across both READMEs and again in
+  the package keywords, the GitHub topics and the discoverability blocks, with
+  no statement of independence anywhere. A legal first look found the naming
+  itself covered by the referential-use exception, with the one open point being
+  the impression of a business relationship — so both READMEs now carry a
+  Trademarks section plus a short notice next to the two blocks that create that
+  impression.
+- **Sharpened the liability paragraph** so the Section 521 BGB limitation is
+  conditioned rather than asserted, and mandatory liability is reserved.
+- **Stated that the package is not on PyPI.** A `pyproject.toml` naming
+  `project-docs-template` invites `pip install project-docs-template`, and the
+  name is unregistered — a dependency-confusion opening that a third party could
+  take at any time.
+- **Replaced the "full active support & immediate hotfixes" promise** in
+  `SECURITY.md` with a best-effort formulation, and "Zero-Egress guarantee" with
+  "architecture"; both contradicted the project's own liability disclaimer.
 
 ## 2026-08-23 - 0.1.2 (Multi-OS CI Hardening, PEP 621 Classifiers & Metadata Contract Expansion)
 

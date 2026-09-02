@@ -20,6 +20,9 @@ Workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
 > [!NOTE]
 > Dieses Repository ist maschinenlesbar und für KI-Agenten optimiert. KI-Coding-Assistenten (Claude Code, Antigravity/Gemini, Codex) können [`llms.txt`](./llms.txt) als schnellen Kontext-Index nutzen und `pytest` (34 bestandene Tests, 7 Subtests) ausführen, um die Integrität der Vorlagengenerierung und Profil-Upgrades zu überprüfen.
 
+> Unabhängiges Projekt — keine Verbindung zu Anthropic, OpenAI oder Google.
+> Siehe [Marken](#marken).
+
 Dieses Repository enthält ein kompaktes Dokumentations-Scaffold für Software-, Forschungs- und Betriebsprojekte, die mit LLM-Agenten gepflegt werden. Die Vorlage konzentriert sich auf klaren Projektstatus, Übergaben zwischen Sitzungen, Aufgabenhistorie, Entscheidungsaufzeichnungen und Workflows, ohne das Projekt in ein schwerfälliges Betriebssystem zu verwandeln.
 
 ## Architektur & Ablauf
@@ -125,6 +128,13 @@ kopiert werden, wenn nur ausgewählte Teile benötigt werden.
 Erfordert Python 3.10 oder neuer. Git wird nur für `--git` benötigt.
 
 > [!IMPORTANT]
+> Dieses Paket ist **nicht** auf PyPI veröffentlicht. Die `pyproject.toml` dient
+> ausschließlich lokalen Werkzeugen und Metadaten. Die Installation erfolgt
+> durch Klonen dieses Repositories — führen Sie **nicht** `pip install
+> project-docs-template` aus; ein Paket dieses Namens in einem öffentlichen
+> Index stammt nicht von uns.
+
+> [!IMPORTANT]
 > **Die erzeugte Dokumentation ist derzeit deutsch.** Die Vorlagen unter
 > [`template/`](./template/) — `CLAUDE.md`, `START.md`, `STATE.md`, `TODO.md`
 > und die übrigen — sowie die CLI-Ausgaben von `init-project`, `doc-lint`,
@@ -202,6 +212,9 @@ Kompositions- und Runtime-Details werden bewusst nicht offengelegt.
 
 ## Auffindbarkeit (SEO)
 
+> Unabhängiges Projekt — keine Verbindung zu Anthropic, OpenAI oder Google.
+> Siehe [Marken](#marken).
+
 Suchbegriffe:
 
 ```text
@@ -235,9 +248,31 @@ Für crawler- und LLM-orientierte Metadaten siehe [`llms.txt`](./llms.txt).
 | [`ellmos-filecommander-mcp`](https://github.com/ellmos-ai/ellmos-filecommander-mcp) | MCP-Server für sichere lokale Dateioperationen | MCP / Python |
 | [`open-bricks`](https://github.com/open-bricks) | Dachorganisation für Entwickler- & KI-Werkzeuge | Portal |
 
+## Marken
+
+Dieses Projekt ist eine unabhängige Dokumentations-Vorlage. Es steht in **keiner**
+Verbindung zu Anthropic, OpenAI oder Google und wird von diesen weder
+unterstützt noch autorisiert oder gesponsert.
+
+„Claude" und „Claude Code", „Codex", „Gemini" und „Antigravity" sind Marken bzw.
+eingetragene Marken der jeweiligen Inhaber (Anthropic PBC, OpenAI, Google LLC).
+Alle weiteren Produktnamen, Logos und Marken sind Eigentum der jeweiligen
+Inhaber. Die Nennung erfolgt ausschließlich beschreibend, um Kompatibilität und
+Zusammenspiel zu erläutern (§ 23 Abs. 1 Nr. 2 und 3 MarkenG). Sie begründet
+weder eine geschäftliche Verbindung noch eine Empfehlung durch die
+Markeninhaber.
+
 ## Lizenz
 
 MIT Lizenz. Siehe [LICENSE](./LICENSE).
 
-Dieses Projekt ist eine unentgeltliche Open-Source-Spende. Die Haftung ist gemäß § 521 BGB auf Vorsatz und grobe Fahrlässigkeit beschränkt. Die Nutzung erfolgt auf eigene Gefahr.
+Dieses Projekt ist ein unentgeltlicher Open-Source-Beitrag. Es gilt die
+MIT-Lizenz. Soweit deutsches Recht anwendbar ist und die Überlassung als
+Schenkung zu qualifizieren ist, ist die Haftung nach § 521 BGB auf Vorsatz und
+grobe Fahrlässigkeit beschränkt. Zwingende gesetzliche Haftung — insbesondere
+für Vorsatz (§ 276 Abs. 3 BGB) sowie für die Verletzung von Leben, Körper oder
+Gesundheit — bleibt unberührt und wird durch den Haftungsausschluss der
+MIT-Lizenz nicht abbedungen. Die Nutzung erfolgt auf eigene Gefahr. Eine
+Gewährleistung, Wartungs- oder Verfügbarkeitsgarantie oder eine Zusicherung der
+Eignung für einen bestimmten Zweck wird nicht übernommen.
 
