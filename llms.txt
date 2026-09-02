@@ -1,4 +1,4 @@
-## Last-checked: 2026-08-23
+## Last-checked: 2026-09-02
 
 # ellmos-ai/project-docs-template
 
@@ -33,7 +33,7 @@ Important files:
 
 ## Verification
 
-- `pytest` (34 passed, 7 subtests passed, 100% green)
+- `pytest` (34 passed, 7 subtests passed) on Linux, Windows and macOS
 - `ruff check .` (100% clean)
 - `compileall` (100% clean)
 
@@ -47,6 +47,15 @@ multi-agent repo handoff documentation template
 lightweight project memory template for coding agents
 project docs template with TODO DONE DECISIONS STATE
 ```
+
+## Language
+
+The repository documentation (`README.md`, `llms.txt`, `SECURITY.md`,
+`RELEASE_GATE.md`) is English, with a German `README_de.md`. The generated
+artefacts are not: the template bodies under `template/` and the CLI output of
+the tools in `template/_tools/` are currently German. File names, profile
+markers and YAML front matter keys are language-neutral. There is no language
+switch; an English template set is an open task in `TODO.md`.
 
 ## Disambiguation
 

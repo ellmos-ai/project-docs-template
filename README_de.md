@@ -124,6 +124,15 @@ kopiert werden, wenn nur ausgewählte Teile benötigt werden.
 
 Erfordert Python 3.10 oder neuer. Git wird nur für `--git` benötigt.
 
+> [!IMPORTANT]
+> **Die erzeugte Dokumentation ist derzeit deutsch.** Die Vorlagen unter
+> [`template/`](./template/) — `CLAUDE.md`, `START.md`, `STATE.md`, `TODO.md`
+> und die übrigen — sowie die CLI-Ausgaben von `init-project`, `doc-lint`,
+> `todo-archive` und `workflows-sync` sind auf Deutsch verfasst, während sich
+> das Repository selbst englisch präsentiert. Dateinamen, Profil-Marker und
+> YAML-Schlüssel sind sprachneutral; eine Sprachumschaltung gibt es noch nicht.
+> Ein englischer Vorlagensatz ist vorgesehen — siehe [`TODO.md`](./TODO.md).
+
 ## Profil-Vergleich
 
 | Profil | Bestes Szenario | Kopierte Dateien |
@@ -211,8 +220,7 @@ Für crawler- und LLM-orientierte Metadaten siehe [`llms.txt`](./llms.txt).
 | Repository | Zweck | Primäre Schnittstelle |
 |---|---|---|
 | [`policy-registry`](https://github.com/ellmos-ai/policy-registry) | Maschinenlesbare Policy-Registry mit signierten Delegationen | CLI / API / MCP |
-| [`automation-master`](https://github.com/dev-bricks/automation-master) | Lokales Credit- & Rate-Limit-Orchestrierungs-Ledger | CLI / SQLite / API |
-| [`DevCenter`](https://github.com/dev-bricks/DevCenter) | Entwickler-Workspace-Hub & Werkzeug-Launcher | GUI / PySide6 |
+| [`DevCenter`](https://github.com/dev-bricks/DevCenter) | Lokale Python-IDE und Entwickler-Werkzeugkasten | GUI / PySide6 |
 | [`CodeBox`](https://github.com/dev-bricks/CodeBox) | Isolierte Code-Playground- & Ausführungsumgebung | GUI / CLI |
 | [`companion-for-agy`](https://github.com/ellmos-ai/companion-for-agy) | Erweiterungs- & Begleitsystem für Antigravity-Agenten | CLI / Node.js |
 | [`safe-start-for-codex`](https://github.com/dev-bricks/safe-start-for-codex) | Defensiver Bootstrapper und Umgebungsverifizierer | CLI / Python |
@@ -220,7 +228,7 @@ Für crawler- und LLM-orientierte Metadaten siehe [`llms.txt`](./llms.txt).
 | [`system-gap-master`](https://github.com/ellmos-ai/system-gap-master) | Cross-System-Synchronisations- & Divergenz-Prüfer | CLI / Python |
 | [`lock-master`](https://github.com/ellmos-ai/lock-master) | Datei- & Ressourcen-Nebenläufigkeits-Sperren | CLI / Python |
 | [`ticket-master`](https://github.com/ellmos-ai/ticket-master) | Lokaler Issue- & Ticket-Orchestrator | CLI / Python |
-| [`clutch`](https://github.com/ellmos-ai/clutch) | Git-Sicherheits-Wrapper & Branch-Protection-Schutz | CLI / Python |
+| [`clutch`](https://github.com/ellmos-ai/clutch) | Anbieterneutraler LLM-Router und Modell-Orchestrierung | CLI / Python |
 | [`memoryhooker`](https://github.com/ellmos-ai/memoryhooker) | Sitzungsspeicher-Extraktor & Hook-Injektor | CLI / Python |
 | [`workflowhooker`](https://github.com/ellmos-ai/workflowhooker) | Workflow-Automatisierungs-Lebenszyklus-Trigger | CLI / Python |
 | [`ellmos-controlcenter-mcp`](https://github.com/ellmos-ai/ellmos-controlcenter-mcp) | MCP-Server für Systeminspektion & Skill-Discovery | MCP / Python |

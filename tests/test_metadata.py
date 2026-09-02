@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 import unittest
+from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -72,7 +73,12 @@ class MetadataAndManifestTests(unittest.TestCase):
     def test_llms_txt_integrity(self) -> None:
         content = self.llms_txt_path.read_text(encoding="utf-8")
         self.assertTrue(content.startswith("## Last-checked:"), "llms.txt must start with ## Last-checked:")
-        self.assertIn("2026-08-23", content, "llms.txt must reflect current verification date 2026-08-23")
+        # Assert the shape of the stamp, not one frozen day. Hard-coding a date
+        # here meant every refresh of llms.txt broke the suite, which invites
+        # bumping the assertion instead of checking the stamp is real.
+        stamp = re.match(r"## Last-checked: (\d{4})-(\d{2})-(\d{2})\n", content)
+        self.assertIsNotNone(stamp, "llms.txt must carry an ISO Last-checked date")
+        date(int(stamp.group(1)), int(stamp.group(2)), int(stamp.group(3)))
         self.assertIn("https://github.com/ellmos-ai/project-docs-template", content)
         self.assertIn("## Search Phrases", content)
         self.assertIn("## Disambiguation", content)
@@ -110,9 +116,11 @@ class MetadataAndManifestTests(unittest.TestCase):
         en_content = self.readme_en_path.read_text(encoding="utf-8")
         de_content = self.readme_de_path.read_text(encoding="utf-8")
 
+        # Only publicly reachable repositories belong here. `automation-master`
+        # was required by this list while being private, so the contract test
+        # actively kept a 404 link in a public README.
         key_siblings = [
             "policy-registry",
-            "automation-master",
             "companion-for-agy",
             "lock-master",
             "system-gap-master",
