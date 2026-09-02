@@ -41,3 +41,8 @@ data/
 *.db-shm
 *.log
 .*.todo-archive-*.json
+
+# Internal maintenance material — not repository content
+_after-care/
+BEFUNDE.md
+LOCK*.txt
