@@ -2,12 +2,44 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-09-02 - Cross-platform CI repair and documentation correction
+
+- **Fixed the red matrix.** `test_profile_upgrade_rolls_back_when_manifest_commit_fails`
+  compared an unresolved temporary path against the manifest path that
+  `upgrade()` resolves. On Linux `/tmp` is a real directory and the comparison
+  matched; on macOS the temporary directory sits under the `/var` -> `/private/var`
+  symlink and on Windows it can be an 8.3 short path, so the injected failure
+  never fired and the test failed with `OSError not raised`. All eight Windows
+  and macOS jobs had been red since 2026-08-23 while the four Ubuntu jobs stayed
+  green. Reproduced locally by pointing `TMPDIR` at a symlinked directory.
+- **Corrected the 0.1.2 entry below.** It claimed "34 tests passed, 7 subtests,
+  100% green"; that held on Ubuntu only. `RELEASE_GATE.md` forbids releasing
+  while any matrix job fails, and `0.1.2` was released while eight were failing.
+- **Restored the SHA-pinned Node 24 actions.** The 0.1.2 change described as CI
+  hardening replaced `actions/checkout` and `actions/setup-python`, pinned to
+  full commit SHAs of the v6 majors since 2026-07-17, with the floating tags
+  `@v4` and `@v5`, which still target the deprecated Node 20. The contract test
+  now asserts SHA pinning instead of a specific major, which is what it meant.
+- **Disclosed the template language.** The repository documents itself in
+  English while the generated template bodies and all CLI output are German.
+  `README.md`, `README_de.md` and `llms.txt` now say so; an English template set
+  is an open item in `TODO.md`.
+- **Ecosystem matrix corrections.** Removed the private
+  `dev-bricks/automation-master` (a 404 for every reader, and a contract test
+  had been requiring it), corrected the `clutch` entry from "Safe Git operation
+  wrapper" to the LLM router it actually is, and aligned the `DevCenter`
+  description with its repository description.
+- **Restored the missing MIT line** in the English README's license section; the
+  German README had it, the English one did not.
+- **Stopped tracking `BEFUNDE.md`**, an internal maintenance journal that
+  exposed the local working path and stale test counts.
+
 ## 2026-08-23 - 0.1.2 (Multi-OS CI Hardening, PEP 621 Classifiers & Metadata Contract Expansion)
 
 - **Version Bump & Manifest Parity**: Released `0.1.2` across `pyproject.toml` and `ellmos-module.v2.json`.
 - **PEP 621 Metadata & URLs**: Added `Operating System :: OS Independent`, Windows, Linux, and macOS classifiers, along with `Documentation`, `Security`, and `Umbrella` URLs in `pyproject.toml`.
 - **Hardened GitHub Actions CI (`.github/workflows/ci.yml`)**: Updated actions to `actions/checkout@v4` and `actions/setup-python@v5` with `cache: 'pip'`; expanded matrix across Python `3.10`, `3.11`, `3.12`, and `3.13` on `ubuntu-latest`, `windows-latest`, and `macos-latest`; added explicit `ruff check .` linting step before test discovery.
-- **Contract & Metadata Test Expansion (`tests/test_metadata.py`)**: Added automated contract tests for PEP 621 classifiers, offline/zero-egress invariants, and full CI matrix parity (34 tests passed, 7 subtests, 100% green).
+- **Contract & Metadata Test Expansion (`tests/test_metadata.py`)**: Added automated contract tests for PEP 621 classifiers, offline/zero-egress invariants, and full CI matrix parity (34 tests, 7 subtests). *Corrected on 2026-09-02: the original entry said "100% green". That was true on Ubuntu only — the eight Windows and macOS jobs were failing when this version was released, contrary to `RELEASE_GATE.md`.*
 - **Security & Umbrella Governance (`SECURITY.md`)**: Added direct umbrella contact `lukas@open-bricks.org` in both German and English vulnerability disclosure policies.
 - **LLM Discovery Index (`llms.txt`)**: Updated `Last-checked: 2026-08-23` and synchronized verification status.
 
