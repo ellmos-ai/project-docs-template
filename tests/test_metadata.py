@@ -132,8 +132,15 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("3.11", ci_content)
         self.assertIn("3.12", ci_content)
         self.assertIn("3.13", ci_content)
-        self.assertIn("actions/checkout@v4", ci_content)
-        self.assertIn("actions/setup-python@v5", ci_content)
+        # Contract is supply-chain pinning, not a specific major. Asserting
+        # "@v4"/"@v5" literally froze the workflow onto the deprecated Node 20
+        # actions and blocked the upgrade it was supposed to protect.
+        for action in ("actions/checkout", "actions/setup-python"):
+            self.assertRegex(
+                ci_content,
+                rf"uses: {action}@[0-9a-f]{{40}}\b",
+                f"{action} must be pinned to a full 40-character commit SHA",
+            )
         self.assertIn("ruff check", ci_content)
         self.assertIn("compileall", ci_content)
         self.assertIn("pytest", ci_content)
