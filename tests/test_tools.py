@@ -301,13 +301,18 @@ class InitProjectTests(unittest.TestCase):
                 for path in target.rglob("*")
                 if path.is_file()
             }
-            manifest = target / ".project-docs-template.json"
+            # `upgrade()` resolves its target before touching the manifest, so the
+            # comparison below must resolve too. On macOS the temporary directory
+            # lives under the /var -> /private/var symlink and on Windows it may be
+            # handed out as an 8.3 short path; without resolving, the injected
+            # failure would silently never fire and the test would pass vacuously.
+            manifest = (target / ".project-docs-template.json").resolve()
             real_replace = module.os.replace
             failed = False
 
             def fail_manifest_once(source, destination):
                 nonlocal failed
-                if Path(destination) == manifest and not failed:
+                if Path(destination).resolve() == manifest and not failed:
                     failed = True
                     raise OSError("injected manifest commit failure")
                 return real_replace(source, destination)
