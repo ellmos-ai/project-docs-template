@@ -1,0 +1,60 @@
+# MARKETING-LOG — Discoverability, SEO & Positioning Register
+
+Repository: ellmos-ai/project-docs-template
+Verantwortlich: Pfad B Automation (Discoverability, UX, SEO & Information Architecture)
+
+---
+
+## 2026-09-12 — Pfad B: Discoverability, Target Personas, Comparative Architecture & Supply-Chain Hardening
+
+### 1. Target Personas & Core Use Cases
+- **Persona 1: Multi-Agent Systems Engineers (Claude Code, Antigravity, Codex)**
+  - *Need:* Heterogeneous agent fleets require uniform entry contracts (`CLAUDE.md`, `AGENTS.md`), current state handoffs (`STATE.md`), and bootstrapping anchors (`START.md`) without hallucinating missing context.
+  - *Solution:* Standardized MINIMAL, STANDARD, and FULL documentation profiles with machine-readable manifests (`.project-docs-template.json`) and SHA-256 integrity tracking.
+- **Persona 2: Solo Developers & Open-Source Maintainers**
+  - *Need:* Fast, lightweight project organization without heavy SaaS tools (Jira, Notion). Clear separation between active tasks, completed work, and architecture decisions.
+  - *Solution:* Native `TODO.md` / `DONE.md` lifecycle with atomic CLI archival (`todo-archive`) and Keep-a-Changelog compatible `CHANGELOG.md`.
+- **Persona 3: Enterprise Architecture & AI Compliance Leads**
+  - *Need:* Verifiable documentation governance, audit trails, and strict zero-egress policies for air-gapped repositories.
+  - *Solution:* `DECISIONS.md` architectural decision records (ADRs), bilingual `SECURITY.md` policies, and 100% standard-library offline tooling without telemetry.
+- **Persona 4: Research & Scientific Pipeline Developers**
+  - *Need:* Reproducible experiment logs, structured glossary and pattern files, and documentation that survives LLM context drift across long-running research cycles.
+  - *Solution:* `GLOSSARY.md`, `PATTERNS.md`, and `WORKFLOWS.md` synchronization via `workflows-sync` with table-safe sanitization.
+
+### 2. Bilingual High-Intent Keyword Matrix
+- **English Search Queries (High-Intent):**
+  - `agent-ready project documentation template`
+  - `claude code documentation scaffold`
+  - `multi-agent session handoff state start todo done`
+  - `offline local-first project template python`
+  - `zero-egress developer scaffolding stdlib`
+  - `deterministic documentation staging and profile upgrades`
+  - `llm friendly project memory repository template`
+- **German Search Queries (High-Intent):**
+  - `agenten-fähiges Projekt-Dokumentations-Template`
+  - `Claude Code Dokumentationsgerüst`
+  - `Multi-Agenten Sitzungsübergabe Start State Todo Done`
+  - `Offline Local-First Projektvorlage Python`
+  - `Zero-Egress Entwickler Scaffolding Standardbibliothek`
+  - `deterministisches Staging und Profil-Upgrades`
+  - `LLM-optimierte Repository-Dokumentation`
+
+### 3. Comparative Architecture & Differentiation
+- **Versus Generic Markdown Dumps:**
+  - *Problem:* Single, unstructured README files suffer from severe context bloat, stale instructions, and zero mechanical validation.
+  - *Advantage:* Strict separation of concerns (bootstrap vs. state vs. task backlog vs. decisions) enforced by automated linter (`doc-lint`).
+- **Versus Heavyweight Wiki / SaaS (Notion, Confluence):**
+  - *Problem:* Cloud lock-in, proprietary APIs, slow token export, and security egress risks.
+  - *Advantage:* 100% local Git-native Markdown files, instant agent indexing via `llms.txt`, and zero external network dependencies.
+- **Versus Rigid Agent Frameworks (AutoGPT / CrewAI Scaffolding):**
+  - *Problem:* Deep runtime coupling to specific proprietary libraries; break when switching agent providers.
+  - *Advantage:* Universal plain-text contract compatible with any agent (Claude Code, Antigravity/Gemini, Codex, Kimi, or human engineers).
+
+### 4. Executed Pfad B Discoverability Measures
+1. **Badges Hardening:** Added Shields.io badges for Last Checked (2026-09-12), Zero-Dependency MIT Licenses, and Marketing Log.
+2. **Quick Navigation:** Integrated structured, reciprocal `🧭 Quick Navigation` / `🧭 Schnellnavigation` anchors across `README.md` and `README_de.md`.
+3. **Dedicated Target Personas & Use Cases Section:** Articulated the 4 target personas and concrete value drivers in both languages.
+4. **Comparative Architecture Matrix:** Embedded a 7-dimension comparative table highlighting the zero-egress, multi-agent, and deterministic upgrade advantages.
+5. **Software Bill of Materials (SBOM):** Created `THIRD_PARTY_LICENSES.md` formally validating the zero-runtime-dependency architecture.
+6. **PEP 621 Metadata Expansion:** Extended `pyproject.toml` with high-intent keywords (`multi-agent`, `zero-egress`, `governance`, `session-handoff`) and explicit project URLs.
+7. **Automated Contract Tests:** Added regression tests in `tests/test_metadata.py` asserting quick navigation integrity, persona coverage, license presence, and PEP 621 URL validity.

@@ -16,6 +16,9 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Last Checked](https://img.shields.io/badge/last%20checked-2026--09--12-informational.svg)](./MARKETING-LOG.txt)
+[![Third-Party Licenses](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
+[![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
 Agent-ready project documentation template with START/STATE/TODO/DONE,
 workflows, lightweight tooling, and LLM-friendly project memory.
@@ -31,6 +34,24 @@ maintained with LLM agents. The template focuses on clear project state,
 session handoff, task history, decision records, workflows, and small local
 utilities without turning the project into a heavy operating system.
 
+## 🧭 Quick Navigation
+
+- [Architecture & Flow](#architecture--flow)
+- [Target Personas & Core Use Cases](#target-personas--core-use-cases)
+- [Comparative Architecture](#comparative-architecture)
+- [Use This Template When](#use-this-template-when)
+- [What Is Included](#what-is-included)
+- [Quick Start](#quick-start)
+  - [Merge-Safe Profile Upgrades](#merge-safe-profile-upgrades)
+- [Profile Comparison](#profile-comparison)
+- [Design Principles](#design-principles)
+- [Verification](#verification)
+- [Bundles and Partners](#bundles-and-partners)
+- [Discoverability](#discoverability)
+- [Ecosystem & Sibling Tools](#ecosystem--sibling-tools)
+- [Trademarks](#trademarks)
+- [License](#license)
+
 ## Architecture & Flow
 
 ```mermaid
@@ -45,6 +66,31 @@ graph TD
     F --> G
     G --> H["Deterministic Agent Handoff & Session Memory"]
 ```
+
+## Target Personas & Core Use Cases
+
+`project-docs-template` is built to resolve state drift, context loss, and coordination friction across 4 distinct user groups:
+
+| Target Persona | Key Pain Point | How `project-docs-template` Solves It | Core Artifacts |
+|---|---|---|---|
+| **Multi-Agent Systems Engineers** | Heterogeneous coding agents (Claude Code, Antigravity/Gemini, Codex) lose project context between sessions and invent divergent file formats. | Universal entry point contracts (`CLAUDE.md`, `AGENTS.md`) and dedicated bootstrap/state registers (`START.md`, `STATE.md`) guarantee deterministic agent handoffs. | `CLAUDE.md`, `AGENTS.md`, `START.md`, `STATE.md` |
+| **Solo Developers & Open-Source Maintainers** | Juggling issues, feature backlogs, and release histories without heavy, distracting project management SaaS (Jira, Linear). | Minimal-overhead markdown task loops (`TODO.md`, `DONE.md`) paired with a transactional archival tool (`todo-archive`) and standard `CHANGELOG.md`. | `TODO.md`, `DONE.md`, `_tools/todo-archive`, `CHANGELOG.md` |
+| **Enterprise Architecture & AI Governance Leads** | Lack of auditable decision trails, compliance transparency, and risk of accidental data egress in corporate agent workflows. | Architecture Decision Records (`DECISIONS.md`), strict `SECURITY.md` local-first invariants, and zero external runtime dependencies. | `DECISIONS.md`, `SECURITY.md`, `THIRD_PARTY_LICENSES.md` |
+| **Research & Scientific Pipeline Developers** | Complex multi-stage experiment pipelines drift over weeks of autonomous LLM reasoning runs. | Scalable FULL profile with operational runbooks (`WORKFLOWS.md`), domain terminology (`GLOSSARY.md`), and automated table sync (`workflows-sync`). | `WORKFLOWS.md`, `GLOSSARY.md`, `_tools/workflows-sync` |
+
+## Comparative Architecture
+
+How `project-docs-template` compares with alternative documentation and project management paradigms for AI-assisted engineering:
+
+| Architectural Dimension | Generic Markdown Dumps (Single README) | Heavy SaaS Wikis (Notion, Confluence) | Rigid Agent Frameworks (AutoGPT / CrewAI Scaffolds) | `project-docs-template` (This Repository) |
+|---|---|---|---|---|
+| **Zero-Egress & Air-Gapped** | ⚠️ Partial (unverified) | ❌ Cloud-only (egress mandatory) | ⚠️ Mixed (often requires external APIs) | ✅ **100% Offline & Local-First** (Zero network calls) |
+| **Multi-Agent Handoff** | ❌ None (monolithic text blob) | ❌ Poor (opaque HTML/API exports) | ⚠️ Proprietary (vendor lock-in) | ✅ **Native** (Standardized `START.md` & `STATE.md`) |
+| **Mechanical Validation** | ❌ None (manual review only) | ❌ None (WYSIWYG drift) | ⚠️ Custom code required | ✅ **Built-in CLI Linting** (`doc-lint`, 34 tests) |
+| **Profile Scalability** | ❌ Monolithic (one-size-fits-none) | ⚠️ Manual workspace setup | ❌ Fixed schema | ✅ **Tiered Profiles** (MINIMAL, STANDARD, FULL) |
+| **Merge-Safe Upgrades** | ❌ Manual cut-and-paste | ❌ Manual sync | ❌ Often breaking | ✅ **SHA-256 Manifest** (`init-project --upgrade`) |
+| **Dependency Footprint** | ✅ None | ❌ Browser / REST API / OAuth | ❌ Heavy Python dependencies | ✅ **Zero Runtime Dependencies** (Python stdlib only) |
+| **LLM Token Indexing** | ⚠️ Slow (unfiltered parsing) | ❌ High overhead | ⚠️ Framework-specific | ✅ **Instant Agent Context** via `llms.txt` |
 
 ## Use This Template When
 

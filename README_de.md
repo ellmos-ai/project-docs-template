@@ -13,6 +13,9 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: English](https://img.shields.io/badge/Language-English-blue.svg)](./README.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--09--12-informational.svg)](./MARKETING-LOG.txt)
+[![Drittanbieter-Lizenzen](https://img.shields.io/badge/lizenzen-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
+[![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20B%20%7C%20Aktiv-blueviolet.svg)](./MARKETING-LOG.txt)
 
 Agenten-optimierte Projektdokumentations-Vorlage mit START/STATE/TODO/DONE,
 Workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
@@ -24,6 +27,24 @@ Workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
 > Siehe [Marken](#marken).
 
 Dieses Repository enthält ein kompaktes Dokumentations-Scaffold für Software-, Forschungs- und Betriebsprojekte, die mit LLM-Agenten gepflegt werden. Die Vorlage konzentriert sich auf klaren Projektstatus, Übergaben zwischen Sitzungen, Aufgabenhistorie, Entscheidungsaufzeichnungen und Workflows, ohne das Projekt in ein schwerfälliges Betriebssystem zu verwandeln.
+
+## 🧭 Schnellnavigation
+
+- [Architektur & Ablauf](#architektur--ablauf)
+- [Zielgruppen & Kern-Anwendungsfälle](#zielgruppen--kern-anwendungsfälle)
+- [Architekturvergleich](#architekturvergleich)
+- [Verwendungsszenarien](#verwendungsszenarien)
+- [Was enthalten ist](#was-enthalten-ist)
+- [Schnellstart](#schnellstart)
+  - [Merge-sichere Profil-Upgrades](#merge-sichere-profil-upgrades)
+- [Profil-Vergleich](#profil-vergleich)
+- [Design-Prinzipien](#design-prinzipien)
+- [Verifizierung](#verifizierung)
+- [Bundles und Partner](#bundles-und-partner)
+- [Auffindbarkeit (SEO)](#auffindbarkeit-seo)
+- [Ökosystem & Geschwisterwerkzeuge](#ökosystem--geschwisterwerkzeuge)
+- [Marken](#marken)
+- [Lizenz](#lizenz)
 
 ## Architektur & Ablauf
 
@@ -39,6 +60,31 @@ graph TD
     F --> G
     G --> H["Deterministische Agenten-Übergabe & Sitzungsspeicher"]
 ```
+
+## Zielgruppen & Kern-Anwendungsfälle
+
+`project-docs-template` wurde entwickelt, um Kontextverlust, Zustandsdrift und Reibungsverluste bei 4 konkreten Zielgruppen zu eliminieren:
+
+| Zielgruppe | Zentrales Problem | Wie `project-docs-template` das Problem löst | Kern-Artefakte |
+|---|---|---|---|
+| **Multi-Agenten Flotten-Ingenieure** | Heterogene KI-Agenten (Claude Code, Antigravity/Gemini, Codex) verlieren über Sitzungen hinweg den Projektkontext und erzeugen inkonsistente Dateistrukturen. | Universelle Instruktions-Einstiegspunkte (`CLAUDE.md`, `AGENTS.md`) und standardisierte Kontext-Register (`START.md`, `STATE.md`) sichern deterministische Übergaben. | `CLAUDE.md`, `AGENTS.md`, `START.md`, `STATE.md` |
+| **Solo-Entwickler & Open-Source-Maintainer** | Aufgaben-Backlogs, Feature-Historie und Releases ohne schwerfällige, ablenkende Projektmanagement-SaaS (Jira, Linear) verwalten. | Markdown-native Aufgabenverwaltung (`TODO.md`, `DONE.md`) mit atomarem Archivierungs-Tool (`todo-archive`) und strukturiertem `CHANGELOG.md`. | `TODO.md`, `DONE.md`, `_tools/todo-archive`, `CHANGELOG.md` |
+| **Enterprise Architecture & AI Compliance Leads** | Fehlende Revisionssicherheit bei Architekturentscheidungen und Risiko ungewollter Datenabflüsse durch autonome Agenten. | Architektur-Entscheidungsaufzeichnungen (`DECISIONS.md`), zweisprachige `SECURITY.md`-Richtlinien und 100% Offline-Standardbibliothek ohne Telemetrie. | `DECISIONS.md`, `SECURITY.md`, `THIRD_PARTY_LICENSES.md` |
+| **Forschungs- & Pipeline-Entwickler** | Komplexe mehrstufige Experimentier-Pipelines driften über Wochen autonomer KI-Ausführungen ab. | Skalierbares FULL-Profil mit standardisierten Runbooks (`WORKFLOWS.md`), Terminologie-Definitionen (`GLOSSARY.md`) und tabellensicherem Tabellen-Sync (`workflows-sync`). | `WORKFLOWS.md`, `GLOSSARY.md`, `_tools/workflows-sync` |
+
+## Architekturvergleich
+
+Direkter Vergleich von `project-docs-template` mit alternativen Dokumentations- und Organisationsansätzen im KI-unterstützten Entwicklungsalltag:
+
+| Architektur-Dimension | Generische Markdown-Ablage (Einzel-README) | Schwere SaaS-Wikis (Notion, Confluence) | Starre Agenten-Frameworks (AutoGPT / CrewAI) | `project-docs-template` (Dieses Repository) |
+|---|---|---|---|---|
+| **Zero-Egress & Offline-Fähigkeit** | ⚠️ Partiell (unverifiziert) | ❌ Nur Cloud (Datenabfluss zwingend) | ⚠️ Gemischt (erfordert oft Web-APIs) | ✅ **100% Offline & Local-First** (Keinerlei Netzaufrufe) |
+| **Multi-Agenten Sitzungsübergabe** | ❌ Keine (monolithischer Textblock) | ❌ Schlecht (proprietärer Export) | ⚠️ Proprietär (Vendor-Lock-in) | ✅ **Nativ** (Standardisiert via `START.md` & `STATE.md`) |
+| **Mechanische Validierung** | ❌ Keine (nur manuelle Sichtung) | ❌ Keine (WYSIWYG-Drift) | ⚠️ Nur mit Eigenbau-Skripten | ✅ **Integrierte CLI-Linter** (`doc-lint`, 34 Tests) |
+| **Profil-Skalierbarkeit** | ❌ Starr (eine Größe für alle) | ⚠️ Manuelles Workspace-Setup | ❌ Festes Schema | ✅ **3 Stufen** (MINIMAL, STANDARD, FULL) |
+| **Merge-sichere Upgrades** | ❌ Manuelles Copy-Paste | ❌ Manueller Abgleich | ❌ Häufig inkompatibel | ✅ **SHA-256 Manifest** (`init-project --upgrade`) |
+| **Abhängigkeits-Footprint** | ✅ Keine | ❌ Browser / REST API / OAuth | ❌ Schwerer Python-Dependency-Tree | ✅ **Zero Runtime Dependencies** (reine Python stdlib) |
+| **LLM-Kontext-Indizierung** | ⚠️ Langsam (ungefilterter Text) | ❌ Hoher Token-Overhead | ⚠️ Framework-spezifisch | ✅ **Sofortiger Agenten-Kontext** via `llms.txt` |
 
 ## Verwendungsszenarien
 

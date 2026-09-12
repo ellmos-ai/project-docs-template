@@ -1,4 +1,4 @@
-## Last-checked: 2026-09-02
+## Last-checked: 2026-09-12
 
 # ellmos-ai/project-docs-template
 
@@ -15,8 +15,10 @@ Primary audience:
 - Template authors looking for a small alternative to heavy agent OS scaffolds.
 
 Important files:
-- `README.md`: human-facing overview and quick start.
-- `README_de.md`: complete German documentation and user guide.
+- `README.md`: human-facing overview, quick navigation, target personas, and comparative architecture.
+- `README_de.md`: complete German documentation, Schnellnavigation, and user guide.
+- `MARKETING-LOG.txt`: Pfad B discoverability log, target personas, keyword matrix, and positioning audit.
+- `THIRD_PARTY_LICENSES.md`: Software Bill of Materials (SBOM) confirming zero runtime dependencies.
 - `template/TEMPLATE.md`: rationale, profile definitions, and file-by-file explanation.
 - `template/_tools/init-project`: profile-based scaffold generator (`MINIMAL`, `STANDARD`, `FULL`).
 - `template/_tools/init-project --upgrade`: one-step, manifest/hash-verified
@@ -46,6 +48,8 @@ Claude Code Codex project documentation scaffold
 multi-agent repo handoff documentation template
 lightweight project memory template for coding agents
 project docs template with TODO DONE DECISIONS STATE
+zero-egress developer scaffolding stdlib
+deterministic documentation staging and profile upgrades
 ```
 
 ## Language

@@ -52,6 +52,8 @@ class MetadataAndManifestTests(unittest.TestCase):
             "llms.txt",
             "pyproject.toml",
             "ellmos-module.v2.json",
+            "THIRD_PARTY_LICENSES.md",
+            "MARKETING-LOG.txt",
         ]
         for filename in required_files:
             file_path = REPO_ROOT / filename
@@ -89,9 +91,22 @@ class MetadataAndManifestTests(unittest.TestCase):
         de_content = self.readme_de_path.read_text(encoding="utf-8")
 
         # Badges
-        for badge_pattern in ["pytest", "license-MIT", "Language-", "Ecosystem-ellmos", "Umbrella-open", "LLM--Ready"]:
+        for badge_pattern in [
+            "pytest",
+            "license-MIT",
+            "Language-",
+            "Ecosystem-ellmos",
+            "Umbrella-open",
+            "LLM--Ready",
+            "zero--dependency",
+            "marketing-",
+        ]:
             self.assertIn(badge_pattern, en_content, f"Badge {badge_pattern} missing in README.md")
             self.assertIn(badge_pattern, de_content, f"Badge {badge_pattern} missing in README_de.md")
+        self.assertIn("last%20checked", en_content)
+        self.assertIn("letzte%20pr%C3%BCfung", de_content)
+        self.assertIn("licenses-zero--dependency", en_content)
+        self.assertIn("lizenzen-zero--dependency", de_content)
 
         # Mermaid diagrams (2 diagrams in each)
         self.assertEqual(en_content.count("```mermaid"), 2, "README.md must contain 2 Mermaid diagrams")
@@ -167,6 +182,11 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("Security =", content)
         self.assertIn("Umbrella =", content)
         self.assertIn("https://open-bricks.org", content)
+        self.assertIn('"Third-Party Licenses" =', content)
+        self.assertIn('"Marketing Log" =', content)
+        self.assertIn('"LLM Ready" =', content)
+        for kw in ["multi-agent", "zero-egress", "governance", "session-handoff"]:
+            self.assertIn(f'"{kw}"', content, f"Keyword {kw} missing in pyproject.toml")
 
     def test_offline_and_privacy_invariants(self) -> None:
         sec_content = self.security_path.read_text(encoding="utf-8")
@@ -213,6 +233,80 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertTrue(tools_dir.is_dir(), "template/_tools directory missing")
         for tool in ["init-project", "doc-lint", "todo-archive", "workflows-sync"]:
             self.assertTrue((tools_dir / tool).is_file(), f"Tool script missing: template/_tools/{tool}")
+
+    def test_quick_navigation_anchors(self) -> None:
+        """Verify quick navigation links resolve to headers in READMEs."""
+        for filename in ["README.md", "README_de.md"]:
+            content = (REPO_ROOT / filename).read_text(encoding="utf-8")
+            self.assertTrue("Quick Navigation" in content or "Schnellnavigation" in content)
+
+            anchor_links = re.findall(r"\[([^\]]+)\]\(#([^\)]+)\)", content)
+            self.assertGreaterEqual(len(anchor_links), 8, f"Expected at least 8 quick nav links in {filename}")
+
+            headers = re.findall(r"^#{2,4}\s+(.+)$", content, re.MULTILINE)
+            normalized_headers = [
+                re.sub(r"[^\w\s-]", "", h).strip().lower().replace(" ", "-") for h in headers
+            ]
+
+            for _text, anchor in anchor_links:
+                self.assertTrue(
+                    anchor in normalized_headers or any(anchor in nh for nh in normalized_headers),
+                    f"Anchor #{anchor} in {filename} does not match any header",
+                )
+
+    def test_target_personas_and_use_cases_section(self) -> None:
+        """Verify Target Personas section in both English and German READMEs."""
+        en_content = self.readme_en_path.read_text(encoding="utf-8")
+        de_content = self.readme_de_path.read_text(encoding="utf-8")
+
+        self.assertIn("## Target Personas & Core Use Cases", en_content)
+        self.assertIn("Multi-Agent Systems Engineers", en_content)
+        self.assertIn("Solo Developers & Open-Source Maintainers", en_content)
+        self.assertIn("Enterprise Architecture & AI Governance Leads", en_content)
+        self.assertIn("Research & Scientific Pipeline Developers", en_content)
+
+        self.assertIn("## Zielgruppen & Kern-Anwendungsfälle", de_content)
+        self.assertIn("Multi-Agenten Flotten-Ingenieure", de_content)
+        self.assertIn("Solo-Entwickler & Open-Source-Maintainer", de_content)
+        self.assertIn("Enterprise Architecture & AI Compliance Leads", de_content)
+        self.assertIn("Forschungs- & Pipeline-Entwickler", de_content)
+
+    def test_comparative_architecture_matrix(self) -> None:
+        """Verify Comparative Architecture table in both English and German READMEs."""
+        en_content = self.readme_en_path.read_text(encoding="utf-8")
+        de_content = self.readme_de_path.read_text(encoding="utf-8")
+
+        self.assertIn("## Comparative Architecture", en_content)
+        self.assertIn("Generic Markdown Dumps", en_content)
+        self.assertIn("Heavy SaaS Wikis", en_content)
+        self.assertIn("Rigid Agent Frameworks", en_content)
+
+        self.assertIn("## Architekturvergleich", de_content)
+        self.assertIn("Generische Markdown-Ablage", de_content)
+        self.assertIn("Schwere SaaS-Wikis", de_content)
+        self.assertIn("Starre Agenten-Frameworks", de_content)
+
+    def test_third_party_licenses_content(self) -> None:
+        """Verify THIRD_PARTY_LICENSES.md structure and invariants."""
+        tpl_path = REPO_ROOT / "THIRD_PARTY_LICENSES.md"
+        self.assertTrue(tpl_path.is_file(), "THIRD_PARTY_LICENSES.md missing")
+        content = tpl_path.read_text(encoding="utf-8")
+        self.assertIn("Third-Party Licenses & Software Bill of Materials", content)
+        self.assertIn("Zero-Runtime-Dependency invariant", content)
+        self.assertIn("Zero-Egress & Local-First Invariant", content)
+        self.assertIn("pytest", content)
+        self.assertIn("ruff", content)
+        self.assertIn("MIT License", content)
+
+    def test_marketing_log_structure(self) -> None:
+        """Verify MARKETING-LOG.txt presence and Pfad B sections."""
+        mlog_path = REPO_ROOT / "MARKETING-LOG.txt"
+        self.assertTrue(mlog_path.is_file(), "MARKETING-LOG.txt missing")
+        content = mlog_path.read_text(encoding="utf-8")
+        self.assertIn("MARKETING-LOG — Discoverability, SEO & Positioning Register", content)
+        self.assertIn("Pfad B: Discoverability, Target Personas", content)
+        self.assertIn("Bilingual High-Intent Keyword Matrix", content)
+        self.assertIn("Comparative Architecture & Differentiation", content)
 
 
 if __name__ == "__main__":

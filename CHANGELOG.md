@@ -2,6 +2,16 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-09-12 - Pfad B Discoverability, Target Personas & Comparative Architecture
+
+- **Quick Navigation & Readme Badges**: Added Shields.io badges for Last Checked (`2026-09-12`), Zero-Dependency MIT Licenses, and Marketing Log. Added reciprocal `🧭 Quick Navigation` / `🧭 Schnellnavigation` anchors across `README.md` and `README_de.md`.
+- **Target Personas & Core Use Cases**: Documented explicit value propositions for 4 target groups: Multi-Agent Systems Engineers, Solo Developers & Open-Source Maintainers, Enterprise Architecture & AI Governance Leads, and Research & Scientific Pipeline Developers.
+- **Comparative Architecture Matrix**: Added a 7-dimension comparative analysis contrasting `project-docs-template` against generic markdown dumps, heavyweight SaaS wikis (Notion, Confluence), and rigid agent frameworks.
+- **Software Bill of Materials (SBOM)**: Created `THIRD_PARTY_LICENSES.md` formally validating the zero-runtime-dependency architecture (`dependencies = []`), standard library usage, and MIT licensing.
+- **Marketing Register (`MARKETING-LOG.txt`)**: Documented Pfad B discoverability audit, bilingual high-intent keyword matrix, and differentiation rationale.
+- **PEP 621 Metadata Expansion**: Added `multi-agent`, `zero-egress`, `governance`, and `session-handoff` keywords, and declared extended project URLs in `pyproject.toml`.
+- **Automated Contract Tests (`tests/test_metadata.py`)**: Added test coverage for quick navigation anchor integrity, persona presence, comparative architecture matrix, and PEP 621 extended URLs.
+
 ## 2026-09-02 - Cross-platform CI repair and documentation correction
 
 - **Fixed the red matrix.** `test_profile_upgrade_rolls_back_when_manifest_commit_fails`

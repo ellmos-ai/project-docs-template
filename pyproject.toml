@@ -11,7 +11,7 @@ authors = [
     { name = "Lukas Geiger", email = "lukas@um-bruch.org" }
 ]
 license = "MIT"
-license-files = ["LICENSE"]
+license-files = ["LICENSE", "THIRD_PARTY_LICENSES.md"]
 requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -29,7 +29,19 @@ classifiers = [
     "Topic :: Software Development :: Documentation",
     "Topic :: Software Development :: Build Tools",
 ]
-keywords = ["llm", "claude-code", "antigravity", "codex", "documentation-template", "agent-handoff", "start-state-todo-done"]
+keywords = [
+    "llm",
+    "claude-code",
+    "antigravity",
+    "codex",
+    "documentation-template",
+    "agent-handoff",
+    "start-state-todo-done",
+    "multi-agent",
+    "zero-egress",
+    "governance",
+    "session-handoff",
+]
 
 [project.urls]
 Homepage = "https://github.com/ellmos-ai/project-docs-template"
@@ -38,6 +50,9 @@ Repository = "https://github.com/ellmos-ai/project-docs-template"
 Issues = "https://github.com/ellmos-ai/project-docs-template/issues"
 Changelog = "https://github.com/ellmos-ai/project-docs-template/blob/main/CHANGELOG.md"
 Security = "https://github.com/ellmos-ai/project-docs-template/blob/main/SECURITY.md"
+"Third-Party Licenses" = "https://github.com/ellmos-ai/project-docs-template/blob/main/THIRD_PARTY_LICENSES.md"
+"Marketing Log" = "https://github.com/ellmos-ai/project-docs-template/blob/main/MARKETING-LOG.txt"
+"LLM Ready" = "https://github.com/ellmos-ai/project-docs-template/blob/main/llms.txt"
 Umbrella = "https://open-bricks.org"
 
 [tool.pytest.ini_options]
