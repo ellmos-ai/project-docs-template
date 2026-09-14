@@ -1,4 +1,4 @@
-## Last-checked: 2026-09-12
+## Last-checked: 2026-09-14
 
 # ellmos-ai/project-docs-template
 
@@ -17,7 +17,7 @@ Primary audience:
 Important files:
 - `README.md`: human-facing overview, quick navigation, target personas, and comparative architecture.
 - `README_de.md`: complete German documentation, Schnellnavigation, and user guide.
-- `MARKETING-LOG.txt`: Pfad B discoverability log, target personas, keyword matrix, and positioning audit.
+- `MARKETING-LOG.txt`: Pfad A repository hygiene & Pfad B discoverability log.
 - `THIRD_PARTY_LICENSES.md`: Software Bill of Materials (SBOM) confirming zero runtime dependencies.
 - `template/TEMPLATE.md`: rationale, profile definitions, and file-by-file explanation.
 - `template/_tools/init-project`: profile-based scaffold generator (`MINIMAL`, `STANDARD`, `FULL`).
@@ -35,9 +35,10 @@ Important files:
 
 ## Verification
 
-- `pytest` (34 passed, 7 subtests passed) on Linux, Windows and macOS
+- `pytest` (44 passed, 7 subtests passed) on Linux, Windows and macOS
 - `ruff check .` (100% clean)
 - `compileall` (100% clean)
+
 
 ## Search Phrases
 

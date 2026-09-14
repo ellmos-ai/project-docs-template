@@ -40,3 +40,32 @@ data/
 *.db-shm
 *.log
 .*.todo-archive-*.json
+
+# Multi-host and cloud sync conflict defense
+* (kopie)*
+* (copy)*
+* (Kopie)*
+* (Copy)*
+*conflicted copy*
+*-WORKSTATION*
+*-WORKSTATION-LG*
+*-ASUS-GEI*
+*.sync-temp-*
+*.sync-conflict-*
+*.conflict
+
+# Canonical lock files
+LOCK
+LOCK.*
+LOCK*.txt
+LOCK.permissions.json
+uv.lock
+!package-lock.json
+
+# Build, cache, and coverage artifacts
+*.orig
+.coverage.*
+.tox/
+.turbo/
+.nyc_output/
+.hypothesis/

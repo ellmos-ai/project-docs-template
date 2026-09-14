@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-34%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-44%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
 [![Ecosystem: ellmos-ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
@@ -13,15 +13,16 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: English](https://img.shields.io/badge/Language-English-blue.svg)](./README.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--09--12-informational.svg)](./MARKETING-LOG.txt)
+[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--09--14-informational.svg)](./MARKETING-LOG.txt)
 [![Drittanbieter-Lizenzen](https://img.shields.io/badge/lizenzen-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
-[![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20B%20%7C%20Aktiv-blueviolet.svg)](./MARKETING-LOG.txt)
+[![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Aktiv-blueviolet.svg)](./MARKETING-LOG.txt)
 
 Agenten-optimierte Projektdokumentations-Vorlage mit START/STATE/TODO/DONE,
-Workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
+workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
 
 > [!NOTE]
-> Dieses Repository ist maschinenlesbar und für KI-Agenten optimiert. KI-Coding-Assistenten (Claude Code, Antigravity/Gemini, Codex) können [`llms.txt`](./llms.txt) als schnellen Kontext-Index nutzen und `pytest` (34 bestandene Tests, 7 Subtests) ausführen, um die Integrität der Vorlagengenerierung und Profil-Upgrades zu überprüfen.
+> Dieses Repository ist maschinenlesbar und für KI-Agenten optimiert. KI-Coding-Assistenten (Claude Code, Antigravity/Gemini, Codex) können [`llms.txt`](./llms.txt) als schnellen Kontext-Index nutzen und `pytest` (44 bestandene Tests, 7 Subtests) ausführen, um die Integrität der Vorlagengenerierung und Profil-Upgrades zu überprüfen.
+
 
 > Unabhängiges Projekt — keine Verbindung zu Anthropic, OpenAI oder Google.
 > Siehe [Marken](#marken).
@@ -80,7 +81,7 @@ Direkter Vergleich von `project-docs-template` mit alternativen Dokumentations- 
 |---|---|---|---|---|
 | **Zero-Egress & Offline-Fähigkeit** | ⚠️ Partiell (unverifiziert) | ❌ Nur Cloud (Datenabfluss zwingend) | ⚠️ Gemischt (erfordert oft Web-APIs) | ✅ **100% Offline & Local-First** (Keinerlei Netzaufrufe) |
 | **Multi-Agenten Sitzungsübergabe** | ❌ Keine (monolithischer Textblock) | ❌ Schlecht (proprietärer Export) | ⚠️ Proprietär (Vendor-Lock-in) | ✅ **Nativ** (Standardisiert via `START.md` & `STATE.md`) |
-| **Mechanische Validierung** | ❌ Keine (nur manuelle Sichtung) | ❌ Keine (WYSIWYG-Drift) | ⚠️ Nur mit Eigenbau-Skripten | ✅ **Integrierte CLI-Linter** (`doc-lint`, 34 Tests) |
+| **Mechanische Validierung** | ❌ Keine (nur manuelle Sichtung) | ❌ Keine (WYSIWYG-Drift) | ⚠️ Nur mit Eigenbau-Skripten | ✅ **Integrierte CLI-Linter** (`doc-lint`, 44 Tests) |
 | **Profil-Skalierbarkeit** | ❌ Starr (eine Größe für alle) | ⚠️ Manuelles Workspace-Setup | ❌ Festes Schema | ✅ **3 Stufen** (MINIMAL, STANDARD, FULL) |
 | **Merge-sichere Upgrades** | ❌ Manuelles Copy-Paste | ❌ Manueller Abgleich | ❌ Häufig inkompatibel | ✅ **SHA-256 Manifest** (`init-project --upgrade`) |
 | **Abhängigkeits-Footprint** | ✅ Keine | ❌ Browser / REST API / OAuth | ❌ Schwerer Python-Dependency-Tree | ✅ **Zero Runtime Dependencies** (reine Python stdlib) |

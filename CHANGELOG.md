@@ -2,7 +2,18 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-09-14 - Pfad A Repository Hygiene, CI Timeout Hardening & Multi-Host Defense
+
+- **CI Workflow Hardening (`.github/workflows/ci.yml`)**: Added `timeout-minutes: 15` runaway guardrail to the matrix test job, concurrency cancellation for in-flight pushes, and standardized pytest runner invocation to `python -m pytest -ra -v`.
+- **Stale Management Automation (`.github/workflows/stale.yml`)**: Added automated issue and pull-request stale lifecycle management with concurrency control and `timeout-minutes: 10`.
+- **Multi-Host Cloud-Sync & Lock Defense (`.gitignore` & `template/.gitignore`)**: Hardened both the repository root `.gitignore` and the scaffold template `.gitignore` against cloud sync conflict copies (`* (kopie)*`, `* (copy)*`, `*-WORKSTATION*`, `*-ASUS-GEI*`), canonical lock files (`LOCK`, `LOCK.*`, `LOCK*.txt`, `LOCK.permissions.json`, `uv.lock`), and temporary test/cache artifacts (`.coverage.*`, `.tox/`, `.turbo/`, `.nyc_output/`, `.hypothesis/`, `*.orig`).
+- **PEP 621 Metadata & Pytest Standardization**: Configured `addopts = "-ra -v"` in `[tool.pytest.ini_options]` and declared explicit `"Bug Tracker"` project URL in `pyproject.toml`.
+- **SBOM & License Audit Refresh (`THIRD_PARTY_LICENSES.md`)**: Re-audited zero-runtime-dependency invariant and updated audit timestamp to 2026-09-14.
+- **Metadata, Badges & LLM-Context Freshness**: Synchronized shields.io badges in `README.md` and `README_de.md` to latest test baseline (44 tests, 7 subtests, 100% green) and updated Last Checked to `2026-09-14`; refreshed `llms.txt` timestamp and test counts.
+- **Automated Contract Tests Expansion (`tests/test_metadata.py`)**: Added 5 new contract tests verifying CI timeouts, concurrency settings, stale workflow presence, multi-host .gitignore defense across both root and template, and pytest options.
+
 ## 2026-09-12 - Pfad B Discoverability, Target Personas & Comparative Architecture
+
 
 - **Quick Navigation & Readme Badges**: Added Shields.io badges for Last Checked (`2026-09-12`), Zero-Dependency MIT Licenses, and Marketing Log. Added reciprocal `🧭 Quick Navigation` / `🧭 Schnellnavigation` anchors across `README.md` and `README_de.md`.
 - **Target Personas & Core Use Cases**: Documented explicit value propositions for 4 target groups: Multi-Agent Systems Engineers, Solo Developers & Open-Source Maintainers, Enterprise Architecture & AI Governance Leads, and Research & Scientific Pipeline Developers.

@@ -1,11 +1,29 @@
 # MARKETING-LOG — Discoverability, SEO & Positioning Register
 
 Repository: ellmos-ai/project-docs-template
-Verantwortlich: Pfad B Automation (Discoverability, UX, SEO & Information Architecture)
+Verantwortlich: Pfad A & Pfad B Automation (Hygiene, Discoverability, UX & Governance)
+
+---
+
+## 2026-09-14 — Pfad A: Repository Hygiene, CI Timeout Hardening & Multi-Host Defense
+
+### 1. Repository Hygiene & Automation Readiness
+- **Target Repository:** `ellmos-ai/project-docs-template`
+- **Audit Date:** 2026-09-14
+- **Focus:** Multi-Host Sync Defense, CI Runaway Protection, Template Scaffolding Hardening, and Contract Test Coverage.
+
+### 2. Executed Measures
+1. **CI/CD Guardrails:** Added `timeout-minutes: 15` to matrix testing in `.github/workflows/ci.yml`, concurrency group cancellation, and standardized `-ra -v` pytest flags.
+2. **Lifecycle Automation:** Added `.github/workflows/stale.yml` with `timeout-minutes: 10` for automated issue and PR lifecycle handling.
+3. **Multi-Host Defense:** Hardened root `.gitignore` and `template/.gitignore` against cloud synchronization conflicts (`* (kopie)*`, `*-WORKSTATION*`, `*-ASUS-GEI*`) and lock files (`LOCK`, `LOCK.*`, `LOCK.permissions.json`, `uv.lock`).
+4. **PEP 621 Standardisation:** Added `addopts = "-ra -v"` to `[tool.pytest.ini_options]` and registered `Bug Tracker` under `[project.urls]`.
+5. **Context Synchronization:** Updated `llms.txt`, `THIRD_PARTY_LICENSES.md`, `README.md`, and `README_de.md` to current test baseline (44 passed, 7 subtests | 100% green) and date 2026-09-14.
+6. **Contract Test Suite:** Expanded `tests/test_metadata.py` with 5 regression assertions covering CI timeouts, concurrency, stale automation, and multi-host defense.
 
 ---
 
 ## 2026-09-12 — Pfad B: Discoverability, Target Personas, Comparative Architecture & Supply-Chain Hardening
+
 
 ### 1. Target Personas & Core Use Cases
 - **Persona 1: Multi-Agent Systems Engineers (Claude Code, Antigravity, Codex)**

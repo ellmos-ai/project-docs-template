@@ -48,6 +48,7 @@ Homepage = "https://github.com/ellmos-ai/project-docs-template"
 Documentation = "https://github.com/ellmos-ai/project-docs-template#readme"
 Repository = "https://github.com/ellmos-ai/project-docs-template"
 Issues = "https://github.com/ellmos-ai/project-docs-template/issues"
+"Bug Tracker" = "https://github.com/ellmos-ai/project-docs-template/issues"
 Changelog = "https://github.com/ellmos-ai/project-docs-template/blob/main/CHANGELOG.md"
 Security = "https://github.com/ellmos-ai/project-docs-template/blob/main/SECURITY.md"
 "Third-Party Licenses" = "https://github.com/ellmos-ai/project-docs-template/blob/main/THIRD_PARTY_LICENSES.md"
@@ -57,9 +58,11 @@ Umbrella = "https://open-bricks.org"
 
 [tool.pytest.ini_options]
 minversion = "7.0"
+addopts = "-ra -v"
 pythonpath = ["."]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+
 
 [tool.ruff]
 target-version = "py310"

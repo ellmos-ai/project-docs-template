@@ -308,6 +308,73 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("Bilingual High-Intent Keyword Matrix", content)
         self.assertIn("Comparative Architecture & Differentiation", content)
 
+    def test_ci_workflow_timeouts_concurrency_and_runner(self) -> None:
+        """Verify CI workflow has runaway timeouts, concurrency cancellation, and pytest flags."""
+        ci_content = self.ci_workflow_path.read_text(encoding="utf-8")
+        self.assertIn("timeout-minutes: 15", ci_content, "CI test job must specify timeout-minutes: 15")
+        self.assertIn("concurrency:", ci_content, "CI workflow must specify concurrency")
+        self.assertIn("cancel-in-progress: true", ci_content, "CI concurrency must cancel in-progress runs")
+        self.assertIn("-ra -v", ci_content, "CI pytest command must include -ra -v flags")
+
+    def test_stale_workflow_present_and_safe(self) -> None:
+        """Verify stale.yml automation exists with timeouts and concurrency."""
+        stale_path = REPO_ROOT / ".github" / "workflows" / "stale.yml"
+        self.assertTrue(stale_path.is_file(), "stale.yml workflow must exist")
+        content = stale_path.read_text(encoding="utf-8")
+        self.assertIn("timeout-minutes: 10", content, "stale workflow must have timeout-minutes: 10")
+        self.assertIn("concurrency:", content, "stale workflow must specify concurrency")
+        self.assertIn("actions/stale", content, "stale workflow must use actions/stale")
+
+    def test_gitignore_canonical_locks_and_multihost_defense(self) -> None:
+        """Verify root .gitignore defends against multi-host conflict copies and locks."""
+        content = (REPO_ROOT / ".gitignore").read_text(encoding="utf-8")
+        expected_patterns = [
+            "* (kopie)*",
+            "* (copy)*",
+            "*-WORKSTATION*",
+            "*-ASUS-GEI*",
+            "LOCK",
+            "LOCK.*",
+            "LOCK.permissions.json",
+            "uv.lock",
+            "!package-lock.json",
+            ".coverage.*",
+            ".tox/",
+            ".turbo/",
+            ".nyc_output/",
+            ".hypothesis/",
+        ]
+        for pattern in expected_patterns:
+            self.assertIn(pattern, content, f"Root .gitignore must defend against {pattern}")
+
+    def test_template_gitignore_inherits_defense(self) -> None:
+        """Verify scaffold template/.gitignore also protects generated repositories."""
+        content = (REPO_ROOT / "template" / ".gitignore").read_text(encoding="utf-8")
+        expected_patterns = [
+            "* (kopie)*",
+            "* (copy)*",
+            "*-WORKSTATION*",
+            "*-ASUS-GEI*",
+            "LOCK",
+            "LOCK.*",
+            "LOCK.permissions.json",
+            "uv.lock",
+            "!package-lock.json",
+            ".coverage.*",
+            ".tox/",
+            ".turbo/",
+            ".nyc_output/",
+            ".hypothesis/",
+        ]
+        for pattern in expected_patterns:
+            self.assertIn(pattern, content, f"Template .gitignore must defend against {pattern}")
+
+    def test_pyproject_pytest_addopts_and_bug_tracker(self) -> None:
+        """Verify pyproject.toml contains standard pytest addopts and Bug Tracker URL."""
+        content = self.pyproject_path.read_text(encoding="utf-8")
+        self.assertIn('addopts = "-ra -v"', content, "pyproject.toml must configure addopts = '-ra -v'")
+        self.assertIn('"Bug Tracker" =', content, "pyproject.toml must contain Bug Tracker URL")
+
 
 if __name__ == "__main__":
     unittest.main()

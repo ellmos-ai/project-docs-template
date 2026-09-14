@@ -7,7 +7,7 @@
 [![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-34%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-44%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
 [![Ecosystem: ellmos-ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
@@ -16,15 +16,16 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Last Checked](https://img.shields.io/badge/last%20checked-2026--09--12-informational.svg)](./MARKETING-LOG.txt)
+[![Last Checked](https://img.shields.io/badge/last%20checked-2026--09--14-informational.svg)](./MARKETING-LOG.txt)
 [![Third-Party Licenses](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
-[![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
+[![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
 Agent-ready project documentation template with START/STATE/TODO/DONE,
 workflows, lightweight tooling, and LLM-friendly project memory.
 
 > [!NOTE]
-> This repository is machine-readable and agent-optimized. AI coding assistants (Claude Code, Antigravity/Gemini, Codex) can read [`llms.txt`](./llms.txt) for a fast context index and run `pytest` (34 tests passing, 7 subtests) to verify template generation and upgrade integrity.
+> This repository is machine-readable and agent-optimized. AI coding assistants (Claude Code, Antigravity/Gemini, Codex) can read [`llms.txt`](./llms.txt) for a fast context index and run `pytest` (44 tests passing, 7 subtests) to verify template generation and upgrade integrity.
+
 
 > Independent project — not affiliated with Anthropic, OpenAI, or Google.
 > See [Trademarks](#trademarks).
@@ -86,7 +87,7 @@ How `project-docs-template` compares with alternative documentation and project 
 |---|---|---|---|---|
 | **Zero-Egress & Air-Gapped** | ⚠️ Partial (unverified) | ❌ Cloud-only (egress mandatory) | ⚠️ Mixed (often requires external APIs) | ✅ **100% Offline & Local-First** (Zero network calls) |
 | **Multi-Agent Handoff** | ❌ None (monolithic text blob) | ❌ Poor (opaque HTML/API exports) | ⚠️ Proprietary (vendor lock-in) | ✅ **Native** (Standardized `START.md` & `STATE.md`) |
-| **Mechanical Validation** | ❌ None (manual review only) | ❌ None (WYSIWYG drift) | ⚠️ Custom code required | ✅ **Built-in CLI Linting** (`doc-lint`, 34 tests) |
+| **Mechanical Validation** | ❌ None (manual review only) | ❌ None (WYSIWYG drift) | ⚠️ Custom code required | ✅ **Built-in CLI Linting** (`doc-lint`, 44 tests) |
 | **Profile Scalability** | ❌ Monolithic (one-size-fits-none) | ⚠️ Manual workspace setup | ❌ Fixed schema | ✅ **Tiered Profiles** (MINIMAL, STANDARD, FULL) |
 | **Merge-Safe Upgrades** | ❌ Manual cut-and-paste | ❌ Manual sync | ❌ Often breaking | ✅ **SHA-256 Manifest** (`init-project --upgrade`) |
 | **Dependency Footprint** | ✅ None | ❌ Browser / REST API / OAuth | ❌ Heavy Python dependencies | ✅ **Zero Runtime Dependencies** (Python stdlib only) |
