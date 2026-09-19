@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 680" width="2400" height="680">
+<defs>
+
+      <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#081832" />
+        <stop offset="45%" stop-color="#0C254B" />
+        <stop offset="100%" stop-color="#123362" />
+      </linearGradient>
+    
+
+      <pattern id="gridMinor" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#FFFFFF" stroke-width="0.7" opacity="0.04" />
+      </pattern>
+    
+
+      <pattern id="gridMajor" width="100" height="100" patternUnits="userSpaceOnUse">
+        <rect width="100" height="100" fill="url(#gridMinor)" />
+        <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.09" />
+      </pattern>
+    
+
+      <pattern id="wallHatch" width="12" height="12" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="0" x2="0" y2="12" stroke="#FFFFFF" stroke-width="1.4" opacity="0.25" />
+      </pattern>
+    
+
+      <pattern id="coreHatch" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="0" x2="0" y2="8" stroke="#FFFFFF" stroke-width="1.0" opacity="0.3" />
+      </pattern>
+    
+
+      <pattern id="dotGrid" width="16" height="16" patternUnits="userSpaceOnUse">
+        <circle cx="8" cy="8" r="1.2" fill="#FFFFFF" opacity="0.28" />
+      </pattern>
+    
+
+      <marker id="dimArrowStart" viewBox="0 0 12 12" refX="1" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+        <path d="M 11 2 L 1 6 L 11 10 Z" fill="#FFFFFF" opacity="0.75" />
+      </marker>
+      <marker id="dimArrowEnd" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+        <path d="M 1 2 L 11 6 L 1 10 Z" fill="#FFFFFF" opacity="0.75" />
+      </marker>
+    
+
+      <marker id="flowArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+        <path d="M 2 2 L 8 5 L 2 8" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.85" />
+      </marker>
+    
+</defs>
+<rect width="2400" height="680" fill="url(#bgGrad)" />
+<rect width="2400" height="680" fill="url(#gridMajor)" />
+<rect x="34" y="34" width="2332" height="612" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.7" />
+<rect x="46" y="46" width="2308" height="588" fill="none" stroke="#FFFFFF" stroke-width="1.0" stroke-dasharray="12 8" opacity="0.3" />
+<g transform="translate(34, 34)" opacity="0.8">
+  <circle cx="0" cy="0" r="14" fill="none" stroke="#FFFFFF" stroke-width="1.5" />
+  <circle cx="0" cy="0" r="4" fill="#FFFFFF" />
+  <line x1="-22" y1="0" x2="22" y2="0" stroke="#FFFFFF" stroke-width="1.5" />
+  <line x1="0" y1="-22" x2="0" y2="22" stroke="#FFFFFF" stroke-width="1.5" />
+</g>
+<g transform="translate(2366, 34)" opacity="0.8">
+  <circle cx="0" cy="0" r="14" fill="none" stroke="#FFFFFF" stroke-width="1.5" />
+  <circle cx="0" cy="0" r="4" fill="#FFFFFF" />
+  <line x1="-22" y1="0" x2="22" y2="0" stroke="#FFFFFF" stroke-width="1.5" />
+  <line x1="0" y1="-22" x2="0" y2="22" stroke="#FFFFFF" stroke-width="1.5" />
+</g>
+<g transform="translate(34, 646)" opacity="0.8">
+  <circle cx="0" cy="0" r="14" fill="none" stroke="#FFFFFF" stroke-width="1.5" />
+  <circle cx="0" cy="0" r="4" fill="#FFFFFF" />
+  <line x1="-22" y1="0" x2="22" y2="0" stroke="#FFFFFF" stroke-width="1.5" />
+  <line x1="0" y1="-22" x2="0" y2="22" stroke="#FFFFFF" stroke-width="1.5" />
+</g>
+<g transform="translate(2366, 646)" opacity="0.8">
+  <circle cx="0" cy="0" r="14" fill="none" stroke="#FFFFFF" stroke-width="1.5" />
+  <circle cx="0" cy="0" r="4" fill="#FFFFFF" />
+  <line x1="-22" y1="0" x2="22" y2="0" stroke="#FFFFFF" stroke-width="1.5" />
+  <line x1="0" y1="-22" x2="0" y2="22" stroke="#FFFFFF" stroke-width="1.5" />
+</g>
+<line x1="100" y1="34" x2="100" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="100" y1="638" x2="100" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="200" y1="34" x2="200" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="200" y1="638" x2="200" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="300" y1="34" x2="300" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="300" y1="638" x2="300" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="400" y1="34" x2="400" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="400" y1="638" x2="400" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="500" y1="34" x2="500" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="500" y1="638" x2="500" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="600" y1="34" x2="600" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="600" y1="638" x2="600" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="700" y1="34" x2="700" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="700" y1="638" x2="700" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="800" y1="34" x2="800" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="800" y1="638" x2="800" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="900" y1="34" x2="900" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="900" y1="638" x2="900" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1000" y1="34" x2="1000" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1000" y1="638" x2="1000" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1100" y1="34" x2="1100" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1100" y1="638" x2="1100" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1200" y1="34" x2="1200" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1200" y1="638" x2="1200" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1300" y1="34" x2="1300" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1300" y1="638" x2="1300" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1400" y1="34" x2="1400" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1400" y1="638" x2="1400" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1500" y1="34" x2="1500" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1500" y1="638" x2="1500" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1600" y1="34" x2="1600" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1600" y1="638" x2="1600" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1700" y1="34" x2="1700" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1700" y1="638" x2="1700" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1800" y1="34" x2="1800" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1800" y1="638" x2="1800" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1900" y1="34" x2="1900" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="1900" y1="638" x2="1900" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2000" y1="34" x2="2000" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2000" y1="638" x2="2000" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2100" y1="34" x2="2100" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2100" y1="638" x2="2100" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2200" y1="34" x2="2200" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2200" y1="638" x2="2200" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2300" y1="34" x2="2300" y2="42" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2300" y1="638" x2="2300" y2="646" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="34" y1="100" x2="42" y2="100" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2358" y1="100" x2="2366" y2="100" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="34" y1="200" x2="42" y2="200" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2358" y1="200" x2="2366" y2="200" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="34" y1="300" x2="42" y2="300" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2358" y1="300" x2="2366" y2="300" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="34" y1="400" x2="42" y2="400" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2358" y1="400" x2="2366" y2="400" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="34" y1="500" x2="42" y2="500" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2358" y1="500" x2="2366" y2="500" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="34" y1="600" x2="42" y2="600" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<line x1="2358" y1="600" x2="2366" y2="600" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+<polygon points="1200,34 1193,22 1207,22" fill="#FFFFFF" opacity="0.6" />
+<polygon points="1200,646 1193,658 1207,658" fill="#FFFFFF" opacity="0.6" />
+<polygon points="34,340 22,333 22,347" fill="#FFFFFF" opacity="0.6" />
+<polygon points="2366,340 2378,333 2378,347" fill="#FFFFFF" opacity="0.6" />
+<line x1="80" y1="460" x2="2320" y2="460" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="24 6 4 6" opacity="0.22" />
+
+      <g opacity="0.75">
+        <!-- Main section cut dash-dot line -->
+        <line x1="120" y1="285" x2="2280" y2="285" stroke="#FFFFFF" stroke-width="2.5" stroke-dasharray="32 8 8 8" />
+        <!-- Left cut terminator and view arrow -->
+        <polyline points="120,285 120,260" stroke="#FFFFFF" stroke-width="3.5" fill="none" stroke-linecap="square" />
+        <polygon points="120,248 111,266 129,266" fill="#FFFFFF" />
+        <!-- Right cut terminator and view arrow -->
+        <polyline points="2280,285 2280,260" stroke="#FFFFFF" stroke-width="3.5" fill="none" stroke-linecap="square" />
+        <polygon points="2280,248 2271,266 2289,266" fill="#FFFFFF" />
+      </g>
+    
+
+      <g id="typography">
+        <!-- Drafting datum framing around title -->
+        <line x1="480" y1="92" x2="1920" y2="92" stroke="#FFFFFF" stroke-width="1.0" stroke-dasharray="6 6" opacity="0.2" />
+        <line x1="480" y1="86" x2="480" y2="98" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="1920" y1="86" x2="1920" y2="98" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        
+        <!-- Main Wordmark: large, bold, freestanding, clean Arial/Helvetica/sans-serif -->
+        <text x="1200" y="165" 
+              text-anchor="middle" 
+              fill="#FFFFFF" 
+              font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" 
+              font-size="78" 
+              font-weight="700" 
+              letter-spacing="2.5" 
+              opacity="0.98">project-docs-template</text>
+        
+        <!-- Tagline: exactly ONE line, verbatim from README/pyproject.toml, smaller, crisp white -->
+        <text x="1200" y="222" 
+              text-anchor="middle" 
+              fill="#FFFFFF" 
+              font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" 
+              font-size="26" 
+              font-weight="400" 
+              letter-spacing="0.6" 
+              opacity="0.85">Agent-ready project documentation template with START/STATE/TODO/DONE and LLM-friendly project memory.</text>
+              
+        <!-- Technical dimension line underneath the title block (rein grafisch, no numbers!) -->
+        <line x1="560" y1="248" x2="1840" y2="248" stroke="#FFFFFF" stroke-width="1.2" opacity="0.45" marker-start="url(#dimArrowStart)" marker-end="url(#dimArrowEnd)" />
+        <line x1="560" y1="240" x2="560" y2="256" stroke="#FFFFFF" stroke-width="1.2" opacity="0.5" />
+        <line x1="1840" y1="240" x2="1840" y2="256" stroke="#FFFFFF" stroke-width="1.2" opacity="0.5" />
+        <line x1="1200" y1="242" x2="1200" y2="254" stroke="#FFFFFF" stroke-width="1.5" opacity="0.6" />
+      </g>
+    
+
+      <g id="module1_floorplan">
+        <!-- Floorplan module boundary / site limit (fine dashed line) -->
+        <rect x="130" y="320" width="600" height="280" fill="none" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="4 4" opacity="0.25" />
+        
+        <!-- External Dimension Line (Top of Floorplan) with architectural 45° slash ticks -->
+        <line x1="150" y1="310" x2="710" y2="310" stroke="#FFFFFF" stroke-width="1.2" opacity="0.5" />
+        <line x1="150" y1="300" x2="150" y2="330" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="390" y1="300" x2="390" y2="330" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="710" y1="300" x2="710" y2="330" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="144" y1="316" x2="156" y2="304" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="384" y1="316" x2="396" y2="304" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="704" y1="316" x2="716" y2="304" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        
+        <!-- External Dimension Line (Left of Floorplan) -->
+        <line x1="118" y1="335" x2="118" y2="585" stroke="#FFFFFF" stroke-width="1.2" opacity="0.5" />
+        <line x1="108" y1="335" x2="138" y2="335" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="108" y1="455" x2="138" y2="455" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="108" y1="585" x2="138" y2="585" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="112" y1="341" x2="124" y2="329" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="112" y1="461" x2="124" y2="449" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="112" y1="591" x2="124" y2="579" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+
+        <!-- Exterior Double Walls (Structural perimeter with wall thickness and diagonal hatch fill) -->
+        <!-- Outer perimeter -->
+        <rect x="150" y="335" width="560" height="250" fill="none" stroke="#FFFFFF" stroke-width="2.8" opacity="0.9" />
+        <!-- Inner perimeter (creating 12px wall thickness) with hatch -->
+        <rect x="162" y="347" width="536" height="226" fill="url(#wallHatch)" stroke="#FFFFFF" stroke-width="1.4" opacity="0.8" />
+        <!-- Room clear space (overwrites hatch inside rooms) -->
+        <rect x="162" y="347" width="536" height="226" fill="#0C254B" opacity="0.75" />
+
+        <!-- Structural Corner Columns (Pillars) -->
+        <rect x="145" y="330" width="17" height="17" fill="#FFFFFF" opacity="0.9" />
+        <rect x="698" y="330" width="17" height="17" fill="#FFFFFF" opacity="0.9" />
+        <rect x="145" y="578" width="17" height="17" fill="#FFFFFF" opacity="0.9" />
+        <rect x="698" y="578" width="17" height="17" fill="#FFFFFF" opacity="0.9" />
+
+        <!-- Window openings in exterior wall (classic 3-line architectural window slits) -->
+        <!-- Top wall windows -->
+        <line x1="240" y1="335" x2="300" y2="335" stroke="#081832" stroke-width="3" />
+        <line x1="240" y1="347" x2="300" y2="347" stroke="#081832" stroke-width="2" />
+        <line x1="240" y1="341" x2="300" y2="341" stroke="#FFFFFF" stroke-width="1.5" opacity="0.8" />
+
+        <line x1="480" y1="335" x2="560" y2="335" stroke="#081832" stroke-width="3" />
+        <line x1="480" y1="347" x2="560" y2="347" stroke="#081832" stroke-width="2" />
+        <line x1="480" y1="341" x2="560" y2="341" stroke="#FFFFFF" stroke-width="1.5" opacity="0.8" />
+
+        <!-- Interior Partition Walls dividing into 4 structured doc compartments -->
+        <!-- Main vertical dividing wall (x = 390) -->
+        <rect x="385" y="347" width="10" height="226" fill="url(#wallHatch)" stroke="#FFFFFF" stroke-width="1.4" opacity="0.8" />
+        
+        <!-- Horizontal dividing wall left side (y = 455) WITH OPEN DOORWAY GAP (x = 290 to 340) -->
+        <rect x="162" y="450" width="128" height="10" fill="url(#wallHatch)" stroke="#FFFFFF" stroke-width="1.4" opacity="0.8" />
+        <rect x="340" y="450" width="45" height="10" fill="url(#wallHatch)" stroke="#FFFFFF" stroke-width="1.4" opacity="0.8" />
+        <!-- Doorway opening jambs -->
+        <line x1="290" y1="448" x2="290" y2="462" stroke="#FFFFFF" stroke-width="1.8" opacity="0.85" />
+        <line x1="340" y1="448" x2="340" y2="462" stroke="#FFFFFF" stroke-width="1.8" opacity="0.85" />
+        <!-- Architectural 90° Door Swing Arc and Door Leaf -->
+        <path d="M 340 450 A 50 50 0 0 0 290 400" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.75" />
+        <line x1="340" y1="450" x2="290" y2="400" stroke="#FFFFFF" stroke-width="2.2" opacity="0.9" />
+
+        <!-- Horizontal dividing wall right side (y = 465) WITH OPEN DOORWAY GAP (x = 520 to 570) -->
+        <rect x="395" y="465" width="125" height="10" fill="url(#wallHatch)" stroke="#FFFFFF" stroke-width="1.4" opacity="0.8" />
+        <rect x="570" y="465" width="128" height="10" fill="url(#wallHatch)" stroke="#FFFFFF" stroke-width="1.4" opacity="0.8" />
+        <line x1="520" y1="463" x2="520" y2="477" stroke="#FFFFFF" stroke-width="1.8" opacity="0.85" />
+        <line x1="570" y1="463" x2="570" y2="477" stroke="#FFFFFF" stroke-width="1.8" opacity="0.85" />
+        <path d="M 520 465 A 50 50 0 0 1 570 515" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.75" />
+        <line x1="520" y1="465" x2="570" y2="515" stroke="#FFFFFF" stroke-width="2.2" opacity="0.9" />
+
+        <!-- Internal Architectural Rooms / Compartments (representing docs taxonomy) -->
+        
+        <!-- Room 1 (Upper-Left): Root Hub / Docs Vault -->
+        <rect x="182" y="367" width="180" height="65" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5" />
+        <line x1="182" y1="399" x2="362" y2="399" stroke="#FFFFFF" stroke-width="1.0" opacity="0.4" />
+        <!-- Structural datum crosshair in Room 1 -->
+        <circle cx="272" cy="399" r="6" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+
+        <!-- Room 2 (Lower-Left): Workflows / Task Scaffolding -->
+        <rect x="182" y="480" width="180" height="72" fill="none" stroke="#FFFFFF" stroke-width="1.4" opacity="0.4" />
+        <rect x="195" y="492" width="45" height="48" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+        <rect x="250" y="492" width="45" height="48" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+        <rect x="305" y="492" width="45" height="48" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+
+        <!-- Room 3 (Upper-Right): Core Architecture / Registry Hall -->
+        <rect x="420" y="367" width="255" height="80" fill="url(#dotGrid)" stroke="#FFFFFF" stroke-width="1.4" opacity="0.45" />
+        <circle cx="548" cy="407" r="26" fill="none" stroke="#FFFFFF" stroke-width="1.8" opacity="0.75" />
+        <circle cx="548" cy="407" r="10" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+        <line x1="514" y1="407" x2="582" y2="407" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.7" />
+        <line x1="548" y1="373" x2="548" y2="441" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.7" />
+
+        <!-- Room 4 (Lower-Right): Memory Vault / Archive Core -->
+        <rect x="420" y="495" width="255" height="58" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.5" />
+        <polyline points="432,507 432,537 448,537" fill="none" stroke="#FFFFFF" stroke-width="2.2" opacity="0.75" />
+        <polyline points="663,507 663,537 647,537" fill="none" stroke="#FFFFFF" stroke-width="2.2" opacity="0.75" />
+        <line x1="465" y1="524" x2="630" y2="524" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="14 5" opacity="0.6" />
+      </g>
+    
+
+      <g id="module2_handoff">
+        <!-- Module Boundary Frame -->
+        <rect x="830" y="320" width="740" height="280" fill="none" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="4 4" opacity="0.25" />
+        
+        <!-- Top Dimension Line for Interface Tolerance -->
+        <line x1="860" y1="310" x2="1540" y2="310" stroke="#FFFFFF" stroke-width="1.2" opacity="0.5" />
+        <line x1="860" y1="300" x2="860" y2="330" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="1200" y1="300" x2="1200" y2="330" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="1540" y1="300" x2="1540" y2="330" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="854" y1="316" x2="866" y2="304" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="1194" y1="316" x2="1206" y2="304" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="1534" y1="316" x2="1546" y2="304" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+
+        <!-- LEFT NODE: Active Session Unit (Agent Context Chamber) -->
+        <rect x="860" y="350" width="270" height="220" rx="4" fill="#0C254B" stroke="#FFFFFF" stroke-width="2.8" opacity="0.9" />
+        <rect x="874" y="364" width="242" height="192" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="8 4" opacity="0.4" />
+        <!-- Structural corner notches -->
+        <line x1="860" y1="365" x2="875" y2="365" stroke="#FFFFFF" stroke-width="2" opacity="0.7" />
+        <line x1="860" y1="555" x2="875" y2="555" stroke="#FFFFFF" stroke-width="2" opacity="0.7" />
+        <!-- Internal state bus registers (4 horizontal slots) -->
+        <rect x="890" y="385" width="210" height="26" fill="url(#coreHatch)" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+        <rect x="890" y="425" width="210" height="26" fill="url(#coreHatch)" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+        <rect x="890" y="465" width="210" height="26" fill="url(#coreHatch)" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+        <rect x="890" y="505" width="210" height="26" fill="url(#coreHatch)" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+
+        <!-- RIGHT NODE: Persistent Memory Unit (Repo State Chamber) -->
+        <rect x="1270" y="350" width="270" height="220" rx="4" fill="#0C254B" stroke="#FFFFFF" stroke-width="2.8" opacity="0.9" />
+        <rect x="1284" y="364" width="242" height="192" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="8 4" opacity="0.4" />
+        <line x1="1525" y1="365" x2="1540" y2="365" stroke="#FFFFFF" stroke-width="2" opacity="0.7" />
+        <line x1="1525" y1="555" x2="1540" y2="555" stroke="#FFFFFF" stroke-width="2" opacity="0.7" />
+        <!-- Internal memory matrix (4 compartments) -->
+        <rect x="1300" y="385" width="95" height="66" fill="url(#dotGrid)" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+        <rect x="1415" y="385" width="95" height="66" fill="url(#dotGrid)" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+        <rect x="1300" y="465" width="95" height="66" fill="url(#dotGrid)" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+        <rect x="1415" y="465" width="95" height="66" fill="url(#dotGrid)" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6" />
+
+        <!-- THE INTERFACE CHANNEL (Gap: x = 1130 to 1270) -->
+        <!-- Center datum axis of the interface -->
+        <line x1="1200" y1="330" x2="1200" y2="590" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="16 5 4 5" opacity="0.4" />
+        <!-- Coupling alignment targets (crosshair circles) -->
+        <circle cx="1200" cy="346" r="12" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.75" />
+        <line x1="1182" y1="346" x2="1218" y2="346" stroke="#FFFFFF" stroke-width="1.2" opacity="0.75" />
+        <line x1="1200" y1="328" x2="1200" y2="364" stroke="#FFFFFF" stroke-width="1.2" opacity="0.75" />
+
+        <circle cx="1200" cy="574" r="12" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.75" />
+        <line x1="1182" y1="574" x2="1218" y2="574" stroke="#FFFFFF" stroke-width="1.2" opacity="0.75" />
+        <line x1="1200" y1="556" x2="1200" y2="592" stroke="#FFFFFF" stroke-width="1.2" opacity="0.75" />
+
+        <!-- Hollow Docking Port Collars (Dedicated Conduit Sleeves) -->
+        <rect x="1122" y="394" width="20" height="52" fill="#0C254B" stroke="#FFFFFF" stroke-width="2.2" opacity="0.9" />
+        <rect x="1258" y="394" width="20" height="52" fill="#0C254B" stroke="#FFFFFF" stroke-width="2.2" opacity="0.9" />
+        <rect x="1122" y="474" width="20" height="52" fill="#0C254B" stroke="#FFFFFF" stroke-width="2.2" opacity="0.9" />
+        <rect x="1258" y="474" width="20" height="52" fill="#0C254B" stroke="#FFFFFF" stroke-width="2.2" opacity="0.9" />
+
+        <!-- =================================================================== -->
+        <!-- TWO LARGE, IMPRESSIVE BLUEPRINT HANDOFF ARROWS (TRANSIT COUPLING)   -->
+        <!-- =================================================================== -->
+        
+        <!-- ARROW 1: STATE COMMIT / EXPORT (Flowing Left-to-Right from Session to Memory) -->
+        <g id="arrow_commit">
+          <!-- Guide rails for transit channel -->
+          <line x1="1040" y1="410" x2="1350" y2="410" stroke="#FFFFFF" stroke-width="1.0" stroke-dasharray="4 4" opacity="0.25" />
+          <line x1="1040" y1="430" x2="1350" y2="430" stroke="#FFFFFF" stroke-width="1.0" stroke-dasharray="4 4" opacity="0.25" />
+          
+          <!-- Origin stop crossbar -->
+          <line x1="1040" y1="408" x2="1040" y2="432" stroke="#FFFFFF" stroke-width="3.5" opacity="0.95" />
+          
+          <!-- Bold arrow shaft -->
+          <line x1="1040" y1="420" x2="1335" y2="420" stroke="#FFFFFF" stroke-width="4.0" stroke-linecap="square" opacity="0.98" />
+          
+          <!-- Large technical arrowhead -->
+          <polygon points="1368,420 1332,404 1342,420 1332,436" fill="#FFFFFF" opacity="0.98" />
+        </g>
+
+        <!-- ARROW 2: CONTEXT RESTORE / INGESTION (Flowing Right-to-Left from Memory to Session) -->
+        <g id="arrow_restore">
+          <!-- Guide rails for transit channel -->
+          <line x1="1050" y1="490" x2="1360" y2="490" stroke="#FFFFFF" stroke-width="1.0" stroke-dasharray="4 4" opacity="0.25" />
+          <line x1="1050" y1="510" x2="1360" y2="510" stroke="#FFFFFF" stroke-width="1.0" stroke-dasharray="4 4" opacity="0.25" />
+          
+          <!-- Origin stop crossbar -->
+          <line x1="1360" y1="488" x2="1360" y2="512" stroke="#FFFFFF" stroke-width="3.5" opacity="0.95" />
+          
+          <!-- Bold arrow shaft pointing LEFT -->
+          <line x1="1360" y1="500" x2="1065" y2="500" stroke="#FFFFFF" stroke-width="4.0" stroke-linecap="square" opacity="0.98" />
+          
+          <!-- Large technical arrowhead pointing LEFT -->
+          <polygon points="1032,500 1068,484 1058,500 1068,516" fill="#FFFFFF" opacity="0.98" />
+        </g>
+
+        <!-- Center tolerance dimension line across the interface gap -->
+        <line x1="1144" y1="460" x2="1256" y2="460" stroke="#FFFFFF" stroke-width="1.2" opacity="0.65" marker-start="url(#dimArrowStart)" marker-end="url(#dimArrowEnd)" />
+        <line x1="1144" y1="452" x2="1144" y2="468" stroke="#FFFFFF" stroke-width="1.2" opacity="0.65" />
+        <line x1="1256" y1="452" x2="1256" y2="468" stroke="#FFFFFF" stroke-width="1.2" opacity="0.65" />
+      </g>
+    
+
+      <g id="module3_progression">
+        <!-- Module Boundary Frame -->
+        <rect x="1670" y="320" width="600" height="280" fill="none" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="4 4" opacity="0.25" />
+        
+        <!-- Top Dimension Line for Timeline Stages -->
+        <line x1="1700" y1="310" x2="2240" y2="310" stroke="#FFFFFF" stroke-width="1.2" opacity="0.5" />
+        <line x1="1700" y1="300" x2="1700" y2="330" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="1870" y1="300" x2="1870" y2="330" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="2050" y1="300" x2="2050" y2="330" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="2240" y1="300" x2="2240" y2="330" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="1694" y1="316" x2="1706" y2="304" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="1864" y1="316" x2="1876" y2="304" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="2044" y1="316" x2="2056" y2="304" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="2234" y1="316" x2="2246" y2="304" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+
+        <!-- Double Guideway Rails (Primary Timeline Track) -->
+        <line x1="1700" y1="454" x2="2240" y2="454" stroke="#FFFFFF" stroke-width="2.6" opacity="0.75" />
+        <line x1="1700" y1="466" x2="2240" y2="466" stroke="#FFFFFF" stroke-width="2.6" opacity="0.75" />
+        <!-- Intermediate cross-ties along the guideway -->
+        <line x1="1785" y1="450" x2="1785" y2="470" stroke="#FFFFFF" stroke-width="1.4" opacity="0.6" />
+        <line x1="1960" y1="450" x2="1960" y2="470" stroke="#FFFFFF" stroke-width="1.4" opacity="0.6" />
+        <line x1="2140" y1="450" x2="2140" y2="470" stroke="#FFFFFF" stroke-width="1.4" opacity="0.6" />
+
+        <!-- STAGE 1: INITIATION / START (x = 1730, cy = 460) -->
+        <circle cx="1730" cy="460" r="42" fill="#0C254B" stroke="#FFFFFF" stroke-width="2.8" opacity="0.95" />
+        <circle cx="1730" cy="460" r="28" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.65" />
+        <polygon points="1744,460 1720,445 1720,475" fill="#FFFFFF" opacity="0.9" />
+        <!-- Directional Flow connector to Stage 2 -->
+        <line x1="1772" y1="460" x2="1832" y2="460" stroke="#FFFFFF" stroke-width="2.2" marker-end="url(#flowArrow)" opacity="0.85" />
+
+        <!-- STAGE 2: ACTIVE REPOSITORY STATE (x = 1885, cy = 460) -->
+        <rect x="1845" y="420" width="80" height="80" rx="4" fill="#0C254B" stroke="#FFFFFF" stroke-width="2.8" opacity="0.95" />
+        <polygon points="1885,426 1919,460 1885,494 1851,460" fill="none" stroke="#FFFFFF" stroke-width="1.8" opacity="0.75" />
+        <circle cx="1885" cy="460" r="8" fill="#FFFFFF" opacity="0.9" />
+        <line x1="1845" y1="432" x2="1857" y2="432" stroke="#FFFFFF" stroke-width="1.5" opacity="0.7" />
+        <line x1="1925" y1="432" x2="1913" y2="432" stroke="#FFFFFF" stroke-width="1.5" opacity="0.7" />
+        <!-- Directional Flow connector to Stage 3 -->
+        <line x1="1925" y1="460" x2="1980" y2="460" stroke="#FFFFFF" stroke-width="2.2" marker-end="url(#flowArrow)" opacity="0.85" />
+
+        <!-- STAGE 3: TASK PIPELINE & WORK QUEUE / TODO (x = 1995 to 2115) -->
+        <rect x="1995" y="375" width="120" height="170" rx="4" fill="#0C254B" stroke="#FFFFFF" stroke-width="2.5" opacity="0.95" />
+        <!-- 4 Stacked task rows (the TODO queue) -->
+        <rect x="2007" y="390" width="96" height="28" fill="url(#coreHatch)" stroke="#FFFFFF" stroke-width="1.2" opacity="0.75" />
+        <line x1="2015" y1="404" x2="2035" y2="404" stroke="#FFFFFF" stroke-width="2.2" opacity="0.9" />
+        
+        <rect x="2007" y="430" width="96" height="28" fill="url(#coreHatch)" stroke="#FFFFFF" stroke-width="1.2" opacity="0.75" />
+        <circle cx="2025" cy="444" r="5" fill="#FFFFFF" opacity="0.9" />
+        
+        <rect x="2007" y="470" width="96" height="28" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.65" />
+        <line x1="2015" y1="484" x2="2075" y2="484" stroke="#FFFFFF" stroke-width="1.6" opacity="0.55" />
+        
+        <rect x="2007" y="510" width="96" height="22" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="2 2" opacity="0.5" />
+
+        <!-- Directional Flow connector to Stage 4 -->
+        <line x1="2115" y1="460" x2="2165" y2="460" stroke="#FFFFFF" stroke-width="2.2" marker-end="url(#flowArrow)" opacity="0.85" />
+
+        <!-- STAGE 4: RESOLVED / DONE (x = 2210, cy = 460) -->
+        <rect x="2170" y="420" width="80" height="80" rx="6" fill="#0C254B" stroke="#FFFFFF" stroke-width="2.8" opacity="0.95" />
+        <circle cx="2210" cy="460" r="28" fill="none" stroke="#FFFFFF" stroke-width="1.6" opacity="0.8" />
+        <polyline points="2195,461 2206,472 2227,447" fill="none" stroke="#FFFFFF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round" opacity="0.98" />
+        <!-- Calibration corner brackets -->
+        <polyline points="2178,432 2178,426 2184,426" fill="none" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <polyline points="2242,432 2242,426 2236,426" fill="none" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <polyline points="2178,488 2178,494 2184,494" fill="none" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <polyline points="2242,488 2242,494 2236,494" fill="none" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+
+        <!-- Bottom Dimension Line across the pipeline -->
+        <line x1="1730" y1="575" x2="2210" y2="575" stroke="#FFFFFF" stroke-width="1.2" opacity="0.5" />
+        <line x1="1730" y1="565" x2="1730" y2="585" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="1885" y1="565" x2="1885" y2="585" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="2055" y1="565" x2="2055" y2="585" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="2210" y1="565" x2="2210" y2="585" stroke="#FFFFFF" stroke-width="1.2" opacity="0.4" />
+        <line x1="1724" y1="581" x2="1736" y2="569" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="1879" y1="581" x2="1891" y2="569" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="2049" y1="581" x2="2061" y2="569" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+        <line x1="2204" y1="581" x2="2216" y2="569" stroke="#FFFFFF" stroke-width="2.2" opacity="0.8" />
+      </g>
+    
+
+      <g id="conduits" opacity="0.65">
+        <!-- Conduit from Module 1 (Floorplan exit) to Module 2 (Session entrance) -->
+        <path d="M 710 460 L 860 460" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-dasharray="8 4" />
+        <circle cx="785" cy="460" r="5" fill="#FFFFFF" />
+        
+        <!-- Conduit from Module 2 (Memory exit) to Module 3 (Timeline entrance) -->
+        <path d="M 1540 460 L 1700 460" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-dasharray="8 4" />
+        <circle cx="1620" cy="460" r="5" fill="#FFFFFF" />
+      </g>
+    
+</svg>
