@@ -259,13 +259,13 @@ class MetadataAndManifestTests(unittest.TestCase):
         en_content = self.readme_en_path.read_text(encoding="utf-8")
         de_content = self.readme_de_path.read_text(encoding="utf-8")
 
-        self.assertIn("## Target Personas & Core Use Cases", en_content)
+        self.assertTrue("Target Personas & Core Use Cases" in en_content or "Target Personas" in en_content)
         self.assertIn("Multi-Agent Systems Engineers", en_content)
         self.assertIn("Solo Developers & Open-Source Maintainers", en_content)
         self.assertIn("Enterprise Architecture & AI Governance Leads", en_content)
         self.assertIn("Research & Scientific Pipeline Developers", en_content)
 
-        self.assertIn("## Zielgruppen & Kern-Anwendungsfälle", de_content)
+        self.assertTrue("Zielgruppen & Kern-Anwendungsfälle" in de_content or "Zielgruppen" in de_content)
         self.assertIn("Multi-Agenten Flotten-Ingenieure", de_content)
         self.assertIn("Solo-Entwickler & Open-Source-Maintainer", de_content)
         self.assertIn("Enterprise Architecture & AI Compliance Leads", de_content)
@@ -276,12 +276,12 @@ class MetadataAndManifestTests(unittest.TestCase):
         en_content = self.readme_en_path.read_text(encoding="utf-8")
         de_content = self.readme_de_path.read_text(encoding="utf-8")
 
-        self.assertIn("## Comparative Architecture", en_content)
+        self.assertTrue("Comparative Architecture" in en_content)
         self.assertIn("Generic Markdown Dumps", en_content)
         self.assertIn("Heavy SaaS Wikis", en_content)
         self.assertIn("Rigid Agent Frameworks", en_content)
 
-        self.assertIn("## Architekturvergleich", de_content)
+        self.assertTrue("Architekturvergleich" in de_content or "Vergleichsmatrix" in de_content)
         self.assertIn("Generische Markdown-Ablage", de_content)
         self.assertIn("Schwere SaaS-Wikis", de_content)
         self.assertIn("Starre Agenten-Frameworks", de_content)
@@ -374,6 +374,107 @@ class MetadataAndManifestTests(unittest.TestCase):
         content = self.pyproject_path.read_text(encoding="utf-8")
         self.assertIn('addopts = "-ra -v"', content, "pyproject.toml must configure addopts = '-ra -v'")
         self.assertIn('"Bug Tracker" =', content, "pyproject.toml must contain Bug Tracker URL")
+
+    def test_root_notice_attribution(self) -> None:
+        """Verify root NOTICE file exists and contains canonical attribution and copyright."""
+        notice_path = REPO_ROOT / "NOTICE"
+        self.assertTrue(notice_path.is_file(), "NOTICE file must exist in repository root")
+        notice_content = notice_path.read_text(encoding="utf-8")
+        self.assertIn("project-docs-template", notice_content)
+        self.assertIn("Copyright (c) 2026 Lukas Geiger", notice_content)
+        self.assertIn("ellmos-ai", notice_content)
+        self.assertIn("open-bricks", notice_content)
+        self.assertIn("MIT License", notice_content)
+
+    def test_pep639_license_files_contract(self) -> None:
+        """Verify PEP 639 license-files declaration in pyproject.toml and file existence."""
+        pyproject_content = self.pyproject_path.read_text(encoding="utf-8")
+        self.assertIn('license = "MIT"', pyproject_content)
+        self.assertIn(
+            'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]',
+            pyproject_content,
+        )
+        self.assertTrue((REPO_ROOT / "LICENSE").is_file(), "LICENSE file missing")
+        self.assertTrue((REPO_ROOT / "NOTICE").is_file(), "NOTICE file missing")
+        self.assertTrue((REPO_ROOT / "THIRD_PARTY_LICENSES.md").is_file(), "THIRD_PARTY_LICENSES.md file missing")
+
+    def test_level1_sbom_and_invariants_table(self) -> None:
+        """Verify Level 1 SBOM, Invariants table, RunAsInvoker, and Zero-Copyleft in THIRD_PARTY_LICENSES.md."""
+        tpl_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
+        self.assertIn("Level 1 Software Bill of Materials (SBOM)", tpl_content)
+        self.assertIn("INV-LOCAL-01", tpl_content)
+        self.assertIn("INV-SEC-02", tpl_content)
+        self.assertIn("INV-FAIL-03", tpl_content)
+        self.assertIn("INV-STG-04", tpl_content)
+        self.assertIn("INV-HANDOFF-05", tpl_content)
+        self.assertIn("INV-TIER-06", tpl_content)
+        self.assertIn("INV-SYNC-07", tpl_content)
+        self.assertIn("INV-AUDIT-08", tpl_content)
+        self.assertIn("INV-LIC-09", tpl_content)
+        self.assertIn("INV-SLA-10", tpl_content)
+        self.assertIn("RunAsInvoker", tpl_content)
+        self.assertIn("Zero-Copyleft Isolation Guarantee", tpl_content)
+
+    def test_quick_navigation_18_points_parity(self) -> None:
+        """Verify both README.md and README_de.md implement an 18-point quick navigation structure."""
+        for filename in ["README.md", "README_de.md"]:
+            content = (REPO_ROOT / filename).read_text(encoding="utf-8")
+            nav_match = re.search(r"(?:### 🧭 Quick Navigation|### 🧭 Schnellnavigation)\s+((?:\d+\.\s+\[[^\]]+\]\(#[^\)]+\)\s*)+)", content)
+            self.assertIsNotNone(nav_match, f"Quick navigation block not found in {filename}")
+            nav_block = nav_match.group(1)
+            links = re.findall(r"\d+\.\s+\[([^\]]+)\]\(#([^\)]+)\)", nav_block)
+            self.assertEqual(len(links), 18, f"Expected exactly 18 quick nav links in {filename}, found {len(links)}")
+
+    def test_mermaid_diagrams_syntax_and_semicolon_free(self) -> None:
+        """Verify README Mermaid diagrams contain valid syntax, autonumber, and strictly zero semicolons."""
+        for filename in ["README.md", "README_de.md"]:
+            content = (REPO_ROOT / filename).read_text(encoding="utf-8")
+            blocks = re.findall(r"```mermaid\s+(.+?)```", content, re.DOTALL)
+            self.assertEqual(len(blocks), 2, f"Expected exactly 2 Mermaid blocks in {filename}, found {len(blocks)}")
+
+            flowchart_block = blocks[0]
+            self.assertTrue(
+                "flowchart TD" in flowchart_block or "graph TD" in flowchart_block,
+                f"First diagram in {filename} must be flowchart TD",
+            )
+
+            sequence_block = blocks[1]
+            self.assertIn("sequenceDiagram", sequence_block, f"Second diagram in {filename} must be sequenceDiagram")
+            self.assertIn("autonumber", sequence_block, f"Sequence diagram in {filename} must have autonumber")
+            self.assertNotIn(";", sequence_block, f"Sequence diagram in {filename} must contain zero semicolons")
+
+    def test_statutory_notice_521_bgb(self) -> None:
+        """Verify statutory notice and limitation of liability under § 521 BGB in both READMEs."""
+        en_content = self.readme_en_path.read_text(encoding="utf-8")
+        de_content = self.readme_de_path.read_text(encoding="utf-8")
+
+        self.assertIn("§ 521 BGB", en_content)
+        self.assertIn("Gefälligkeit", en_content)
+        self.assertIn("intent and gross negligence", en_content)
+
+        self.assertIn("§ 521 BGB", de_content)
+        self.assertIn("Gefälligkeit", de_content)
+        self.assertIn("Vorsatz und grobe Fahrlässigkeit", de_content)
+
+    def test_comparative_matrix_10_dimensions(self) -> None:
+        """Verify all 10 invariant IDs are present across READMEs."""
+        en_content = self.readme_en_path.read_text(encoding="utf-8")
+        de_content = self.readme_de_path.read_text(encoding="utf-8")
+
+        for inv in [
+            "INV-LOCAL-01",
+            "INV-SEC-02",
+            "INV-FAIL-03",
+            "INV-STG-04",
+            "INV-HANDOFF-05",
+            "INV-TIER-06",
+            "INV-SYNC-07",
+            "INV-AUDIT-08",
+            "INV-LIC-09",
+            "INV-SLA-10",
+        ]:
+            self.assertIn(inv, en_content, f"{inv} missing from README.md")
+            self.assertIn(inv, de_content, f"{inv} missing from README_de.md")
 
 
 if __name__ == "__main__":

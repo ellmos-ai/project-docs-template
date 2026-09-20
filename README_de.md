@@ -1,325 +1,411 @@
 # Project Docs Template (Deutsche Dokumentation)
 
+<p align="center"><img src="assets/banner.png" width="100%" alt="Project Docs Template Banner"></p>
+
 [![Template](https://img.shields.io/badge/template-agent--ready_project_docs-2f6f5e)](https://github.com/ellmos-ai/project-docs-template)
 [![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-44%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-51%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
+[![Security SLA](https://img.shields.io/badge/Security%20SLA-48h%20%2F%205d-blue.svg)](./SECURITY.md)
+[![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Gepr%C3%BCft-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
+[![RunAsInvoker](https://img.shields.io/badge/RunAsInvoker-Zertifiziert-success.svg)](./THIRD_PARTY_LICENSES.md)
+[![Attribution: NOTICE](https://img.shields.io/badge/Attribution-NOTICE-blue.svg)](./NOTICE)
 [![Ecosystem: ellmos-ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
 [![Umbrella: open-bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
 [![LLM-Ready: llms.txt](https://img.shields.io/badge/LLM--Ready-llms.txt-orange.svg)](./llms.txt)
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: English](https://img.shields.io/badge/Language-English-blue.svg)](./README.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--09--14-informational.svg)](./MARKETING-LOG.txt)
+[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--09--20-informational.svg)](./MARKETING-LOG.txt)
 [![Drittanbieter-Lizenzen](https://img.shields.io/badge/lizenzen-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
 [![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Aktiv-blueviolet.svg)](./MARKETING-LOG.txt)
 
 Agenten-optimierte Projektdokumentations-Vorlage mit START/STATE/TODO/DONE,
-workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
+Workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
 
 > [!NOTE]
-> Dieses Repository ist maschinenlesbar und für KI-Agenten optimiert. KI-Coding-Assistenten (Claude Code, Antigravity/Gemini, Codex) können [`llms.txt`](./llms.txt) als schnellen Kontext-Index nutzen und `pytest` (44 bestandene Tests, 7 Subtests) ausführen, um die Integrität der Vorlagengenerierung und Profil-Upgrades zu überprüfen.
+> **KI / LLM-Indexierung**: KI-Agenten und automatisierte Werkzeuge können [llms.txt](llms.txt) für eine maschinenlesbare Übersicht, Suchbegriffe und Disambiguierung einsehen. Letzte Prüfung: **2026-09-20**.
 
-
-> Unabhängiges Projekt — keine Verbindung zu Anthropic, OpenAI oder Google.
+> Unabhängiges Projekt — keine geschäftliche Verbindung zu Anthropic, OpenAI oder Google.
 > Siehe [Marken](#marken).
 
-Dieses Repository enthält ein kompaktes Dokumentations-Scaffold für Software-, Forschungs- und Betriebsprojekte, die mit LLM-Agenten gepflegt werden. Die Vorlage konzentriert sich auf klaren Projektstatus, Übergaben zwischen Sitzungen, Aufgabenhistorie, Entscheidungsaufzeichnungen und Workflows, ohne das Projekt in ein schwerfälliges Betriebssystem zu verwandeln.
+### 🧭 Schnellnavigation
 
-## 🧭 Schnellnavigation
+1. [Management-Zusammenfassung & Kernidentität](#management-zusammenfassung--kernidentitaet)
+2. [Visuelle Architektur-Topologie & Entkoppelte Schichten](#visuelle-architektur-topologie)
+3. [Ende-zu-Ende Multi-Agenten-Lebenszyklus & Tooling-Ablauf](#ende-zu-ende-lebenszyklus)
+4. [Zielgruppen & High-Intent SEO-Suchanfragen](#zielgruppen--kern-anwendungsfaelle)
+5. [Vergleichsmatrix gegenüber Alternativen](#vergleichsmatrix-gegenueber-alternativen)
+6. [Governance & Laufzeit-Invarianten Matrix](#governance--laufzeit-invarianten)
+7. [Einsatzszenarien für diese Vorlage](#verwendungsszenarien)
+8. [Lieferumfang & Scaffold-Struktur](#was-enthalten-ist)
+9. [Schnellstart & CLI-Workflows](#schnellstart)
+10. [Merge-sichere Profil-Upgrades & Migration](#merge-sichere-profil-upgrades)
+11. [Profilvergleich (MINIMAL / STANDARD / FULL)](#profil-vergleich)
+12. [Design-Prinzipien & Architektur-Invarianten](#design-prinzipien)
+13. [Verifikation, Tests & Qualitäts-Gates](#verifizierung)
+14. [Sicherheitsrichtlinie & Schwachstellen-SLAs](#sicherheitsrichtlinie)
+15. [Drittanbieter-Lizenzen & Level 1 SBOM](#drittanbieter-lizenzen--transparenz)
+16. [Bundles, Partner & Ökosystem-Geschwister](#oekosystem--geschwistertools)
+17. [Markenhinweise & Unabhängigkeitserklärung](#marken)
+18. [Gesetzliche Hinweise, Haftungsbeschränkung & Lizenz (§ 521 BGB)](#lizenz)
 
-- [Architektur & Ablauf](#architektur--ablauf)
-- [Zielgruppen & Kern-Anwendungsfälle](#zielgruppen--kern-anwendungsfälle)
-- [Architekturvergleich](#architekturvergleich)
-- [Verwendungsszenarien](#verwendungsszenarien)
-- [Was enthalten ist](#was-enthalten-ist)
-- [Schnellstart](#schnellstart)
-  - [Merge-sichere Profil-Upgrades](#merge-sichere-profil-upgrades)
-- [Profil-Vergleich](#profil-vergleich)
-- [Design-Prinzipien](#design-prinzipien)
-- [Verifizierung](#verifizierung)
-- [Bundles und Partner](#bundles-und-partner)
-- [Auffindbarkeit (SEO)](#auffindbarkeit-seo)
-- [Ökosystem & Geschwisterwerkzeuge](#ökosystem--geschwisterwerkzeuge)
-- [Marken](#marken)
-- [Lizenz](#lizenz)
+---
 
-## Architektur & Ablauf
+## <a id="management-zusammenfassung--kernidentitaet"></a><a id="was-ist-project-docs-template"></a>1. Management-Zusammenfassung & Kernidentität
+
+`project-docs-template` liefert eine schlanke, agentenfähige Dokumentations- und Kontext-Architektur, konzipiert für autonome KI-Coding-Agenten (Claude Code, OpenAI Codex, Antigravity/Gemini), Multi-Agenten-Schwärme sowie menschliche Maintainer in Software-, Forschungs- und Betriebsprojekten.
+
+Statt Repositories in schwerfällige, unübersichtliche Betriebssysteme zu verwandeln oder proprietäre SaaS-Portale vorauszusetzen, setzt `project-docs-template` auf transparente, strukturierte Klartext-Markdown-Register (`START.md`, `STATE.md`, `TODO.md`, `DONE.md`, `DECISIONS.md`). Universelle Instruktions-Einstiegspunkte (`CLAUDE.md`, `AGENTS.md`) garantieren, dass jeder neue Agent beim Sitzungsstart sofort den exakten Projektzustand, architektonische Invarianten und anstehende Aufgaben erfasst — ohne Halluzinationen oder Kontextverlust.
+
+### Zentrale Nutzenversprechen
+- **100% Local-First & Zero-Egress**: Vollständig offline im lokalen Dateisystem lauffähig, ohne externe Netzaufrufe, Telemetrie oder Cloud-Zwänge.
+- **Zero Runtime Dependencies**: Reine Python-Standardbibliothek (3.10+) für sämtliche Generierungs-, Upgrade-, Validierungs- und Archivierungswerkzeuge.
+- **Deterministische Multi-Agenten-Übergabe**: Dedizierte Bootstrap- (`START.md`) und Live-Statusregister (`STATE.md`) sichern reibungslose Übergaben zwischen Sitzungen und Agenten.
+- **Merge-sichere Profil-Upgrades**: SHA-256-Hash-Prüfung (`.project-docs-template.json`) ermöglicht nahtlose Upgrades von `MINIMAL` auf `STANDARD` oder `FULL`, ohne eigene Projektdateien zu überschreiben.
+- **Transaktionale Aufgabenarchivierung**: Atomare Zwei-Dateien-Archivierung (`todo-archive`) verschiebt erledigte Aufgaben sauber nach `DONE.md`, um `TODO.md` fokussiert und kurz zu halten.
+
+---
+
+## <a id="visuelle-architektur-topologie"></a><a id="architektur--ablauf"></a>2. Visuelle Architektur-Topologie & Entkoppelte Schichten
+
+Das folgende Diagramm zeigt die vier entkoppelten Betriebsebenen von `project-docs-template`, von Schnittstellen für Entwickler und Agenten bis hin zum persistenten Repository-Zustand und den Cloud-Sync-Schutzmechanismen:
 
 ```mermaid
-graph TD
-    A["LLM Coding Agent<br>(Claude Code / Antigravity / Codex)"] --> B["init-project CLI / Staging"]
-    B --> C{"Profil wählen"}
-    C -->|MINIMAL| D["Kern-Dokumente<br>(CLAUDE.md, START.md, STATE.md, TODO.md)"]
-    C -->|STANDARD| E["Standard-Suite<br>(Minimal + DECISIONS.md, CHANGELOG.md)"]
-    C -->|FULL| F["Enterprise Router<br>(Standard + WORKFLOWS.md, TOOLS.md, GLOSSARY.md)"]
-    D --> G["Validierte Projekt-Vorlage"]
-    E --> G
-    F --> G
-    G --> H["Deterministische Agenten-Übergabe & Sitzungsspeicher"]
+flowchart TD
+    subgraph T1["Ebene 1: Entwickler- & Agenten-Schnittstellen"]
+        A["KI-Coding-Agent / Entwickler"] --> B["init-project CLI"]
+        A --> C["doc-lint Linter"]
+        A --> D["todo-archive Tool"]
+        A --> E["workflows-sync Tool"]
+    end
+
+    subgraph T2["Ebene 2: Profilauswahl & Staging"]
+        B --> F{"Profilauswahl"}
+        F -->|MINIMAL| G["Kern-Kontextschicht"]
+        F -->|STANDARD| H["Wartungs-Suite"]
+        F -->|FULL| I["Unternehmens-Router"]
+        B --> J["SHA-256 Manifest: .project-docs-template.json"]
+    end
+
+    subgraph T3["Ebene 3: Vorlagen-Artefakte & Projektgedächtnis"]
+        G --> K["CLAUDE.md / AGENTS.md / START.md / STATE.md / TODO.md / DONE.md"]
+        H --> L["DECISIONS.md / PATTERNS.md / CHANGELOG.md / HEADER-RULES.md"]
+        I --> M["WORKFLOWS.md / TOOLS.md / GLOSSARY.md / ARCHITECTURE.md"]
+    end
+
+    subgraph T4["Ebene 4: Verifikation & Multi-Host-Schutz"]
+        K & L & M --> N["doc-lint: YAML-Frontmatter & Platzhalter-Prüfung"]
+        K & L & M --> O[".gitignore: Cloud-Sync- & Sperren-Abwehr"]
+        J --> P["init-project --upgrade: Kollisionssichere Upgrades"]
+    end
 ```
 
-## Zielgruppen & Kern-Anwendungsfälle
+---
+
+## <a id="ende-zu-ende-lebenszyklus"></a>3. Ende-zu-Ende Multi-Agenten-Lebenszyklus & Tooling-Ablauf
+
+Das Sequenzdiagramm verdeutlicht, wie Entwickler und autonome KI-Agenten über Gerüsterstellung, Sitzungsstart, Arbeitsabschluss und Profil-Upgrades hinweg zusammenarbeiten:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Engineer as "Entwickler / Agent"
+    participant CLI as "init-project CLI"
+    participant Manifest as ".project-docs-template.json"
+    participant FS as "Lokales Dateisystem"
+    actor NextAgent as "Nächster Coding-Agent"
+    participant Linter as "doc-lint / todo-archive"
+
+    Note over Engineer,FS: Phase 1: Projekt-Initialisierung & Profil-Scaffolding
+    Engineer->>CLI: Ausführen von init-project --profile standard
+    CLI->>FS: Prüfe Zielverzeichnis auf Sauberkeit und Konfliktfreiheit
+    CLI->>FS: Erzeuge START.md, STATE.md, TODO.md, DECISIONS.md
+    CLI->>Manifest: Berechne SHA-256 Hashes und schreibe Manifest
+    Manifest-->>Engineer: Gerüst vollständig angelegt (0 externe Abhängigkeiten)
+
+    Note over Engineer,Linter: Phase 2: Agenten-Sitzungsübergabe & Aufgabenverwaltung
+    NextAgent->>FS: Lese START.md und STATE.md für Sitzungskontext
+    NextAgent->>FS: Trage neue Aufgabe in TODO.md ein
+    NextAgent->>Linter: Prüfe Dokumente mit doc-lint auf fehlerfreie Metadaten
+    Linter-->>NextAgent: Prüfung bestanden (Saubere Frontmatter)
+
+    Note over NextAgent,Linter: Phase 3: Aufgabenabschluss & Transaktionale Archivierung
+    NextAgent->>FS: Markiere Aufgabe in TODO.md als erledigt
+    NextAgent->>Linter: Starte todo-archive --apply
+    Linter->>FS: Trenne erledigte Aufgaben atomar aus TODO.md heraus
+    Linter->>FS: Hänge archivierte Aufgaben an DONE.md an
+    FS-->>NextAgent: Archivierung erfolgreich bestätigt (Journal geprüft)
+
+    Note over Engineer,NextAgent: Phase 4: Merge-sicheres Profil-Upgrade
+    Engineer->>CLI: Profil aktualisieren: init-project --upgrade full
+    CLI->>Manifest: Prüfe vorhandene Dateien gegen gespeicherte SHA-256 Hashes
+    CLI->>FS: Ergänze FULL-Tier Router (WORKFLOWS.md, TOOLS.md)
+    CLI->>Manifest: Speichere neues Profil und aktualisierte Hashes ab
+    Manifest-->>Engineer: Profil kollisionsfrei aktualisiert
+```
+
+---
+
+## <a id="zielgruppen--auffindbarkeit"></a><a id="zielgruppen--kern-anwendungsfaelle"></a><a id="zielgruppen--kern-anwendungsfälle"></a>4. Zielgruppen & Kern-Anwendungsfälle
 
 `project-docs-template` wurde entwickelt, um Kontextverlust, Zustandsdrift und Reibungsverluste bei 4 konkreten Zielgruppen zu eliminieren:
 
 | Zielgruppe | Zentrales Problem | Wie `project-docs-template` das Problem löst | Kern-Artefakte |
-|---|---|---|---|
+|:---|:---|:---|:---|
 | **Multi-Agenten Flotten-Ingenieure** | Heterogene KI-Agenten (Claude Code, Antigravity/Gemini, Codex) verlieren über Sitzungen hinweg den Projektkontext und erzeugen inkonsistente Dateistrukturen. | Universelle Instruktions-Einstiegspunkte (`CLAUDE.md`, `AGENTS.md`) und standardisierte Kontext-Register (`START.md`, `STATE.md`) sichern deterministische Übergaben. | `CLAUDE.md`, `AGENTS.md`, `START.md`, `STATE.md` |
 | **Solo-Entwickler & Open-Source-Maintainer** | Aufgaben-Backlogs, Feature-Historie und Releases ohne schwerfällige, ablenkende Projektmanagement-SaaS (Jira, Linear) verwalten. | Markdown-native Aufgabenverwaltung (`TODO.md`, `DONE.md`) mit atomarem Archivierungs-Tool (`todo-archive`) und strukturiertem `CHANGELOG.md`. | `TODO.md`, `DONE.md`, `_tools/todo-archive`, `CHANGELOG.md` |
 | **Enterprise Architecture & AI Compliance Leads** | Fehlende Revisionssicherheit bei Architekturentscheidungen und Risiko ungewollter Datenabflüsse durch autonome Agenten. | Architektur-Entscheidungsaufzeichnungen (`DECISIONS.md`), zweisprachige `SECURITY.md`-Richtlinien und 100% Offline-Standardbibliothek ohne Telemetrie. | `DECISIONS.md`, `SECURITY.md`, `THIRD_PARTY_LICENSES.md` |
 | **Forschungs- & Pipeline-Entwickler** | Komplexe mehrstufige Experimentier-Pipelines driften über Wochen autonomer KI-Ausführungen ab. | Skalierbares FULL-Profil mit standardisierten Runbooks (`WORKFLOWS.md`), Terminologie-Definitionen (`GLOSSARY.md`) und tabellensicherem Tabellen-Sync (`workflows-sync`). | `WORKFLOWS.md`, `GLOSSARY.md`, `_tools/workflows-sync` |
 
-## Architekturvergleich
+### High-Intent Suchbegriffe (Auffindbarkeit)
+- `agenten-fähiges Projekt-Dokumentations-Template`
+- `Claude Code Dokumentationsgerüst`
+- `Multi-Agenten Sitzungsübergabe Start State Todo Done`
+- `Offline Local-First Projektvorlage Python`
+- `Zero-Egress Entwickler Scaffolding Standardbibliothek`
+- `deterministisches Staging und Profil-Upgrades`
+- `LLM-optimierte Repository-Dokumentation`
 
-Direkter Vergleich von `project-docs-template` mit alternativen Dokumentations- und Organisationsansätzen im KI-unterstützten Entwicklungsalltag:
+---
 
-| Architektur-Dimension | Generische Markdown-Ablage (Einzel-README) | Schwere SaaS-Wikis (Notion, Confluence) | Starre Agenten-Frameworks (AutoGPT / CrewAI) | `project-docs-template` (Dieses Repository) |
-|---|---|---|---|---|
-| **Zero-Egress & Offline-Fähigkeit** | ⚠️ Partiell (unverifiziert) | ❌ Nur Cloud (Datenabfluss zwingend) | ⚠️ Gemischt (erfordert oft Web-APIs) | ✅ **100% Offline & Local-First** (Keinerlei Netzaufrufe) |
-| **Multi-Agenten Sitzungsübergabe** | ❌ Keine (monolithischer Textblock) | ❌ Schlecht (proprietärer Export) | ⚠️ Proprietär (Vendor-Lock-in) | ✅ **Nativ** (Standardisiert via `START.md` & `STATE.md`) |
-| **Mechanische Validierung** | ❌ Keine (nur manuelle Sichtung) | ❌ Keine (WYSIWYG-Drift) | ⚠️ Nur mit Eigenbau-Skripten | ✅ **Integrierte CLI-Linter** (`doc-lint`, 44 Tests) |
-| **Profil-Skalierbarkeit** | ❌ Starr (eine Größe für alle) | ⚠️ Manuelles Workspace-Setup | ❌ Festes Schema | ✅ **3 Stufen** (MINIMAL, STANDARD, FULL) |
-| **Merge-sichere Upgrades** | ❌ Manuelles Copy-Paste | ❌ Manueller Abgleich | ❌ Häufig inkompatibel | ✅ **SHA-256 Manifest** (`init-project --upgrade`) |
-| **Abhängigkeits-Footprint** | ✅ Keine | ❌ Browser / REST API / OAuth | ❌ Schwerer Python-Dependency-Tree | ✅ **Zero Runtime Dependencies** (reine Python stdlib) |
-| **LLM-Kontext-Indizierung** | ⚠️ Langsam (ungefilterter Text) | ❌ Hoher Token-Overhead | ⚠️ Framework-spezifisch | ✅ **Sofortiger Agenten-Kontext** via `llms.txt` |
+## <a id="vergleichsmatrix-gegenueber-alternativen"></a><a id="vergleichsmatrix-gegenüber-alternativen"></a><a id="architekturvergleich"></a>5. Vergleichsmatrix gegenüber Alternativen
 
-## Verwendungsszenarien
+Direkter Vergleich von `project-docs-template` mit alternativen Dokumentations- und Organisationsansätzen anhand unserer 10 Governance- und Laufzeit-Invarianten (`INV-LOCAL-01` bis `INV-SLA-10`):
+
+| # | Invariante & Dimension | project-docs-template | Generische Markdown-Ablage | Schwere SaaS-Wikis (Notion / Jira) | Starre Agenten-Frameworks (CrewAI / AutoGPT) | Ad-Hoc Skripte / Ordner-Flags |
+|---|:---|:---:|:---:|:---:|:---:|:---:|
+| 1 | **INV-LOCAL-01: Zero-Egress & Local-First** | ✅ 100% Offline (Keinerlei Netzaufrufe) | ⚠️ Partiell (unverifiziert) | ❌ Nur Cloud (Datenabfluss zwingend) | ⚠️ Erfordert oft Web-APIs | ✅ Lokale Dateien |
+| 2 | **INV-SEC-02: Unprivilegiert (`RunAsInvoker`)** | ✅ Nur Benutzer-Berechtigungen | ✅ Benutzer-Ebene | ⚠️ Browser / SaaS Authentifizierung | ⚠️ Container- / Service-Rechte | ✅ Benutzer-Ebene |
+| 3 | **INV-FAIL-03: Fail-Closed Staging** | ✅ Verweigert schmutzige Zielpfade | ❌ Stilles Überschreiben | ⚠️ Manuelle Konflikt-UI | ⚠️ Fragile Laufzeitfehler | ❌ Unkontrolliertes Überschreiben |
+| 4 | **INV-STG-04: Transaktionale Upgrades** | ✅ SHA-256 Manifest-Rollback | ❌ Keine (manuelles Copy-Paste) | ❌ Vendor-Lock-in | ❌ Häufig inkompatibel | ❌ Keine |
+| 5 | **INV-HANDOFF-05: Multi-Agenten Übergabe** | ✅ Standardisiert (`START`/`STATE`) | ❌ Keine (monolithischer Textblock) | ❌ Schlechter API-Export | ⚠️ Proprietäre Schemata | ⚠️ Ad-hoc Notizen |
+| 6 | **INV-TIER-06: Skalierbare Profilstufen** | ✅ MINIMAL, STANDARD, FULL | ❌ Eine Größe für alle | ⚠️ Aufwendige manuelle Boards | ❌ Starres Schema | ❌ Undefiniert |
+| 7 | **INV-SYNC-07: Cloud-Sync- & Lock-Abwehr** | ✅ Root- & Template-Ignore-Filter | ❌ Keine (Konfliktkopien häufen sich) | ❌ Nur SaaS-Cloud | ❌ Unkontrollierter Sync | ❌ Hohes Kollisionsrisiko |
+| 8 | **INV-AUDIT-08: Lesbare Aufgabenarchivierung** | ✅ `TODO.md` / `DONE.md` + Journal | ❌ Überladene TODO-Dateien | ⚠️ Proprietäre DB-Einträge | ⚠️ JSON/Binär-Logs | ❌ Unstrukturiert |
+| 9 | **INV-LIC-09: 100% Zulässiger Lizenz-Stack** | ✅ MIT (0 externe Abhängigkeiten) | ✅ Nur Markdown | ❌ Kommerziell proprietär | ⚠️ Komplexer Python-Tree | ⚠️ Unspezifiziert |
+| 10 | **INV-SLA-10: 48h Response / 5d Triage SLA** | ✅ Formale Sicherheitsrichtlinie | ❌ Keine | ⚠️ Nur bei Enterprise-SaaS | ⚠️ Community-Foren | ❌ Keine |
+
+---
+
+## <a id="governance--runtime-invariants"></a><a id="governance--laufzeit-invarianten"></a>6. Governance & Laufzeit-Invarianten Matrix
+
+`project-docs-template` garantiert 10 fundamentale Laufzeit-, Staging- und Governance-Invarianten über sämtliche Werkzeuge, CLI-Befehle und generierten Vorlagen hinweg:
+
+| Kanonische ID | Invarianten-Titel | Kern-Betriebsgarantie |
+|:---|:---|:---|
+| **INV-LOCAL-01** | **100% Local-First & Zero-Egress** | Arbeitet ausschließlich auf lokalen Dateisystemen. Überträgt niemals Telemetrie, Tracking-Daten oder Netzwerk-Payloads. |
+| **INV-SEC-02** | **Unprivilegierte Ausführung (`RunAsInvoker`)** | Läuft vollständig im unprivilegierten Standard-Benutzermodus. Fordert niemals Root- oder Administrator-Rechte an. |
+| **INV-FAIL-03** | **Fail-Closed Standardsemantik** | Bricht sicher ab, ohne bestehende Dateien zu verändern, wenn Kollisionen oder ungültige YAML-Frontmatter erkannt werden. |
+| **INV-STG-04** | **Transaktionales & Merge-sicheres Staging** | Profil-Upgrades prüfen SHA-256-Hashes gegen `.project-docs-template.json`. Bei Konflikten erfolgt ein vollständiger Rollback. |
+| **INV-HANDOFF-05** | **Multi-Agenten Sitzungsübergabe** | Strukturierte `START.md`- und `STATE.md`-Dateien sichern deterministische Kontextwiederherstellung für KI-Coding-Agenten. |
+| **INV-TIER-06** | **Skalierbare Profilstufen** | Drei abgestufte Profile (`MINIMAL`, `STANDARD`, `FULL`) balancieren Dokumentationsstruktur gegen Pflegeaufwand. |
+| **INV-SYNC-07** | **Multi-Host Cloud-Sync-Schutz** | Sowohl Root- als auch Template-`.gitignore` filtern Synchronisationskopien (`* (kopie)*`, `*-WORKSTATION*`) und Locks ab. |
+| **INV-AUDIT-08** | **Lesbares Backlog & Aufgabenarchivierung** | Sauberes Markdown-Aufgabenmanagement mit transaktionaler, ausfallsicherer Aufgabenarchivierung via `todo-archive`. |
+| **INV-LIC-09** | **100% Freier, geprüfter Lizenz-Stack** | Keine externen Laufzeit-Abhängigkeiten; Entwicklungs- und Build-Tools sind strikt MIT/PSFL/Apache-2.0 auditiert. |
+| **INV-SLA-10** | **Duale Sicherheits-SLA** | Garantierte 48-Stunden-Reaktionszeit und 5-Werktage-Triage über Sicherheitskontakte (`security@ellmos.ai`). |
+
+---
+
+## <a id="verwendungsszenarien"></a>7. Einsatzszenarien für diese Vorlage
 
 | Situation | Vorteil |
-|---|---|
+|:---|:---|
 | Ein neues Projekt wird von Claude Code, Codex, Gemini CLI oder einem anderen Agenten betreut | Bietet dem Agenten einen vorhersehbaren Bootstrap-Pfad und eine aktuelle Statusdatei. |
 | Ein bestehendes Repo hat verstreute Notizen oder keine Übergabespur | Trennt aktive Arbeit, abgeschlossene Arbeit, Entscheidungen und Sitzungsstatus sauber. |
 | Mehrere Agenten oder Entwickler müssen die Arbeit sicher fortsetzen | Hält Anweisungen, Status, Workflows und Tools in dedizierten Dateien. |
 
-## Was enthalten ist
+Dies ist eine Dokumentations- und Koordinationsvorlage, kein Laufzeitframework. Sie wird direkt in bestehende Software-, Forschungs- oder Betriebsprojekte integriert.
+
+---
+
+## <a id="was-enthalten-ist"></a>8. Lieferumfang & Scaffold-Struktur
 
 - `CLAUDE.md` und `AGENTS.md` für Agenten-Anweisungen
-- `START.md` und `STATE.md` für den Sitzungs-Bootstrap und den aktuellen Status
-- `TODO.md` und `DONE.md` mit optionaler Archivierungsunterstützung
+- `START.md` und `STATE.md` für Sitzungs-Bootstrap und aktuellen Status
+- `TODO.md` und `DONE.md` mit optionaler transaktionaler Archivierung
 - `DECISIONS.md`, `PATTERNS.md`, `CHANGELOG.md` und `HEADER-RULES.md`
 - Optionale FULL-Profil-Router: `WORKFLOWS.md`, `TOOLS.md`, `GLOSSARY.md`
-- Lokale Helfer unter `_tools/`, darunter `init-project`, `doc-lint`, `todo-archive` und `workflows-sync`
+- Lokale Werkzeuge in `_tools/`: `init-project`, `doc-lint`, `todo-archive` und `workflows-sync`
 
-Die eigentlichen Vorlagendateien befinden sich in [`template/`](./template/).
+Die eigentlichen Vorlagendateien liegen unter [`template/`](./template/).
 
-## Schnellstart
+---
 
-Repository klonen und ein Projektprofil instanziieren:
+## <a id="schnellstart"></a>9. Schnellstart & CLI-Workflows
+
+Repository klonen und Generator aufrufen:
 
 ```bash
 git clone https://github.com/ellmos-ai/project-docs-template.git
 cd project-docs-template
-python template/_tools/init-project --target ../mein-projekt --name MeinProjekt --profile STANDARD
+
+# Standard-Profil im Zielverzeichnis erzeugen
+python template/_tools/init-project /pfad/zu/meinem-projekt --profile standard
+
+# Trockenlauf zur Prüfung
+python template/_tools/init-project /pfad/zu/meinem-projekt --profile full --dry-run
 ```
 
-Optionale Flag `--author "Ihr Name"` zur Festlegung des Autors oder `--git` zur Erstellung eines `main`-Repositories mit Initial-Commit.
+Verfügbare CLI-Befehle im generierten Projekt:
+```bash
+# Projektdokumentation und YAML-Frontmatter prüfen
+python _tools/doc-lint
 
-### Merge-sichere Profil-Upgrades
+# Erledigte Aufgaben aus TODO.md nach DONE.md archivieren
+python _tools/todo-archive --apply
 
-Jedes generierte Projekt erhält `.project-docs-template.json` mit dem Profil
-und SHA-256-Hashes der vom Generator verwalteten Dateien. Das nächste Profil
-wird ausdrücklich und schrittweise angefordert:
+# Workflow-Tabellen über Router hinweg synchronisieren
+python _tools/workflows-sync --apply
+```
+
+> [!NOTE]
+> **Vorlagensprache:** Die Repository-Dokumentation ist auf Englisch verfasst, die erzeugten Vorlagendokumente unter [`template/`](./template/) — `CLAUDE.md`, `START.md`, `STATE.md`, `TODO.md` und die weiteren — sowie die CLI-Ausgaben von `init-project`, `doc-lint`, `todo-archive` und `workflows-sync` sind auf Deutsch. Die Dateinamen, Profilmarker und YAML-Frontmatter-Schlüssel sind sprachneutral; englischsprachige Projekte können die Struktur unverändert übernehmen.
+
+---
+
+## <a id="merge-sichere-profil-upgrades"></a>10. Merge-sichere Profil-Upgrades & Migration
+
+Bestehende Projekte können sicher auf höhere Profilstufen aktualisiert werden:
 
 ```bash
-python template/_tools/init-project --target ../mein-projekt \
-  --profile STANDARD --upgrade
+# Vorhandenes Projekt auf FULL-Profil anheben
+python template/_tools/init-project /pfad/zu/meinem-projekt --upgrade full
 ```
 
-Der Upgrade-Ablauf folgt einem strikten Staging- und Validierungs-Lebenszyklus:
+### Sicherheitsgarantien beim Upgrade
+- **Manifest-Verifikation**: Liest `.project-docs-template.json` zur Prüfung des aktiven Profils und der SHA-256-Hashes.
+- **Fail-Closed bei Fremdkollisionen**: Existiert eine Datei bereits, die nicht Teil des vorherigen Profils war, bricht das Upgrade sofort ab.
+- **Fail-Closed bei Anwendermutationen**: Wurde eine Vorlagendatei manuell angepasst, wird sie nicht stillschweigend überschrieben.
+- **Rollback-Garantie**: Bei Fehlern oder Abbruch werden Manifest und Dateisystem sauber in den Ausgangszustand zurückgesetzt.
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as Agent / Maintainer
-    participant CLI as init-project CLI
-    participant Stage as Isoliertes Staging-Verzeichnis
-    participant Manifest as .project-docs-template.json
-    participant Target as Ziel-Projekt-Root
+---
 
-    User->>CLI: init-project --target <dir> --upgrade --profile STANDARD
-    CLI->>Manifest: Manifest & Profil-Metadaten einlesen
-    CLI->>Target: SHA-256 Hashes der verwalteten Dateien auf Platte berechnen
-    alt Prüfsummen-Mismatch oder Dateikollision
-        CLI-->>User: Abbruch: Geänderte Dateien erkannt (Fail-Closed, 0 Modifikationen)
-    else Prüfsummen intakt & sauberer Zustand
-        CLI->>Stage: Nächstes Profil in isoliertem Staging-Ordner generieren
-        CLI->>Stage: Relative Markdown-Links & Platzhalter validieren
-        CLI->>Target: Passende Dateien atomar ersetzen & neue Dokumente anlegen
-        CLI->>Manifest: Aktualisiertes SHA-256 Manifest finalisieren
-        CLI->>Stage: Temporären Staging-Ordner bereinigen
-        CLI-->>User: Erfolg: Profil sicher aufgewertet
-    end
-```
+## <a id="profil-vergleich"></a>11. Profilvergleich (MINIMAL / STANDARD / FULL)
 
-Der Befehl baut das Zielprofil zunächst in einem Staging-Ordner. Er ersetzt
-nur Dateien, deren Manifest-Hash noch stimmt, legt nur fehlende Profil-Dateien
-an und schreibt das Manifest zuletzt. Geänderte verwaltete Dateien,
-unbekannte Dateikollisionen, ein fehlendes Manifest oder ein übersprungener
-Profil-Schritt führen vor jeder Änderung zum Abbruch. Es gibt keinen
-automatischen Merge; eigene Änderungen müssen bewusst aufgelöst werden.
-Mit `--dry-run` lässt sich der Plan ohne Schreibvorgang anzeigen.
+| Feature / Dokument | `MINIMAL` | `STANDARD` | `FULL` |
+|:---|:---:|:---:|:---:|
+| `CLAUDE.md` & `AGENTS.md` (Agenten-Instruktionen) | ✅ Enthalten | ✅ Enthalten | ✅ Enthalten |
+| `START.md` & `STATE.md` (Sitzungsgedächtnis) | ✅ Enthalten | ✅ Enthalten | ✅ Enthalten |
+| `TODO.md` & `DONE.md` (Aufgabenverwaltung) | ✅ Enthalten | ✅ Enthalten | ✅ Enthalten |
+| `_tools/todo-archive` (Aufgaben-Archivierer) | ✅ Enthalten | ✅ Enthalten | ✅ Enthalten |
+| `_tools/doc-lint` (Dokumentations-Linter) | ✅ Enthalten | ✅ Enthalten | ✅ Enthalten |
+| `DECISIONS.md` (Architekturentscheidungen) | — | ✅ Enthalten | ✅ Enthalten |
+| `PATTERNS.md` (Design-Patterns) | — | ✅ Enthalten | ✅ Enthalten |
+| `CHANGELOG.md` & `HEADER-RULES.md` | — | ✅ Enthalten | ✅ Enthalten |
+| `WORKFLOWS.md` & `_tools/workflows-sync` | — | — | ✅ Enthalten |
+| `TOOLS.md` & `GLOSSARY.md` (Domänen-Router) | — | — | ✅ Enthalten |
+| `ARCHITECTURE.md` & `.github/` Workflows | — | — | ✅ Enthalten |
 
-Verfügbare Profile:
+---
 
-- `MINIMAL`: 7 Stammdateien plus essentielle Werkzeuge
-- `STANDARD`: 12 Stammdateien plus Entscheidungen & Changelog
-- `FULL`: 16 Stammdateien plus Workflow-, Tool- und Glossar-Router
+## <a id="design-prinzipien"></a>12. Design-Prinzipien & Architektur-Invarianten
 
-Alternativ können einzelne Dateien auch manuell aus [`template/`](./template/)
-kopiert werden, wenn nur ausgewählte Teile benötigt werden.
+- **Klare Aufgabenverteilung**: Jede Datei besitzt eine einzige, präzise definierte operative Rolle.
+- **Explizite Übergabe**: Sitzungsstart und aktueller Projektstatus sind in kurzen, vorhersehbaren Registern dokumentiert (`START.md`, `STATE.md`).
+- **Niedriger Pflegeaufwand**: Konzentration auf hochwertige Kontextdateien statt unübersichtlicher Monster-Wikis.
+- **Router-Muster**: Übergeordnete Router (`WORKFLOWS.md`, `TOOLS.md`) verweisen auf Details, statt sie zu duplizieren.
+- **Transaktionale Archivierung**: Abgeschlossene Aufgaben wandern atomar nach `DONE.md`, um das aktive Backlog schlank zu halten.
 
-Erfordert Python 3.10 oder neuer. Git wird nur für `--git` benötigt.
+Vollständige Hintergründe und Dateierklärungen finden sich in [`template/TEMPLATE.md`](./template/TEMPLATE.md).
 
-> [!IMPORTANT]
-> Dieses Paket ist **nicht** auf PyPI veröffentlicht. Die `pyproject.toml` dient
-> ausschließlich lokalen Werkzeugen und Metadaten. Die Installation erfolgt
-> durch Klonen dieses Repositories — führen Sie **nicht** `pip install
-> project-docs-template` aus; ein Paket dieses Namens in einem öffentlichen
-> Index stammt nicht von uns.
+---
 
-> [!IMPORTANT]
-> **Die erzeugte Dokumentation ist derzeit deutsch.** Die Vorlagen unter
-> [`template/`](./template/) — `CLAUDE.md`, `START.md`, `STATE.md`, `TODO.md`
-> und die übrigen — sowie die CLI-Ausgaben von `init-project`, `doc-lint`,
-> `todo-archive` und `workflows-sync` sind auf Deutsch verfasst, während sich
-> das Repository selbst englisch präsentiert. Dateinamen, Profil-Marker und
-> YAML-Schlüssel sind sprachneutral; eine Sprachumschaltung gibt es noch nicht.
-> Ein englischer Vorlagensatz ist vorgesehen — siehe [`TODO.md`](./TODO.md).
+## <a id="verifizierung"></a>13. Verifikation, Tests & Qualitäts-Gates
 
-## Profil-Vergleich
-
-| Profil | Bestes Szenario | Kopierte Dateien |
-|---|---|---|
-| `MINIMAL` | Kleine Repos, Experimente, kurze Tools | Core Agenten-Instruktionen, Start/State, TODO/DONE, Basis-Tools |
-| `STANDARD` | Ernsthafte Projekte mit Entscheidungs- & Pflegebedarf | Minimal-Set plus Changelog, Entscheidungen, Muster & Regeln |
-| `FULL` | Multi-Agenten- & Langzeitprojekte mit Routern & Workflows | Standard-Set plus Architektur, Workflow/Tool-Router & Glossar |
-
-## Design-Prinzipien
-
-- Jede Datei hat eine klar abgegrenzte Aufgabe.
-- Die Übergabe zwischen Sitzungen ist explizit und kurz.
-- Der Pflegeaufwand zählt mehr als die Vollständigkeit aller denkbaren Dokumente.
-- Router wie `WORKFLOWS.md` und `TOOLS.md` verweisen auf Details an anderer Stelle.
-- Abgeschlossene Aufgaben können automatisch archiviert werden, statt `TODO.md` aufzublähen.
-
-Die vollständige Begründung und eine Erklärung Datei für Datei bietet
-[`template/TEMPLATE.md`](./template/TEMPLATE.md).
-
-## Verifizierung
+Die Testsuite kann mit Pythons Standard-`unittest` oder `pytest` ausgeführt werden:
 
 ```bash
+# Mit pytest ausführen
+pytest -ra -v
+
+# Mit unittest ausführen
 python -m unittest discover -s tests -v
 ```
 
-Die Testsuite prüft alle Profile, reale Git-Initialisierung, Frontmatter-Reparatur und TODO/DONE Rollback-Verhalten auf Windows, Linux und macOS; siehe [`RELEASE_GATE.md`](./RELEASE_GATE.md).
+Die Suite testet jedes Profil, echte Git-Initialisierungen, Frontmatter-Reparaturen, Metadaten-Maskierung und Rollback-Verhalten bei Fehlern. Sie läuft plattformübergreifend auf Linux, Windows und macOS; siehe [`RELEASE_GATE.md`](./RELEASE_GATE.md).
 
-Sicherheitsmeldungen gehören in den privaten Kanal, der in
-[`SECURITY.md`](./SECURITY.md) beschrieben ist, nicht in öffentliche Issues.
+---
 
-<!-- BEGIN ELLMOS BUNDLE DISCOVERY DE -->
+## <a id="sicherheitsrichtlinie"></a>14. Sicherheitsrichtlinie & Schwachstellen-SLAs
 
-## Bundles und Partner
+`project-docs-template` erzwingt strenge Sicherheitsinvariante:
+- **Zero-Egress-Invariante**: Sämtliche Werkzeuge arbeiten vollständig offline ohne externe Netzwerkverbindungen.
+- **Deterministisches Staging**: Kollisionen führen zum sicheren Abbruch ohne Datenverlust.
+- **Duale Sicherheits-SLAs**: Verbindliche **48-Stunden-Reaktionszeit** und **5-Werktage-Triage**.
 
-Geprüfte Discovery-Projektion für `module:project-docs-template` aus
-`catalog:v4-bundles`
-(`546290dafbaafd810df1d59ef5a3d7183738472b48cd5a8a81f1e8f2b64d852e`).
-Das Ziel-Repository ist `public`. Die Bundle-Manifeste bleiben die Autorität
-für Mitgliedschaften; dieser Abschnitt installiert oder aktiviert keine
-Komponenten. Die Freigabe beruht auf einem öffentlichen Modul-Registry-Eintrag
-und einer ausdrücklichen Default-deny-Allowlist für Bundles.
+Sicherheitsrelevante Meldungen sind vertraulich über die in [`SECURITY.md`](./SECURITY.md) definierten Kanäle zu melden (`security@ellmos.ai`, `security@open-bricks.org`, `support@lukasgeiger.com`), niemals über öffentliche Issues.
 
-### `ellmos-dev-lifecycle-bundle`
+---
 
-- Sichtbarkeit des Bundle-Rezepts: `private`; Rolle: `declared-component`;
-  Anforderung: `required`.
-- Modulpartner: `module:bundle-installer`, `module:ellmos-code-tools`,
-  `module:ellmos-tests`, `module:github-onedrive-mirror`,
-  `module:stack-system-installer`.
-- Skill-Partner: `skill:bugfix-protocol`, `skill:bugsweep`, `skill:dev-cycle`,
-  `skill:encoding-fix`, `skill:github-repo-care`, `skill:migrate-rename`,
-  `skill:nulcleaner`, `skill:pipeline-optimizer`, `skill:plugin-system`,
-  `skill:project-onboarding`, `skill:trampelpfadanalyse`.
+## <a id="drittanbieter-lizenzen--transparenz"></a>15. Drittanbieter-Lizenzen & Level 1 SBOM
 
-### `ellmos-knowledge-bundle`
+`project-docs-template` arbeitet unter einer **strengen Zero-Runtime-Dependency-Architektur** (`dependencies = []`). Der gesamte Produktivcode nutzt ausschließlich die Python-Standardbibliothek (3.10+).
 
-- Sichtbarkeit des Bundle-Rezepts: `private`; Rolle: `declared-component`;
-  Anforderung: `recommended`.
-- Modulpartner: `module:KnowledgeDigest`, `module:WikiStub-Seed`,
-  `module:report-forge`, `module:web-scraper`.
-- Skill-Partner: `skill:bilingual-doc-sync`, `skill:docs-analysis`,
-  `skill:document-chunker`.
+| Komponente | Rolle | Lizenz | Status |
+|:---|:---|:---|:---|
+| **Python Standard Library** | Laufzeitkern | PSFL-2.0 | 100% Frei / Zulässig (Integriert) |
+| **pytest** | Entwicklung / Test | MIT License | 100% Frei / Zulässig |
+| **ruff** | Entwicklung / QA | MIT / Apache-2.0 | 100% Frei / Zulässig |
+| **setuptools** | Build-Backend | MIT License | 100% Frei / Zulässig |
 
-Kompositions- und Runtime-Details werden bewusst nicht offengelegt.
+Das vollständige Level 1 Software Bill of Materials (SBOM) und die Invarianten-Matrix (`INV-LOCAL-01` bis `INV-SLA-10`) sind in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) dokumentiert.
 
-<!-- END ELLMOS BUNDLE DISCOVERY DE -->
+---
 
-## Auffindbarkeit (SEO)
+## <a id="oekosystem--geschwistertools"></a><a id="ökosystem--geschwisterwerkzeuge"></a><a id="bundles-und-partner"></a>16. Bundles, Partner & Ökosystem-Geschwister
 
-> Unabhängiges Projekt — keine Verbindung zu Anthropic, OpenAI oder Google.
-> Siehe [Marken](#marken).
-
-Suchbegriffe:
-
-```text
-agent-ready project documentation template
-LLM project docs template START STATE TODO DONE
-Claude Code Codex project documentation scaffold
-multi-agent repo handoff documentation template
-```
-
-Für crawler- und LLM-orientierte Metadaten siehe [`llms.txt`](./llms.txt).
-
-## Ökosystem & Geschwisterwerkzeuge
-
-`project-docs-template` ist Teil der Open-Source-Ökosysteme [`ellmos-ai`](https://github.com/ellmos-ai), [`dev-bricks`](https://github.com/dev-bricks) und [`open-bricks`](https://github.com/open-bricks).
+`project-docs-template` ist ein grundlegender Baustein im [`ellmos-ai`](https://github.com/ellmos-ai)-Ökosystem sowie der Dachorganisation [`open-bricks`](https://github.com/open-bricks):
 
 | Repository | Zweck | Primäre Schnittstelle |
-|---|---|---|
-| [`policy-registry`](https://github.com/ellmos-ai/policy-registry) | Maschinenlesbare Policy-Registry mit signierten Delegationen | CLI / API / MCP |
-| [`DevCenter`](https://github.com/dev-bricks/DevCenter) | Lokale Python-IDE und Entwickler-Werkzeugkasten | GUI / PySide6 |
-| [`CodeBox`](https://github.com/dev-bricks/CodeBox) | Isolierte Code-Playground- & Ausführungsumgebung | GUI / CLI |
-| [`companion-for-agy`](https://github.com/ellmos-ai/companion-for-agy) | Erweiterungs- & Begleitsystem für Antigravity-Agenten | CLI / Node.js |
-| [`safe-start-for-codex`](https://github.com/dev-bricks/safe-start-for-codex) | Defensiver Bootstrapper und Umgebungsverifizierer | CLI / Python |
-| [`automizer-for-claude-desktop`](https://github.com/dev-bricks/automizer-for-claude-desktop) | Bridge- & Automatisierungs-Toolkit für Claude Desktop | CLI / Python |
-| [`system-gap-master`](https://github.com/ellmos-ai/system-gap-master) | Cross-System-Synchronisations- & Divergenz-Prüfer | CLI / Python |
-| [`lock-master`](https://github.com/ellmos-ai/lock-master) | Datei- & Ressourcen-Nebenläufigkeits-Sperren | CLI / Python |
-| [`ticket-master`](https://github.com/ellmos-ai/ticket-master) | Lokaler Issue- & Ticket-Orchestrator | CLI / Python |
-| [`clutch`](https://github.com/ellmos-ai/clutch) | Anbieterneutraler LLM-Router und Modell-Orchestrierung | CLI / Python |
-| [`memoryhooker`](https://github.com/ellmos-ai/memoryhooker) | Sitzungsspeicher-Extraktor & Hook-Injektor | CLI / Python |
-| [`workflowhooker`](https://github.com/ellmos-ai/workflowhooker) | Workflow-Automatisierungs-Lebenszyklus-Trigger | CLI / Python |
-| [`ellmos-controlcenter-mcp`](https://github.com/ellmos-ai/ellmos-controlcenter-mcp) | MCP-Server für Systeminspektion & Skill-Discovery | MCP / Python |
-| [`ellmos-filecommander-mcp`](https://github.com/ellmos-ai/ellmos-filecommander-mcp) | MCP-Server für sichere lokale Dateioperationen | MCP / Python |
-| [`open-bricks`](https://github.com/open-bricks) | Dachorganisation für Entwickler- & KI-Werkzeuge | Portal |
+|:---|:---|:---|
+| [`policy-registry`](https://github.com/ellmos-ai/policy-registry) | Maschinenlesbare Richtlinien-Registry mit signierten Delegationen | CLI / API / MCP |
+| [`DevCenter`](https://github.com/dev-bricks/DevCenter) | Lokale Python-IDE und Entwickler-Toolkit | GUI / PySide6 |
+| [`CodeBox`](https://github.com/dev-bricks/CodeBox) | Isolierte Code-Sandbox und Ausführungsumgebung | GUI / CLI |
+| [`companion-for-agy`](https://github.com/ellmos-ai/companion-for-agy) | Erweiterungssuite für Antigravity KI-Agenten | CLI / Node.js |
+| [`safe-start-for-codex`](https://github.com/dev-bricks/safe-start-for-codex) | Defensive Startumgebung und Verifizierer für Codex | CLI / Python |
+| [`automizer-for-claude-desktop`](https://github.com/dev-bricks/automizer-for-claude-desktop) | Bridge- und Automations-Toolkit für Claude Desktop | CLI / Python |
+| [`system-gap-master`](https://github.com/ellmos-ai/system-gap-master) | Systemübergreifende Synchronisation und Divergenzanalyse | CLI / Python |
+| [`lock-master`](https://github.com/ellmos-ai/lock-master) | Concurrency- und Dateisperren-Manager für Multi-Agenten | CLI / Python |
+| [`ticket-master`](https://github.com/ellmos-ai/ticket-master) | Lokale Issue- und Ticket-Verwaltung | CLI / Python |
+| [`clutch`](https://github.com/ellmos-ai/clutch) | Provider-neutraler LLM-Router und Orchestrierungsmotor | CLI / Python |
+| [`memoryhooker`](https://github.com/ellmos-ai/memoryhooker) | Sitzungsgedächtnis-Extraktion und Hook-Injektion | CLI / Python |
+| [`workflowhooker`](https://github.com/ellmos-ai/workflowhooker) | Workflow-Automatisierungs-Trigger | CLI / Python |
+| [`ellmos-controlcenter-mcp`](https://github.com/ellmos-ai/ellmos-controlcenter-mcp) | MCP-Server für Systeminspektion und Skill-Erkennung | MCP / Python |
+| [`ellmos-filecommander-mcp`](https://github.com/ellmos-ai/ellmos-filecommander-mcp) | MCP-Server für sichere Dateioperationen | MCP / Python |
+| [`open-bricks`](https://github.com/open-bricks) | Dachorganisation für Entwickler- und KI-Werkzeuge | Portal |
 
-## Marken
+<!-- BEGIN GENERATED ELLMOS BUNDLE DISCOVERY -->
+### Bundles und Partner Entdeckungsprojektion
+Generierte Entdeckungsprojektion für `module:project-docs-template` aus `catalog:v4-bundles` (`546290dafbaafd810df1d59ef5a3d7183738472b48cd5a8a81f1e8f2b64d852e`). Ziel-Sichtbarkeit: `public`.
 
-Dieses Projekt ist eine unabhängige Dokumentations-Vorlage. Es steht in **keiner**
-Verbindung zu Anthropic, OpenAI oder Google und wird von diesen weder
-unterstützt noch autorisiert oder gesponsert.
+- **`ellmos-dev-lifecycle-bundle`**: Rolle `declared-component`, Anforderung `required`. Partner: `module:bundle-installer`, `module:ellmos-code-tools`, `module:ellmos-tests`, `module:github-onedrive-mirror`, `module:stack-system-installer`.
+- **`ellmos-knowledge-bundle`**: Rolle `declared-component`, Anforderung `recommended`. Partner: `module:KnowledgeDigest`, `module:WikiStub-Seed`, `module:report-forge`, `module:web-scraper`.
+<!-- END GENERATED ELLMOS BUNDLE DISCOVERY -->
 
-„Claude" und „Claude Code", „Codex", „Gemini" und „Antigravity" sind Marken bzw.
-eingetragene Marken der jeweiligen Inhaber (Anthropic PBC, OpenAI, Google LLC).
-Alle weiteren Produktnamen, Logos und Marken sind Eigentum der jeweiligen
-Inhaber. Die Nennung erfolgt ausschließlich beschreibend, um Kompatibilität und
-Zusammenspiel zu erläutern (§ 23 Abs. 1 Nr. 2 und 3 MarkenG). Sie begründet
-weder eine geschäftliche Verbindung noch eine Empfehlung durch die
-Markeninhaber.
+---
 
-## Lizenz
+## <a id="marken"></a><a id="markenhinweise"></a>17. Markenhinweise & Unabhängigkeitserklärung
 
-MIT Lizenz. Siehe [LICENSE](./LICENSE).
+Dieses Projekt ist eine unabhängige, gemeinschaftlich gepflegte Dokumentationsvorlage.
+Es besteht **keine** geschäftliche Verbindung, Autorisierung oder Förderung durch
+Anthropic, OpenAI oder Google.
 
-Dieses Projekt ist ein unentgeltlicher Open-Source-Beitrag. Es gilt die
-MIT-Lizenz. Soweit deutsches Recht anwendbar ist und die Überlassung als
-Schenkung zu qualifizieren ist, ist die Haftung nach § 521 BGB auf Vorsatz und
-grobe Fahrlässigkeit beschränkt. Zwingende gesetzliche Haftung — insbesondere
-für Vorsatz (§ 276 Abs. 3 BGB) sowie für die Verletzung von Leben, Körper oder
-Gesundheit — bleibt unberührt und wird durch den Haftungsausschluss der
-MIT-Lizenz nicht abbedungen. Die Nutzung erfolgt auf eigene Gefahr. Eine
-Gewährleistung, Wartungs- oder Verfügbarkeitsgarantie oder eine Zusicherung der
-Eignung für einen bestimmten Zweck wird nicht übernommen.
+"Claude" und "Claude Code", "Codex", "Gemini" und "Antigravity" sind Marken
+oder eingetragene Marken der jeweiligen Eigentümer (Anthropic PBC, OpenAI,
+Google LLC). Alle weiteren genannten Produktnamen, Logos und Marken sind
+Eigentum ihrer jeweiligen Inhaber. Die Nennung dient ausschließlich der
+Beschreibung von Kompatibilität und Schnittstellen.
 
+---
+
+## <a id="lizenz"></a><a id="gesetzliche-hinweise-haftungsbeschraenkung--lizenz"></a>18. Gesetzliche Hinweise, Haftungsbeschränkung & Lizenz (§ 521 BGB)
+
+### Gesetzlicher Hinweis & Haftungsbeschränkung (§ 521 BGB)
+Die Bereitstellung dieser Software und Vorlagen erfolgt unentgeltlich als gesetzliche Gefälligkeit bzw. Schenkung im Sinne von **§ 521 BGB**. Gemäß deutschem Recht ist die Haftung des Autors und der Mitwirkenden auf Vorsatz und grobe Fahrlässigkeit beschränkt. Die zwingende gesetzliche Haftung — insbesondere für Vorsatz (§ 276 Abs. 3 BGB) sowie für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit — bleibt unberührt.
+
+### Lizenz
+Dieses Projekt ist unter den Bedingungen der **MIT-Lizenz** lizenziert. Siehe [LICENSE](LICENSE) und [NOTICE](NOTICE) für Urheberrechts- und Lizenzhinweise.

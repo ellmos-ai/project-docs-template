@@ -2,6 +2,17 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-09-20 - Pfad B Discoverability, 18-Point Navigation Parity, Level 1 SBOM, NOTICE & Visual Architecture Overhaul
+
+- **18-Point Bilingual Navigation Parity**: Standardized both `README.md` and `README_de.md` into 18 identically numbered sections with dual reciprocal HTML anchors (`<a id="..."></a>`) guaranteeing seamless deep linking.
+- **Visual Architecture & Lifecycle Flowcharts**: Added dual Mermaid diagrams to both language editions: a 4-tier decoupled architecture flowchart (`flowchart TD`) and a 4-phase end-to-end multi-agent session lifecycle (`sequenceDiagram` with `autonumber` and strictly 0 semicolons).
+- **Level 1 Software Bill of Materials (SBOM)**: Overhauled `THIRD_PARTY_LICENSES.md` to include a full Level 1 SBOM table, Zero-Runtime-Dependency & Zero-Copyleft Isolation Guarantee, unprivileged user-mode execution (`RunAsInvoker`) certification, and Invariant Cross-Reference Matrix (`INV-LOCAL-01` to `INV-SLA-10`).
+- **Canonical Root NOTICE File**: Created root `NOTICE` file asserting copyright 2026 Lukas Geiger, ellmos-ai, and open-bricks umbrella attribution.
+- **PEP 639 License Files Standard**: Configured `license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]` and ecosystem discoverability keywords (`ellmos-ai`, `open-bricks`) in `pyproject.toml`.
+- **10-Dimension Comparative Matrix**: Expanded Section 5 matrix evaluating 4 alternatives across all 10 governance invariants (`INV-LOCAL-01` to `INV-SLA-10`).
+- **Section 18 Statutory Notice (§ 521 BGB)**: Documented statutory courtesy disclaimer (*Gefälligkeit / unentgeltliche Schenkung* pursuant to § 521 BGB, liability limited to intent and gross negligence).
+- **Automated Contract Tests (`tests/test_metadata.py`)**: Added test assertions for root `NOTICE` existence, PEP 639 `license-files`, Level 1 SBOM / `RunAsInvoker`, 18-point quick navigation, 10-dimension matrix, and semicolon-free Mermaid syntax.
+
 ## 2026-09-14 - Pfad A Repository Hygiene, CI Timeout Hardening & Multi-Host Defense
 
 - **CI Workflow Hardening (`.github/workflows/ci.yml`)**: Added `timeout-minutes: 15` runaway guardrail to the matrix test job, concurrency cancellation for in-flight pushes, and standardized pytest runner invocation to `python -m pytest -ra -v`.

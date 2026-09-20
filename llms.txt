@@ -1,4 +1,4 @@
-## Last-checked: 2026-09-14
+## Last-checked: 2026-09-20
 
 # ellmos-ai/project-docs-template
 
@@ -15,19 +15,18 @@ Primary audience:
 - Template authors looking for a small alternative to heavy agent OS scaffolds.
 
 Important files:
-- `README.md`: human-facing overview, quick navigation, target personas, and comparative architecture.
-- `README_de.md`: complete German documentation, Schnellnavigation, and user guide.
+- `README.md`: human-facing overview, 18-point bilingual navigation, target personas, and comparative architecture.
+- `README_de.md`: complete German documentation, 18-Punkte-Schnellnavigation, and user guide.
+- `NOTICE`: legal copyright attribution and ecosystem notice.
 - `MARKETING-LOG.txt`: Pfad A repository hygiene & Pfad B discoverability log.
-- `THIRD_PARTY_LICENSES.md`: Software Bill of Materials (SBOM) confirming zero runtime dependencies.
+- `THIRD_PARTY_LICENSES.md`: Level 1 Software Bill of Materials (SBOM) and Governance Invariants Cross-Reference Matrix.
 - `template/TEMPLATE.md`: rationale, profile definitions, and file-by-file explanation.
 - `template/_tools/init-project`: profile-based scaffold generator (`MINIMAL`, `STANDARD`, `FULL`).
-- `template/_tools/init-project --upgrade`: one-step, manifest/hash-verified
-  profile upgrade for existing generated projects; changed or unowned files
-  fail closed rather than being merged.
+- `template/_tools/init-project --upgrade`: one-step, manifest/hash-verified profile upgrade for existing generated projects; changed or unowned files fail closed rather than being merged.
 - `tests/test_tools.py`: cross-profile and tool-integrity regression contract.
 - `tests/test_metadata.py`: automated metadata, schema, and manifest parity test suite.
 - `RELEASE_GATE.md`: commands and evidence required before release.
-- `SECURITY.md`: bilingual vulnerability-reporting policy with Zero-Egress and Local-First guarantees.
+- `SECURITY.md`: bilingual vulnerability-reporting policy with Zero-Egress and Local-First guarantees (48h / 5d SLAs).
 - `template/START.md`: session bootstrap pattern.
 - `template/STATE.md`: current-state snapshot pattern.
 - `template/TODO.md` and `template/DONE.md`: active and completed task surfaces.
@@ -35,7 +34,7 @@ Important files:
 
 ## Verification
 
-- `pytest` (44 passed, 7 subtests passed) on Linux, Windows and macOS
+- `pytest` (51 passed, 7 subtests passed) on Linux, Windows and macOS
 - `ruff check .` (100% clean)
 - `compileall` (100% clean)
 
@@ -68,4 +67,3 @@ This repository is a documentation scaffold for software, research, and
 operations projects that are maintained with LLM agents. It is not a runtime
 agent framework, not a task runner, and not a replacement for project-specific
 source code or CI.
-

@@ -76,3 +76,21 @@ Verantwortlich: Pfad A & Pfad B Automation (Hygiene, Discoverability, UX & Gover
 5. **Software Bill of Materials (SBOM):** Created `THIRD_PARTY_LICENSES.md` formally validating the zero-runtime-dependency architecture.
 6. **PEP 621 Metadata Expansion:** Extended `pyproject.toml` with high-intent keywords (`multi-agent`, `zero-egress`, `governance`, `session-handoff`) and explicit project URLs.
 7. **Automated Contract Tests:** Added regression tests in `tests/test_metadata.py` asserting quick navigation integrity, persona coverage, license presence, and PEP 621 URL validity.
+
+## 2026-09-20 — Pfad B: Discoverability, 18-Point Navigation Parity, Level 1 SBOM, NOTICE & Visual Architecture Overhaul
+
+### 1. Architectural & Discoverability Evolution
+- **18-Point Quick Navigation Parity:** Both `README.md` and `README_de.md` now feature a standardized 18-point numbered structure with reciprocal dual HTML anchors (`<a id="..."></a>`) guaranteeing flawless deep-linking from documentation catalogs, LLM prompts, and GitHub web interfaces.
+- **Dual Mermaid Visual Topology:** Added two dedicated diagrams to both language editions:
+  1. *Visual Architecture Topology (`flowchart TD`):* Maps the 4 decoupled tiers (Developer & Agent Interfaces, Profile Selection & Staging, Scaffold Artifacts & Project Memory, Verification & Multi-Host Protection).
+  2. *End-to-End Multi-Agent Lifecycle (`sequenceDiagram`):* Illustrates the 4-phase workflow (Project Initialization, Agent Session Bootstrap, Task Completion & Archival, Merge-Safe Profile Upgrade) with `autonumber` and strictly 0 semicolons.
+- **Level 1 Software Bill of Materials (SBOM):** Upgraded `THIRD_PARTY_LICENSES.md` to the 2026-09-20 fleet standard, featuring:
+  - Level 1 SBOM component table with PSFL-2.0, MIT, and Apache-2.0 audit.
+  - Zero-Runtime-Dependency & Zero-Copyleft Isolation Guarantee.
+  - Unprivileged User-Mode Execution (`RunAsInvoker`) non-elevation certification.
+  - Invariant Cross-Reference Matrix mapping `INV-LOCAL-01` through `INV-SLA-10`.
+- **Root NOTICE Attribution:** Created canonical root `NOTICE` file asserting copyright 2026 Lukas Geiger, ellmos-ai, and open-bricks umbrella attribution.
+- **PEP 639 Compliance:** Added `license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]` and ecosystem discoverability keywords (`ellmos-ai`, `open-bricks`) to `pyproject.toml`.
+- **10-Dimension Comparative Matrix:** Expanded Section 5 matrix evaluating 4 alternatives across all 10 governance invariants (`INV-LOCAL-01` to `INV-SLA-10`).
+- **Section 18 Statutory Notice (§ 521 BGB):** Added the standard courtesy disclaimer (*Gefälligkeit / unentgeltliche Schenkung* pursuant to § 521 BGB, liability limited to intent and gross negligence).
+- **Automated Contract Tests:** Added comprehensive regression tests in `tests/test_metadata.py` asserting root `NOTICE` presence, PEP 639 compliance, Level 1 SBOM & `RunAsInvoker` guarantees, 18-point navigation resolution, 10-dimension comparative matrix, and semicolon-free Mermaid syntax.

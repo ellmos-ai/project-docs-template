@@ -11,7 +11,7 @@ authors = [
     { name = "Lukas Geiger", email = "lukas@um-bruch.org" }
 ]
 license = "MIT"
-license-files = ["LICENSE", "THIRD_PARTY_LICENSES.md"]
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]
 requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -41,6 +41,8 @@ keywords = [
     "zero-egress",
     "governance",
     "session-handoff",
+    "ellmos-ai",
+    "open-bricks",
 ]
 
 [project.urls]
@@ -52,6 +54,7 @@ Issues = "https://github.com/ellmos-ai/project-docs-template/issues"
 Changelog = "https://github.com/ellmos-ai/project-docs-template/blob/main/CHANGELOG.md"
 Security = "https://github.com/ellmos-ai/project-docs-template/blob/main/SECURITY.md"
 "Third-Party Licenses" = "https://github.com/ellmos-ai/project-docs-template/blob/main/THIRD_PARTY_LICENSES.md"
+Notice = "https://github.com/ellmos-ai/project-docs-template/blob/main/NOTICE"
 "Marketing Log" = "https://github.com/ellmos-ai/project-docs-template/blob/main/MARKETING-LOG.txt"
 "LLM Ready" = "https://github.com/ellmos-ai/project-docs-template/blob/main/llms.txt"
 Umbrella = "https://open-bricks.org"
