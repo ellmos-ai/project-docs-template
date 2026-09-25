@@ -5,6 +5,21 @@ Verantwortlich: Pfad A & Pfad B Automation (Hygiene, Discoverability, UX & Gover
 
 ---
 
+## 2026-09-25 — Pfad A: Repository Hygiene, CI Security Hardening & Contract Test Expansion
+
+### 1. Repository Hygiene & Automation Readiness
+- **Target Repository:** `ellmos-ai/project-docs-template`
+- **Audit Date:** 2026-09-25
+- **Focus:** Explicit CI Permissions, Patch Rejection Defense, Multi-Host Sync Guardrails, and Contract Test Suite Expansion.
+
+### 2. Executed Measures
+1. **CI/CD Security Guardrails:** Verified unprivileged `permissions: contents: read` in `.github/workflows/ci.yml` and scoped permissions in `stale.yml` alongside matrix timeouts and Node 24 SHA-pinned actions.
+2. **Multi-Host & Patch Defense:** Hardened root and template `.gitignore` against patch reject artifacts (`*.rej`), temporary debug logs (`pytestdebug.log`), and multi-host conflict patterns.
+3. **Context Synchronization:** Synchronized test suite counters (54 passed, 7 subtests | 100% green) and updated verification timestamps to `2026-09-25` across `README.md`, `README_de.md`, and `llms.txt`.
+4. **Contract Test Suite Expansion:** Added 3 new regression contract tests in `tests/test_metadata.py` verifying explicit CI permissions, patch ignore defenses, and changelog audit entries (54 collected tests, 100% green).
+
+---
+
 ## 2026-09-14 — Pfad A: Repository Hygiene, CI Timeout Hardening & Multi-Host Defense
 
 ### 1. Repository Hygiene & Automation Readiness

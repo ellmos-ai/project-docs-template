@@ -1,4 +1,4 @@
-## Last-checked: 2026-09-20
+## Last-checked: 2026-09-25
 
 # ellmos-ai/project-docs-template
 
@@ -34,7 +34,7 @@ Important files:
 
 ## Verification
 
-- `pytest` (51 passed, 7 subtests passed) on Linux, Windows and macOS
+- `pytest` (54 passed, 7 subtests passed) on Linux, Windows and macOS
 - `ruff check .` (100% clean)
 - `compileall` (100% clean)
 

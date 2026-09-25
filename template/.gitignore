@@ -64,6 +64,9 @@ uv.lock
 
 # Build, cache, and coverage artifacts
 *.orig
+*.rej
+*.tmp
+pytestdebug.log
 .coverage.*
 .tox/
 .turbo/

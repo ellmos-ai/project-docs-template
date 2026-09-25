@@ -2,6 +2,13 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## 2026-09-25 - Pfad A Repository Hygiene, CI Security Hardening & Contract Test Expansion
+
+- **CI Workflow Security Hardening (`.github/workflows/ci.yml`)**: Verified explicit unprivileged permissions (`contents: read`), runaway execution guardrail (`timeout-minutes: 15`), concurrency dedup, and pinned Node 24 action SHAs.
+- **Multi-Host Defense & Patch Hygiene (`.gitignore` & `template/.gitignore`)**: Hardened root and template ignore specifications with patch rejection artifacts (`*.rej`), temporary debug logs (`pytestdebug.log`), and multi-host conflict patterns.
+- **Context & Badge Synchronization**: Synchronized test badge baselines (54 passed, 7 subtests | 100% green), updated verification timestamps to `2026-09-25` across `README.md`, `README_de.md`, and `llms.txt`.
+- **Automated Contract Tests Expansion (`tests/test_metadata.py`)**: Added 3 new regression contract tests covering explicit CI workflow permissions, patch artifact ignore defenses, and changelog hygiene auditing (54 collected tests, 100% green).
+
 ## 2026-09-20 - Pfad B Discoverability, 18-Point Navigation Parity, Level 1 SBOM, NOTICE & Visual Architecture Overhaul
 
 - **18-Point Bilingual Navigation Parity**: Standardized both `README.md` and `README_de.md` into 18 identically numbered sections with dual reciprocal HTML anchors (`<a id="..."></a>`) guaranteeing seamless deep linking.

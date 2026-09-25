@@ -476,6 +476,27 @@ class MetadataAndManifestTests(unittest.TestCase):
             self.assertIn(inv, en_content, f"{inv} missing from README.md")
             self.assertIn(inv, de_content, f"{inv} missing from README_de.md")
 
+    def test_ci_explicit_permissions_guard(self) -> None:
+        """Verify CI workflows declare least-privilege explicit permissions."""
+        ci_content = self.ci_workflow_path.read_text(encoding="utf-8")
+        self.assertIn("permissions:\n  contents: read", ci_content, "ci.yml must declare unprivileged contents: read")
+
+        stale_content = (REPO_ROOT / ".github" / "workflows" / "stale.yml").read_text(encoding="utf-8")
+        self.assertIn("issues: write", stale_content, "stale.yml must declare issues: write")
+        self.assertIn("pull-requests: write", stale_content, "stale.yml must declare pull-requests: write")
+
+    def test_extended_gitignore_patch_and_cache_defense(self) -> None:
+        """Verify root and template gitignore include patch reject and temp debugging defenses."""
+        for path in [REPO_ROOT / ".gitignore", REPO_ROOT / "template" / ".gitignore"]:
+            content = path.read_text(encoding="utf-8")
+            for pattern in ["*.rej", "*.tmp", "pytestdebug.log"]:
+                self.assertIn(pattern, content, f"{path.name} must ignore {pattern}")
+
+    def test_changelog_recent_pfad_a_entry(self) -> None:
+        """Verify CHANGELOG.md documents recent Pfad A repository hygiene and CI security audit."""
+        content = self.changelog_path.read_text(encoding="utf-8")
+        self.assertIn("## 2026-09-25 - Pfad A", content, "CHANGELOG.md must contain 2026-09-25 Pfad A entry")
+
 
 if __name__ == "__main__":
     unittest.main()
