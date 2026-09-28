@@ -343,6 +343,7 @@ class MetadataAndManifestTests(unittest.TestCase):
             ".turbo/",
             ".nyc_output/",
             ".hypothesis/",
+            "MARKETING-LOG.txt",
         ]
         for pattern in expected_patterns:
             self.assertIn(pattern, content, f"Root .gitignore must defend against {pattern}")
@@ -365,6 +366,7 @@ class MetadataAndManifestTests(unittest.TestCase):
             ".turbo/",
             ".nyc_output/",
             ".hypothesis/",
+            "MARKETING-LOG.txt",
         ]
         for pattern in expected_patterns:
             self.assertIn(pattern, content, f"Template .gitignore must defend against {pattern}")
