@@ -69,3 +69,8 @@ uv.lock
 .turbo/
 .nyc_output/
 .hypothesis/
+
+# Internal maintenance material — not repository content
+_after-care/
+BEFUNDE.md
+MARKETING-LOG.txt
