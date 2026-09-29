@@ -2,6 +2,15 @@
 
 All notable public-facing changes to this repository are documented here.
 
+## [Unreleased] - Pfad B Discoverability, Dual HTML Anchors, ASCII 4-View Architecture Topology, Level 1 SBOM Text Companion & 20 Topics Saturation [2026-09-29]
+
+- **Version-Freeze Disziplin (T-20260920-167562623)**: Version `0.1.2` strikt unverändert beibehalten; kein vorzeitiger Release-Bump.
+- **Bilinguale 18-Punkte-Navigationsparität & wechselseitige HTML-Anker**: Vollständige 18-Punkte-Schnellnavigation in `README.md` und `README_de.md` mit reziproken dualen HTML-Ankern (`<a id="sec-01"></a>`..`<a id="sec-18"></a>`) und synchronisierten Shields.io-Badges (`last checked-2026--09--29`, `Level 1 SBOM: Audited | Plain Text`).
+- **ASCII Vier-Ansichten-Architekturprojektion**: Ergänzung von Section 2 in beiden READMEs um standardisierte 4-Ebenen-ASCII-Topologie (`[VIEW 1: CLI COCKPIT, LINTER & AGENT INTERFACE HARNESS]`, `[VIEW 2: TIERED PROFILE ENGINE & MERGE-SAFE STAGING]`, `[VIEW 3: RUNTIME PERSISTENCE, REPOSITORY MEMORY & AUDIT]`, `[VIEW 4: SECURITY BOUNDARY, AIR-GAP & RUNASINVOKER ZERO-EGRESS]`; deutsche Entsprechung `[SICHT 1]`..`[SICHT 4]`).
+- **Level 1 SBOM Plain-Text Companion (`THIRD_PARTY_LICENSES.txt`)**: Neue Plain-Text-Begleitdatei mit vollständigem Permissive-Inventar (PSFL-2.0, MIT, Apache-2.0), Zero-Runtime-Dependency-Garantie, `RunAsInvoker` Non-Elevation-Zertifizierung, Invarianten-Kreuzreferenzmatrix (`INV-LOCAL-01` bis `INV-SLA-10`) und gesetzlichem Haftungsausschluss gem. § 521 BGB.
+- **PEP 621 Metadaten- & GitHub Topics Sättigung**: GitHub Remote Topics via `gh repo edit` auf 20/20 gesättigt; alle 20 Topics in sortierter Reihenfolge in `keywords` von `pyproject.toml` synchronisiert; `license-files` Whitelist um `THIRD_PARTY_LICENSES.txt` erweitert; `"Level 1 SBOM"`, `"Third-Party Licenses (Text)"` und `"Plain-Text License"` URLs in `[project.urls]` registriert; `[tool.pytest.ini_options]` mit `--basetemp=.pytest_temp` und erweitertem `norecursedirs` gehärtet.
+- **Automatisierte Vertragstests (`tests/test_metadata.py`)**: Neue Contract-Tests für bilaterale 18-Punkte-Navigationsanker `sec-01`..`sec-18`, ASCII Vier-Ansichten-Topologie-Projektion, Level 1 SBOM Text-Companion und PEP 621 20-Keywords-Sättigung.
+
 ## 2026-09-25 - Pfad A Repository Hygiene, CI Security Hardening & Contract Test Expansion
 
 - **CI Workflow Security Hardening (`.github/workflows/ci.yml`)**: Verified explicit unprivileged permissions (`contents: read`), runaway execution guardrail (`timeout-minutes: 15`), concurrency dedup, and pinned Node 24 action SHAs.

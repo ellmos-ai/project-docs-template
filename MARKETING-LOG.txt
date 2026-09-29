@@ -5,6 +5,24 @@ Verantwortlich: Pfad A & Pfad B Automation (Hygiene, Discoverability, UX & Gover
 
 ---
 
+## 2026-09-29 — Pfad B: Discoverability, Bilateral Dual HTML Anchors, ASCII 4-View Topology, Level 1 SBOM Plain-Text Companion & 20 Topics Saturation
+
+### 1. Repository Discoverability & SEO Saturation
+- **Target Repository:** `ellmos-ai/project-docs-template`
+- **Audit Date:** 2026-09-29
+- **Focus:** 18-Point Dual Reciprocal Anchors (`sec-01`..`sec-18`), ASCII 4-View Architecture Topology Projection, Plain-Text Level 1 SBOM Companion (`THIRD_PARTY_LICENSES.txt`), PEP 621 20-Keywords Saturation, and Contract Test Hardening.
+
+### 2. Executed Measures
+1. **Version-Freeze Disziplin:** Version `0.1.2` strikt unverändert beibehalten per `T-20260920-167562623` (keine unautorisierte Versionsänderung). Alle Neuerungen unter `## [Unreleased]` in `CHANGELOG.md` dokumentiert.
+2. **Bilinguale 18-Punkte-Navigationsparität & wechselseitige HTML-Anker:** Vollständige 18-Punkte-Schnellnavigation in `README.md` und `README_de.md` mit reziproken dualen HTML-Ankern (`<a id="sec-01"></a>`..`<a id="sec-18"></a>`) und synchronisierten Shields.io Badges (`last checked-2026--09--29`, `Level 1 SBOM: Audited | Plain Text`).
+3. **ASCII Vier-Ansichten-Architekturprojektion:** Neuer Abschnitt 2 in beiden Sprachversionen mit ASCII-Topologie (`[VIEW 1: CLI COCKPIT, LINTER & AGENT INTERFACE HARNESS]`, `[VIEW 2: TIERED PROFILE ENGINE & MERGE-SAFE STAGING]`, `[VIEW 3: RUNTIME PERSISTENCE, REPOSITORY MEMORY & AUDIT]`, `[VIEW 4: SECURITY BOUNDARY, AIR-GAP & RUNASINVOKER ZERO-EGRESS]`; deutsche Entsprechung in `README_de.md` `[SICHT 1]`..`[SICHT 4]`).
+4. **Level 1 SBOM Plain-Text Companion:** `THIRD_PARTY_LICENSES.txt` neu erstellt mit vollständigem Permissive-Inventar (PSFL-2.0, MIT, Apache-2.0), Zero-Runtime-Dependency-Garantie, unprivileged `RunAsInvoker` Non-Elevation-Garantie, Zero-Copyleft & Zero-Egress Perimeter, Bestätigung aller 10 Governance- und Laufzeitinvarianten `INV-LOCAL-01`..`INV-SLA-10`, gesetzlichem Haftungsausschluss gem. § 521 BGB Gefälligkeitsrecht und Querverweisen auf `NOTICE` und `THIRD_PARTY_LICENSES.md`.
+5. **PEP 621 Metadaten- & GitHub Topics Sättigung in pyproject.toml:** GitHub Remote Topics via `gh repo edit` auf 20/20 gesättigt; alle 20 Topics in sortierter Reihenfolge in `keywords` von `pyproject.toml` synchronisiert (`agent-ready`, `agent-workflow`, `ai-agents`, `antigravity`, `claude-code`, `codex`, `developer-tools`, `documentation-template`, `documentation-tools`, `ellmos`, `ellmos-ai`, `llm-agents`, `llm-documentation`, `local-first`, `markdown`, `open-bricks`, `project-docs`, `project-template`, `python`, `zero-egress`); `license-files` Whitelist um `THIRD_PARTY_LICENSES.txt` erweitert; `"Level 1 SBOM"`, `"Third-Party Licenses (Text)"` und `"Plain-Text License"` URLs in `[project.urls]` registriert; `[tool.pytest.ini_options]` mit `--basetemp=.pytest_temp` und erweitertem `norecursedirs` gehärtet.
+6. **RAG-Manifest & Badges:** `llms.txt` auf Stand `2026-09-29` aktualisiert mit Verweisen auf Level 1 SBOM Plain-Text Companion; Test-Counter auf neue Gesamtzahl synchronisiert.
+7. **Automatisierte Vertragstests (`tests/test_metadata.py`):** Suite um neue Contract-Tests für bilaterale 18-Punkte-Navigationsanker `sec-01`..`sec-18`, ASCII Vier-Ansichten-Topologie-Projektion, Level 1 SBOM Plain-Text Companion und PEP 621 20-Keywords-Sättigung erweitert.
+
+---
+
 ## 2026-09-25 — Pfad A: Repository Hygiene, CI Security Hardening & Contract Test Expansion
 
 ### 1. Repository Hygiene & Automation Readiness

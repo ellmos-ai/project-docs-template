@@ -34,7 +34,7 @@ Important files:
 
 ## Verification
 
-- `pytest` (54 passed, 7 subtests passed) on Linux, Windows and macOS
+- `pytest` (60 passed, 7 subtests passed) on Linux, Windows and macOS
 - `ruff check .` (100% clean)
 - `compileall` (100% clean)
 

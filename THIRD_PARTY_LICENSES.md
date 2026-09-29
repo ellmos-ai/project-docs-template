@@ -1,9 +1,10 @@
 # Third-Party Licenses & Software Bill of Materials (SBOM)
 
 > **Project:** `ellmos-ai/project-docs-template`
-> **Audit Date:** 2026-09-20
+> **Audit Date:** 2026-09-29
 > **Repository License:** [MIT License](LICENSE)
 > **Attribution:** [NOTICE](NOTICE)
+> **Plain-Text SBOM Companion:** [THIRD_PARTY_LICENSES.txt](THIRD_PARTY_LICENSES.txt)
 > **Architecture & Privacy:** 100% Local-First, Zero-Egress, Unprivileged User-Mode (`RunAsInvoker`), Fail-Closed
 
 ---

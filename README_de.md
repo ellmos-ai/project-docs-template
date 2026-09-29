@@ -6,11 +6,11 @@
 [![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-54%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-60%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
 [![Security SLA](https://img.shields.io/badge/Security%20SLA-48h%20%2F%205d-blue.svg)](./SECURITY.md)
-[![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Gepr%C3%BCft-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
+[![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Gepr%C3%BCft%20%7C%20Klartext-brightgreen.svg)](./THIRD_PARTY_LICENSES.txt)
 [![RunAsInvoker](https://img.shields.io/badge/RunAsInvoker-Zertifiziert-success.svg)](./THIRD_PARTY_LICENSES.md)
 [![Attribution: NOTICE](https://img.shields.io/badge/Attribution-NOTICE-blue.svg)](./NOTICE)
 [![Ecosystem: ellmos-ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
@@ -19,7 +19,7 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: English](https://img.shields.io/badge/Language-English-blue.svg)](./README.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--09--25-informational.svg)](./MARKETING-LOG.txt)
+[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--09--29-informational.svg)](./MARKETING-LOG.txt)
 [![Drittanbieter-Lizenzen](https://img.shields.io/badge/lizenzen-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
 [![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Aktiv-blueviolet.svg)](./MARKETING-LOG.txt)
 
@@ -27,7 +27,7 @@ Agenten-optimierte Projektdokumentations-Vorlage mit START/STATE/TODO/DONE,
 Workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
 
 > [!NOTE]
-> **KI / LLM-Indexierung**: KI-Agenten und automatisierte Werkzeuge können [llms.txt](llms.txt) für eine maschinenlesbare Übersicht, Suchbegriffe und Disambiguierung einsehen. Letzte Prüfung: **2026-09-25**.
+> **KI / LLM-Indexierung**: KI-Agenten und automatisierte Werkzeuge können [llms.txt](llms.txt) für eine maschinenlesbare Übersicht, Suchbegriffe und Disambiguierung einsehen. Letzte Prüfung: **2026-09-29**.
 
 > Unabhängiges Projekt — keine geschäftliche Verbindung zu Anthropic, OpenAI oder Google.
 > Siehe [Marken](#marken).
@@ -55,7 +55,7 @@ Workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
 
 ---
 
-## <a id="management-zusammenfassung--kernidentitaet"></a><a id="was-ist-project-docs-template"></a>1. Management-Zusammenfassung & Kernidentität
+## <a id="sec-01"></a><a id="management-zusammenfassung--kernidentitaet"></a><a id="was-ist-project-docs-template"></a>1. Management-Zusammenfassung & Kernidentität
 
 `project-docs-template` liefert eine schlanke, agentenfähige Dokumentations- und Kontext-Architektur, konzipiert für autonome KI-Coding-Agenten (Claude Code, OpenAI Codex, Antigravity/Gemini), Multi-Agenten-Schwärme sowie menschliche Maintainer in Software-, Forschungs- und Betriebsprojekten.
 
@@ -70,7 +70,7 @@ Statt Repositories in schwerfällige, unübersichtliche Betriebssysteme zu verwa
 
 ---
 
-## <a id="visuelle-architektur-topologie"></a><a id="architektur--ablauf"></a>2. Visuelle Architektur-Topologie & Entkoppelte Schichten
+## <a id="sec-02"></a><a id="visuelle-architektur-topologie"></a><a id="architektur--ablauf"></a>2. Visuelle Architektur-Topologie & Entkoppelte Schichten
 
 Das folgende Diagramm zeigt die vier entkoppelten Betriebsebenen von `project-docs-template`, von Schnittstellen für Entwickler und Agenten bis hin zum persistenten Repository-Zustand und den Cloud-Sync-Schutzmechanismen:
 
@@ -104,9 +104,48 @@ flowchart TD
     end
 ```
 
+### Vier-Sichten-Architekturprojektion
+
+```text
++--------------------------------------------------------------------------------------------------+
+|                  [SICHT 1: CLI-COCKPIT, LINTER & AGENTEN-SCHNITTSTELLEN]                         |
+|  - init-project: Deterministisches Scaffolding, SHA-256 Manifest-Stempel & Profil-Migrationen   |
+|  - doc-lint: Statische Markdown-Validierung, Frontmatter-Prüfung & Header-Vertragskontrolle     |
+|  - todo-archive: Atomare Zwei-Dateien-Aufgabenarchivierung (TODO.md -> DONE.md)                  |
+|  - workflows-sync: Bidirektionale Orchestrierungs-Synchronisation & Prompt-Vorlagen-Extraktion   |
++--------------------------------------------------------------------------------------------------+
+                                                |
+                                                v
++--------------------------------------------------------------------------------------------------+
+|                  [SICHT 2: GESTAFFELTE PROFIL-ENGINE & MERGE-SICHERE BEREITSTELLUNG]            |
+|  - MINIMAL-Profil: Schlanke Kontextgrenze (CLAUDE.md, AGENTS.md, START.md, STATE.md)            |
+|  - STANDARD-Profil: Vollständiges Projektgedächtnis (TODO.md, DONE.md, DECISIONS.md, PATTERNS)  |
+|  - FULL-Profil: Enterprise-Architektur & Governance (WORKFLOWS.md, TOOLS.md, GLOSSARY.md)       |
+|  - SHA-256 Manifest: .project-docs-template.json schützt eigene Dateiänderungen vor Kollisionen  |
++--------------------------------------------------------------------------------------------------+
+                                                |
+                                                v
++--------------------------------------------------------------------------------------------------+
+|                  [SICHT 3: LAUFZEIT-PERSISTENZ, REPOSITORY-MEMORY & AUDITIERBARKEIT]             |
+|  - Universeller Agenten-Bootstrap: CLAUDE.md / AGENTS.md sofortige Workspace-Ausrichtung        |
+|  - Sitzungsgedächtnis: START.md (Sitzungs-Bootloader) & STATE.md (lebendes Betriebsregister)    |
+|  - Aufgaben-Tracking: Strukturierte Task-Karten, wiederkehrende Checklisten & Prüfkriterien      |
+|  - Entscheidungsregister: ADR-konforme Architektureinträge (DECISIONS.md) & Muster (PATTERNS.md) |
++--------------------------------------------------------------------------------------------------+
+                                                |
+                                                v
++--------------------------------------------------------------------------------------------------+
+|                  [SICHT 4: SICHERHEITSPERIMETER, AIR-GAP & RUNASINVOKER ZERO-EGRESS]             |
+|  - Unprivilegierter Benutzermodus: RunAsInvoker-Garantie, 0 Rechteerweiterung, 0 UAC-Dialoge     |
+|  - Zero-Egress-Invariante: 100% Offline, 0 Netzwerk-Sockets, 0 Phone-Home-Aufrufe, 0 Telemetrie  |
+|  - Multi-Host Cloud-Sync-Abwehr: .gitignore-Filter für Konfliktkopien (*-WORKSTATION-LG*)        |
+|  - Recht & Governance: § 521 BGB Gefälligkeitshaftung, verbindliche 48h Security SLA (INV-SLA-10)|
++--------------------------------------------------------------------------------------------------+
+```
+
 ---
 
-## <a id="ende-zu-ende-lebenszyklus"></a>3. Ende-zu-Ende Multi-Agenten-Lebenszyklus & Tooling-Ablauf
+## <a id="sec-03"></a><a id="ende-zu-ende-lebenszyklus"></a>3. Ende-zu-Ende Multi-Agenten-Lebenszyklus & Tooling-Ablauf
 
 Das Sequenzdiagramm verdeutlicht, wie Entwickler und autonome KI-Agenten über Gerüsterstellung, Sitzungsstart, Arbeitsabschluss und Profil-Upgrades hinweg zusammenarbeiten:
 
@@ -150,7 +189,7 @@ sequenceDiagram
 
 ---
 
-## <a id="zielgruppen--auffindbarkeit"></a><a id="zielgruppen--kern-anwendungsfaelle"></a><a id="zielgruppen--kern-anwendungsfälle"></a>4. Zielgruppen & Kern-Anwendungsfälle
+## <a id="sec-04"></a><a id="zielgruppen--auffindbarkeit"></a><a id="zielgruppen--kern-anwendungsfaelle"></a><a id="zielgruppen--kern-anwendungsfälle"></a>4. Zielgruppen & Kern-Anwendungsfälle
 
 `project-docs-template` wurde entwickelt, um Kontextverlust, Zustandsdrift und Reibungsverluste bei 4 konkreten Zielgruppen zu eliminieren:
 
@@ -172,7 +211,7 @@ sequenceDiagram
 
 ---
 
-## <a id="vergleichsmatrix-gegenueber-alternativen"></a><a id="vergleichsmatrix-gegenüber-alternativen"></a><a id="architekturvergleich"></a>5. Vergleichsmatrix gegenüber Alternativen
+## <a id="sec-05"></a><a id="vergleichsmatrix-gegenueber-alternativen"></a><a id="vergleichsmatrix-gegenüber-alternativen"></a><a id="architekturvergleich"></a>5. Vergleichsmatrix gegenüber Alternativen
 
 Direkter Vergleich von `project-docs-template` mit alternativen Dokumentations- und Organisationsansätzen anhand unserer 10 Governance- und Laufzeit-Invarianten (`INV-LOCAL-01` bis `INV-SLA-10`):
 
@@ -191,7 +230,7 @@ Direkter Vergleich von `project-docs-template` mit alternativen Dokumentations- 
 
 ---
 
-## <a id="governance--runtime-invariants"></a><a id="governance--laufzeit-invarianten"></a>6. Governance & Laufzeit-Invarianten Matrix
+## <a id="sec-06"></a><a id="governance--runtime-invariants"></a><a id="governance--laufzeit-invarianten"></a>6. Governance & Laufzeit-Invarianten Matrix
 
 `project-docs-template` garantiert 10 fundamentale Laufzeit-, Staging- und Governance-Invarianten über sämtliche Werkzeuge, CLI-Befehle und generierten Vorlagen hinweg:
 
@@ -210,7 +249,7 @@ Direkter Vergleich von `project-docs-template` mit alternativen Dokumentations- 
 
 ---
 
-## <a id="verwendungsszenarien"></a>7. Einsatzszenarien für diese Vorlage
+## <a id="sec-07"></a><a id="verwendungsszenarien"></a>7. Einsatzszenarien für diese Vorlage
 
 | Situation | Vorteil |
 |:---|:---|
@@ -222,7 +261,7 @@ Dies ist eine Dokumentations- und Koordinationsvorlage, kein Laufzeitframework. 
 
 ---
 
-## <a id="was-enthalten-ist"></a>8. Lieferumfang & Scaffold-Struktur
+## <a id="sec-08"></a><a id="was-enthalten-ist"></a>8. Lieferumfang & Scaffold-Struktur
 
 - `CLAUDE.md` und `AGENTS.md` für Agenten-Anweisungen
 - `START.md` und `STATE.md` für Sitzungs-Bootstrap und aktuellen Status
@@ -235,7 +274,7 @@ Die eigentlichen Vorlagendateien liegen unter [`template/`](./template/).
 
 ---
 
-## <a id="schnellstart"></a>9. Schnellstart & CLI-Workflows
+## <a id="sec-09"></a><a id="schnellstart"></a>9. Schnellstart & CLI-Workflows
 
 Repository klonen und Generator aufrufen:
 
@@ -267,7 +306,7 @@ python _tools/workflows-sync --apply
 
 ---
 
-## <a id="merge-sichere-profil-upgrades"></a>10. Merge-sichere Profil-Upgrades & Migration
+## <a id="sec-10"></a><a id="merge-sichere-profil-upgrades"></a>10. Merge-sichere Profil-Upgrades & Migration
 
 Bestehende Projekte können sicher auf höhere Profilstufen aktualisiert werden:
 
@@ -284,7 +323,7 @@ python template/_tools/init-project /pfad/zu/meinem-projekt --upgrade full
 
 ---
 
-## <a id="profil-vergleich"></a>11. Profilvergleich (MINIMAL / STANDARD / FULL)
+## <a id="sec-11"></a><a id="profil-vergleich"></a>11. Profilvergleich (MINIMAL / STANDARD / FULL)
 
 | Feature / Dokument | `MINIMAL` | `STANDARD` | `FULL` |
 |:---|:---:|:---:|:---:|
@@ -302,7 +341,7 @@ python template/_tools/init-project /pfad/zu/meinem-projekt --upgrade full
 
 ---
 
-## <a id="design-prinzipien"></a>12. Design-Prinzipien & Architektur-Invarianten
+## <a id="sec-12"></a><a id="design-prinzipien"></a>12. Design-Prinzipien & Architektur-Invarianten
 
 - **Klare Aufgabenverteilung**: Jede Datei besitzt eine einzige, präzise definierte operative Rolle.
 - **Explizite Übergabe**: Sitzungsstart und aktueller Projektstatus sind in kurzen, vorhersehbaren Registern dokumentiert (`START.md`, `STATE.md`).
@@ -314,7 +353,7 @@ Vollständige Hintergründe und Dateierklärungen finden sich in [`template/TEMP
 
 ---
 
-## <a id="verifizierung"></a>13. Verifikation, Tests & Qualitäts-Gates
+## <a id="sec-13"></a><a id="verifizierung"></a>13. Verifikation, Tests & Qualitäts-Gates
 
 Die Testsuite kann mit Pythons Standard-`unittest` oder `pytest` ausgeführt werden:
 
@@ -330,7 +369,7 @@ Die Suite testet jedes Profil, echte Git-Initialisierungen, Frontmatter-Reparatu
 
 ---
 
-## <a id="sicherheitsrichtlinie"></a>14. Sicherheitsrichtlinie & Schwachstellen-SLAs
+## <a id="sec-14"></a><a id="sicherheitsrichtlinie"></a>14. Sicherheitsrichtlinie & Schwachstellen-SLAs
 
 `project-docs-template` erzwingt strenge Sicherheitsinvariante:
 - **Zero-Egress-Invariante**: Sämtliche Werkzeuge arbeiten vollständig offline ohne externe Netzwerkverbindungen.
@@ -341,7 +380,7 @@ Sicherheitsrelevante Meldungen sind vertraulich über die in [`SECURITY.md`](./S
 
 ---
 
-## <a id="drittanbieter-lizenzen--transparenz"></a>15. Drittanbieter-Lizenzen & Level 1 SBOM
+## <a id="sec-15"></a><a id="drittanbieter-lizenzen--transparenz"></a>15. Drittanbieter-Lizenzen & Level 1 SBOM
 
 `project-docs-template` arbeitet unter einer **strengen Zero-Runtime-Dependency-Architektur** (`dependencies = []`). Der gesamte Produktivcode nutzt ausschließlich die Python-Standardbibliothek (3.10+).
 
@@ -352,11 +391,11 @@ Sicherheitsrelevante Meldungen sind vertraulich über die in [`SECURITY.md`](./S
 | **ruff** | Entwicklung / QA | MIT / Apache-2.0 | 100% Frei / Zulässig |
 | **setuptools** | Build-Backend | MIT License | 100% Frei / Zulässig |
 
-Das vollständige Level 1 Software Bill of Materials (SBOM) und die Invarianten-Matrix (`INV-LOCAL-01` bis `INV-SLA-10`) sind in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) dokumentiert.
+Das vollständige Level 1 Software Bill of Materials (SBOM) und die Invarianten-Matrix (`INV-LOCAL-01` bis `INV-SLA-10`) sind in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) und der Klartext-Begleitdatei [THIRD_PARTY_LICENSES.txt](THIRD_PARTY_LICENSES.txt) dokumentiert.
 
 ---
 
-## <a id="oekosystem--geschwistertools"></a><a id="ökosystem--geschwisterwerkzeuge"></a><a id="bundles-und-partner"></a>16. Bundles, Partner & Ökosystem-Geschwister
+## <a id="sec-16"></a><a id="oekosystem--geschwistertools"></a><a id="ökosystem--geschwisterwerkzeuge"></a><a id="bundles-und-partner"></a>16. Bundles, Partner & Ökosystem-Geschwister
 
 `project-docs-template` ist ein grundlegender Baustein im [`ellmos-ai`](https://github.com/ellmos-ai)-Ökosystem sowie der Dachorganisation [`open-bricks`](https://github.com/open-bricks):
 
@@ -388,7 +427,7 @@ Generierte Entdeckungsprojektion für `module:project-docs-template` aus `catalo
 
 ---
 
-## <a id="marken"></a><a id="markenhinweise"></a>17. Markenhinweise & Unabhängigkeitserklärung
+## <a id="sec-17"></a><a id="marken"></a><a id="markenhinweise"></a>17. Markenhinweise & Unabhängigkeitserklärung
 
 Dieses Projekt ist eine unabhängige, gemeinschaftlich gepflegte Dokumentationsvorlage.
 Es besteht **keine** geschäftliche Verbindung, Autorisierung oder Förderung durch
@@ -402,7 +441,7 @@ Beschreibung von Kompatibilität und Schnittstellen.
 
 ---
 
-## <a id="lizenz"></a><a id="gesetzliche-hinweise-haftungsbeschraenkung--lizenz"></a>18. Gesetzliche Hinweise, Haftungsbeschränkung & Lizenz (§ 521 BGB)
+## <a id="sec-18"></a><a id="lizenz"></a><a id="gesetzliche-hinweise-haftungsbeschraenkung--lizenz"></a>18. Gesetzliche Hinweise, Haftungsbeschränkung & Lizenz (§ 521 BGB)
 
 ### Gesetzlicher Hinweis & Haftungsbeschränkung (§ 521 BGB)
 Die Bereitstellung dieser Software und Vorlagen erfolgt unentgeltlich als gesetzliche Gefälligkeit bzw. Schenkung im Sinne von **§ 521 BGB**. Gemäß deutschem Recht ist die Haftung des Autors und der Mitwirkenden auf Vorsatz und grobe Fahrlässigkeit beschränkt. Die zwingende gesetzliche Haftung — insbesondere für Vorsatz (§ 276 Abs. 3 BGB) sowie für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit — bleibt unberührt.

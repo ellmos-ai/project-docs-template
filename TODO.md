@@ -10,6 +10,7 @@ Project-level maintenance checklist for `project-docs-template`.
 | Template profiles | Verified | `MINIMAL`, `STANDARD`, and `FULL` generate profile-correct files without dead local links. |
 | Tooling | Verified | Generator, linter, archive transaction, and workflow synchronization have focused regression tests. |
 | Security hygiene | Documented | Root/template ignore rules and private vulnerability-reporting guidance are present. |
+| Pfad B Discoverability | Verified (2026-09-29) | Bilateral dual anchors sec-01..18, ASCII 4-view topology, Level 1 SBOM text companion & 20 topics saturation. |
 
 ## Open Items
 

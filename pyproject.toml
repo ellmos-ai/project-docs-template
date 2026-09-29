@@ -11,7 +11,7 @@ authors = [
     { name = "Lukas Geiger", email = "lukas@um-bruch.org" }
 ]
 license = "MIT"
-license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt"]
 requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -30,19 +30,26 @@ classifiers = [
     "Topic :: Software Development :: Build Tools",
 ]
 keywords = [
-    "llm",
-    "claude-code",
+    "agent-ready",
     "antigravity",
+    "claude-code",
     "codex",
+    "developer-tools",
     "documentation-template",
-    "agent-handoff",
-    "start-state-todo-done",
-    "multi-agent",
-    "zero-egress",
-    "governance",
-    "session-handoff",
+    "documentation-tools",
+    "ellmos",
     "ellmos-ai",
+    "governance",
+    "llm-agents",
+    "llm-documentation",
+    "local-first",
+    "markdown",
+    "multi-agent",
     "open-bricks",
+    "project-docs",
+    "project-template",
+    "session-handoff",
+    "zero-egress",
 ]
 
 [project.urls]
@@ -54,6 +61,9 @@ Issues = "https://github.com/ellmos-ai/project-docs-template/issues"
 Changelog = "https://github.com/ellmos-ai/project-docs-template/blob/main/CHANGELOG.md"
 Security = "https://github.com/ellmos-ai/project-docs-template/blob/main/SECURITY.md"
 "Third-Party Licenses" = "https://github.com/ellmos-ai/project-docs-template/blob/main/THIRD_PARTY_LICENSES.md"
+"Level 1 SBOM" = "https://github.com/ellmos-ai/project-docs-template/blob/main/THIRD_PARTY_LICENSES.md"
+"Third-Party Licenses (Text)" = "https://github.com/ellmos-ai/project-docs-template/blob/main/THIRD_PARTY_LICENSES.txt"
+"Plain-Text License" = "https://github.com/ellmos-ai/project-docs-template/blob/main/THIRD_PARTY_LICENSES.txt"
 Notice = "https://github.com/ellmos-ai/project-docs-template/blob/main/NOTICE"
 "Marketing Log" = "https://github.com/ellmos-ai/project-docs-template/blob/main/MARKETING-LOG.txt"
 "LLM Ready" = "https://github.com/ellmos-ai/project-docs-template/blob/main/llms.txt"
@@ -65,6 +75,7 @@ addopts = "-ra -v"
 pythonpath = ["."]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+norecursedirs = [".pytest_temp", ".pytest_tmp*", ".git", ".tox", "build", "dist", ".venv"]
 
 
 [tool.ruff]

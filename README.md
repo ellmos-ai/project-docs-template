@@ -6,11 +6,11 @@
 [![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-54%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-60%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
 [![Security SLA](https://img.shields.io/badge/Security%20SLA-48h%20%2F%205d-blue.svg)](./SECURITY.md)
-[![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Audited-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
+[![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Audited%20%7C%20Plain%20Text-brightgreen.svg)](./THIRD_PARTY_LICENSES.txt)
 [![RunAsInvoker](https://img.shields.io/badge/RunAsInvoker-Certified-success.svg)](./THIRD_PARTY_LICENSES.md)
 [![Attribution: NOTICE](https://img.shields.io/badge/Attribution-NOTICE-blue.svg)](./NOTICE)
 [![Ecosystem: ellmos-ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
@@ -19,7 +19,7 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Last Checked](https://img.shields.io/badge/last%20checked-2026--09--25-informational.svg)](./MARKETING-LOG.txt)
+[![Last Checked](https://img.shields.io/badge/last%20checked-2026--09--29-informational.svg)](./MARKETING-LOG.txt)
 [![Third-Party Licenses](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
 [![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
@@ -27,7 +27,7 @@ Agent-ready project documentation template with START/STATE/TODO/DONE,
 workflows, lightweight tooling, and LLM-friendly project memory.
 
 > [!NOTE]
-> **AI / LLM Indexing**: AI agents and automated tools can inspect [llms.txt](llms.txt) for a machine-readable summary, search terms, and disambiguation details. Last checked: **2026-09-25**.
+> **AI / LLM Indexing**: AI agents and automated tools can inspect [llms.txt](llms.txt) for a machine-readable summary, search terms, and disambiguation details. Last checked: **2026-09-29**.
 
 > Independent project — not affiliated with Anthropic, OpenAI, or Google.
 > See [Trademarks](#trademarks).
@@ -55,7 +55,7 @@ workflows, lightweight tooling, and LLM-friendly project memory.
 
 ---
 
-## <a id="executive-summary--core-identity"></a><a id="what-is-project-docs-template"></a>1. Executive Summary & Core Identity
+## <a id="sec-01"></a><a id="executive-summary--core-identity"></a><a id="what-is-project-docs-template"></a>1. Executive Summary & Core Identity
 
 `project-docs-template` provides a lightweight, agent-ready documentation and project memory architecture engineered for autonomous AI coding agents (Claude Code, OpenAI Codex, Antigravity/Gemini), multi-agent swarms, and human maintainers operating across software, research, and operations repositories.
 
@@ -70,7 +70,7 @@ Instead of turning projects into heavyweight, rigid operating systems or relying
 
 ---
 
-## <a id="visual-architecture-topology"></a><a id="architecture--flow"></a>2. Visual Architecture Topology & Decoupled Layers
+## <a id="sec-02"></a><a id="visual-architecture-topology"></a><a id="architecture--flow"></a>2. Visual Architecture Topology & Decoupled Layers
 
 The diagram below illustrates the four decoupled operational tiers of `project-docs-template`, from developer/agent interfaces down to persistent repository state, validation gates, and cloud-sync defenses:
 
@@ -104,9 +104,48 @@ flowchart TD
     end
 ```
 
+### Four-View Architectural Projection
+
+```text
++--------------------------------------------------------------------------------------------------+
+|                  [VIEW 1: CLI COCKPIT, LINTER & AGENT INTERFACE HARNESS]                         |
+|  - init-project: Deterministic scaffolding, SHA-256 manifest stamping & profile migrations      |
+|  - doc-lint: Static markdown validation, frontmatter linting & header contract enforcement       |
+|  - todo-archive: Atomic two-file task ledger journaling (TODO.md -> DONE.md)                     |
+|  - workflows-sync: Bidirectional orchestration synchronization & prompt template extraction      |
++--------------------------------------------------------------------------------------------------+
+                                                |
+                                                v
++--------------------------------------------------------------------------------------------------+
+|                  [VIEW 2: TIERED PROFILE ENGINE & MERGE-SAFE STAGING]                            |
+|  - MINIMAL Profile: Lightweight context boundary (CLAUDE.md, AGENTS.md, START.md, STATE.md)     |
+|  - STANDARD Profile: Complete project memory (TODO.md, DONE.md, DECISIONS.md, PATTERNS.md)       |
+|  - FULL Profile: Enterprise architecture & governance (WORKFLOWS.md, TOOLS.md, GLOSSARY.md)      |
+|  - SHA-256 Manifest: .project-docs-template.json protects custom user edits against collisions   |
++--------------------------------------------------------------------------------------------------+
+                                                |
+                                                v
++--------------------------------------------------------------------------------------------------+
+|                  [VIEW 3: RUNTIME PERSISTENCE, REPOSITORY MEMORY & AUDIT]                        |
+|  - Universal Agent Bootstrap: CLAUDE.md / AGENTS.md instant workspace alignment                  |
+|  - Session Memory: START.md (session bootloader) & STATE.md (live operational ledger)            |
+|  - Task Tracking: Structured task cards, recurring checklists, and verification criteria        |
+|  - Decision Ledger: ADR-style architectural records (DECISIONS.md) & code patterns (PATTERNS.md)|
++--------------------------------------------------------------------------------------------------+
+                                                |
+                                                v
++--------------------------------------------------------------------------------------------------+
+|                  [VIEW 4: SECURITY BOUNDARY, AIR-GAP & RUNASINVOKER ZERO-EGRESS]                 |
+|  - Unprivileged User-Mode: RunAsInvoker guarantee, 0 administrative elevation, 0 UAC prompts     |
+|  - Zero-Egress Invariant: 100% offline, 0 network sockets, 0 phone-home calls, 0 telemetry       |
+|  - Multi-Host Cloud-Sync Defense: .gitignore filters for conflict copies (*-WORKSTATION-LG*)    |
+|  - Legal & Governance: § 521 BGB Gefälligkeit liability cap, 48h Security SLA (INV-SLA-10)       |
++--------------------------------------------------------------------------------------------------+
+```
+
 ---
 
-## <a id="end-to-end-multi-agent-lifecycle"></a>3. End-to-End Multi-Agent Lifecycle & Tooling Flow
+## <a id="sec-03"></a><a id="end-to-end-multi-agent-lifecycle"></a>3. End-to-End Multi-Agent Lifecycle & Tooling Flow
 
 The sequence diagram below demonstrates how human engineers and autonomous AI coding agents interact with `project-docs-template` across scaffolding, session bootstrap, task completion, and merge-safe profile upgrades:
 
@@ -150,7 +189,7 @@ sequenceDiagram
 
 ---
 
-## <a id="target-personas--discoverability"></a><a id="target-personas--core-use-cases"></a>4. Target Personas & Core Use Cases
+## <a id="sec-04"></a><a id="target-personas--discoverability"></a><a id="target-personas--core-use-cases"></a>4. Target Personas & Core Use Cases
 
 `project-docs-template` is engineered to solve context drift, handoff loss, and governance friction across four primary technical user journeys:
 
@@ -172,7 +211,7 @@ sequenceDiagram
 
 ---
 
-## <a id="comparative-matrix-vs-alternatives"></a><a id="comparative-architecture"></a>5. Comparative Architecture Matrix vs. Alternatives
+## <a id="sec-05"></a><a id="comparative-matrix-vs-alternatives"></a><a id="comparative-architecture"></a>5. Comparative Architecture Matrix vs. Alternatives
 
 The matrix below compares `project-docs-template` against single README markdown dumps, heavy SaaS wikis, rigid agent frameworks, and ad-hoc shell scripts across our 10 Governance and Technical Invariants (`INV-LOCAL-01` to `INV-SLA-10`):
 
@@ -191,7 +230,7 @@ The matrix below compares `project-docs-template` against single README markdown
 
 ---
 
-## <a id="governance--runtime-invariants"></a>6. Governance & Runtime Invariants Matrix
+## <a id="sec-06"></a><a id="governance--runtime-invariants"></a>6. Governance & Runtime Invariants Matrix
 
 `project-docs-template` guarantees 10 fundamental runtime, staging, and governance invariants across all scaffolding tools, maintenance CLI utilities, and generated repository profiles:
 
@@ -210,7 +249,7 @@ The matrix below compares `project-docs-template` against single README markdown
 
 ---
 
-## <a id="use-this-template-when"></a>7. When to Use This Template
+## <a id="sec-07"></a><a id="use-this-template-when"></a>7. When to Use This Template
 
 | Situation | Why it helps |
 |:---|:---|
@@ -223,7 +262,7 @@ is meant to sit inside ordinary software, research, or operations repositories.
 
 ---
 
-## <a id="what-is-included"></a>8. What Is Included & Scaffold Structure
+## <a id="sec-08"></a><a id="what-is-included"></a>8. What Is Included & Scaffold Structure
 
 - `CLAUDE.md` and `AGENTS.md` for agent instructions
 - `START.md` and `STATE.md` for session bootstrap and current state
@@ -236,7 +275,7 @@ The actual template files live in [`template/`](./template/).
 
 ---
 
-## <a id="quick-start"></a>9. Quick Start & Common CLI Workflows
+## <a id="sec-09"></a><a id="quick-start"></a>9. Quick Start & Common CLI Workflows
 
 Clone the repository and run the generator:
 
@@ -268,7 +307,7 @@ python _tools/workflows-sync --apply
 
 ---
 
-## <a id="merge-safe-profile-upgrades"></a>10. Merge-Safe Profile Upgrades & Migration
+## <a id="sec-10"></a><a id="merge-safe-profile-upgrades"></a>10. Merge-Safe Profile Upgrades & Migration
 
 Existing projects can be upgraded to higher profiles safely:
 
@@ -285,7 +324,7 @@ python template/_tools/init-project /path/to/my-project --upgrade full
 
 ---
 
-## <a id="profile-comparison"></a>11. Profile Comparison Matrix
+## <a id="sec-11"></a><a id="profile-comparison"></a>11. Profile Comparison Matrix
 
 | Feature / Document | `MINIMAL` | `STANDARD` | `FULL` |
 |:---|:---:|:---:|:---:|
@@ -303,7 +342,7 @@ python template/_tools/init-project /path/to/my-project --upgrade full
 
 ---
 
-## <a id="design-principles"></a>12. Design Principles & Architecture Invariants
+## <a id="sec-12"></a><a id="design-principles"></a>12. Design Principles & Architecture Invariants
 
 - **Separation of Concerns**: Every file has a single, well-defined operational responsibility.
 - **Explicit Session Handoff**: Session start and current state are documented in short, predictable files (`START.md`, `STATE.md`).
@@ -315,7 +354,7 @@ See [`template/TEMPLATE.md`](./template/TEMPLATE.md) for the complete design rat
 
 ---
 
-## <a id="verification"></a>13. Testing, Verification & Quality Gates
+## <a id="sec-13"></a><a id="verification"></a>13. Testing, Verification & Quality Gates
 
 The entire test suite can be run with Python's standard `unittest` or `pytest`:
 
@@ -331,7 +370,7 @@ The test suite exercises every profile, real Git repository initialization, fron
 
 ---
 
-## <a id="security-policy"></a>14. Security Policy & Vulnerability SLAs
+## <a id="sec-14"></a><a id="security-policy"></a>14. Security Policy & Vulnerability SLAs
 
 `project-docs-template` enforces strict security invariants:
 - **Zero-Egress Invariant**: All scaffolding and maintenance operations execute offline with zero network connectivity.
@@ -342,7 +381,7 @@ Security reports must be sent through private channels as documented in [`SECURI
 
 ---
 
-## <a id="third-party-licenses--transparency"></a>15. Third-Party Licenses & Level 1 SBOM
+## <a id="sec-15"></a><a id="third-party-licenses--transparency"></a>15. Third-Party Licenses & Level 1 SBOM
 
 `project-docs-template` maintains a **strict Zero-Runtime-Dependency architecture** (`dependencies = []`). All runtime code relies exclusively on Python's standard library (3.10+).
 
@@ -353,11 +392,11 @@ Security reports must be sent through private channels as documented in [`SECURI
 | **ruff** | Development / QA | MIT / Apache-2.0 | 100% Permissive |
 | **setuptools** | Build Backend | MIT License | 100% Permissive |
 
-For the complete Level 1 Software Bill of Materials (SBOM), audited dependency matrix, and Invariant Cross-Reference Matrix (`INV-LOCAL-01` to `INV-SLA-10`), see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+For the complete Level 1 Software Bill of Materials (SBOM), audited dependency matrix, and Invariant Cross-Reference Matrix (`INV-LOCAL-01` to `INV-SLA-10`), see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) and the plain-text companion [THIRD_PARTY_LICENSES.txt](THIRD_PARTY_LICENSES.txt).
 
 ---
 
-## <a id="ecosystem--sibling-tools"></a><a id="bundles-and-partners"></a>16. Bundles, Partners & Ecosystem Sibling Tools
+## <a id="sec-16"></a><a id="ecosystem--sibling-tools"></a><a id="bundles-and-partners"></a>16. Bundles, Partners & Ecosystem Sibling Tools
 
 `project-docs-template` is an essential scaffolding component within the [`ellmos-ai`](https://github.com/ellmos-ai) ecosystem and the umbrella [`open-bricks`](https://github.com/open-bricks) open-source collective:
 
@@ -389,7 +428,7 @@ Generated discovery projection for `module:project-docs-template` from `catalog:
 
 ---
 
-## <a id="trademarks"></a>17. Trademarks & Independence Notice
+## <a id="sec-17"></a><a id="trademarks"></a>17. Trademarks & Independence Notice
 
 This project is an independent, community-maintained documentation template.
 It is **not** affiliated with, endorsed by, sponsored by, or otherwise connected
@@ -404,7 +443,7 @@ authorisation, or business relationship.
 
 ---
 
-## <a id="license"></a><a id="statutory-notice-liability-limitation--license"></a>18. Statutory Notice, Liability Limitation & License (§ 521 BGB)
+## <a id="sec-18"></a><a id="license"></a><a id="statutory-notice-liability-limitation--license"></a>18. Statutory Notice, Liability Limitation & License (§ 521 BGB)
 
 ### Statutory Notice & Limitation of Liability (§ 521 BGB)
 The provision of this software and template scaffold is made free of charge as a statutory courtesy (*Gefälligkeit* / *unentgeltliche Schenkung* pursuant to **§ 521 BGB** of the German Civil Code). Under German statutory law, liability of the author and contributors is strictly limited to intent and gross negligence (*Vorsatz und grobe Fahrlässigkeit*). Mandatory statutory liability — in particular for intent (Section 276(3) BGB) and for injury to life, body, or health — remains unaffected.

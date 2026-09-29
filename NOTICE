@@ -6,3 +6,6 @@ ellmos-ai multi-agent infrastructure (https://github.com/ellmos-ai)
 and the open-bricks open-source software ecosystem (https://github.com/open-bricks).
 
 Licensed under the MIT License.
+
+See THIRD_PARTY_LICENSES.md and THIRD_PARTY_LICENSES.txt for third-party
+software notices and Level 1 SBOM audit trail.

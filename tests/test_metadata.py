@@ -393,12 +393,13 @@ class MetadataAndManifestTests(unittest.TestCase):
         pyproject_content = self.pyproject_path.read_text(encoding="utf-8")
         self.assertIn('license = "MIT"', pyproject_content)
         self.assertIn(
-            'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]',
+            'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt"]',
             pyproject_content,
         )
         self.assertTrue((REPO_ROOT / "LICENSE").is_file(), "LICENSE file missing")
         self.assertTrue((REPO_ROOT / "NOTICE").is_file(), "NOTICE file missing")
         self.assertTrue((REPO_ROOT / "THIRD_PARTY_LICENSES.md").is_file(), "THIRD_PARTY_LICENSES.md file missing")
+        self.assertTrue((REPO_ROOT / "THIRD_PARTY_LICENSES.txt").is_file(), "THIRD_PARTY_LICENSES.txt file missing")
 
     def test_level1_sbom_and_invariants_table(self) -> None:
         """Verify Level 1 SBOM, Invariants table, RunAsInvoker, and Zero-Copyleft in THIRD_PARTY_LICENSES.md."""
@@ -498,6 +499,106 @@ class MetadataAndManifestTests(unittest.TestCase):
         """Verify CHANGELOG.md documents recent Pfad A repository hygiene and CI security audit."""
         content = self.changelog_path.read_text(encoding="utf-8")
         self.assertIn("## 2026-09-25 - Pfad A", content, "CHANGELOG.md must contain 2026-09-25 Pfad A entry")
+
+    def test_changelog_unreleased_pfad_b_entry(self) -> None:
+        """Verify CHANGELOG.md documents Pfad B 2026-09-29 discoverability improvements."""
+        content = self.changelog_path.read_text(encoding="utf-8")
+        self.assertIn("## [Unreleased]", content, "CHANGELOG.md must contain ## [Unreleased] section")
+        self.assertIn("2026-09-29", content, "CHANGELOG.md must contain 2026-09-29 entry")
+        self.assertIn("ASCII Vier-Ansichten-Architekturprojektion", content)
+        self.assertIn("Level 1 SBOM Plain-Text Companion", content)
+
+    def test_bilateral_sec_navigation_anchors(self) -> None:
+        """Verify README.md and README_de.md maintain bilateral sec-01..18 navigation anchors."""
+        readme_en = self.readme_en_path.read_text(encoding="utf-8")
+        readme_de = self.readme_de_path.read_text(encoding="utf-8")
+        for i in range(1, 19):
+            anchor = f'<a id="sec-{i:02d}"></a>'
+            self.assertIn(anchor, readme_en, f"Missing anchor {anchor} in README.md")
+            self.assertIn(anchor, readme_de, f"Missing anchor {anchor} in README_de.md")
+
+    def test_ascii_four_view_topology_projection(self) -> None:
+        """Verify README.md and README_de.md include the 4 architectural projection views."""
+        readme_en = self.readme_en_path.read_text(encoding="utf-8")
+        readme_de = self.readme_de_path.read_text(encoding="utf-8")
+
+        # English README views
+        self.assertIn("VIEW 1: CLI COCKPIT", readme_en)
+        self.assertIn("VIEW 2: TIERED PROFILE ENGINE", readme_en)
+        self.assertIn("VIEW 3: RUNTIME PERSISTENCE", readme_en)
+        self.assertIn("VIEW 4: SECURITY BOUNDARY", readme_en)
+
+        # German README views
+        self.assertIn("SICHT 1: CLI-COCKPIT", readme_de)
+        self.assertIn("SICHT 2: GESTAFFELTE PROFIL-ENGINE", readme_de)
+        self.assertIn("SICHT 3: LAUFZEIT-PERSISTENZ", readme_de)
+        self.assertIn("SICHT 4: SICHERHEITSPERIMETER", readme_de)
+
+    def test_level1_sbom_plaintext_companion_contract(self) -> None:
+        """Verify THIRD_PARTY_LICENSES.txt exists and meets all compliance invariants."""
+        sbom_txt = REPO_ROOT / "THIRD_PARTY_LICENSES.txt"
+        self.assertTrue(sbom_txt.is_file(), "Missing root THIRD_PARTY_LICENSES.txt")
+        content = sbom_txt.read_text(encoding="utf-8")
+
+        for inv in [
+            "INV-LOCAL-01",
+            "INV-SEC-02",
+            "INV-FAIL-03",
+            "INV-STG-04",
+            "INV-HANDOFF-05",
+            "INV-TIER-06",
+            "INV-SYNC-07",
+            "INV-AUDIT-08",
+            "INV-LIC-09",
+            "INV-SLA-10",
+        ]:
+            self.assertIn(inv, content, f"Missing invariant {inv} in THIRD_PARTY_LICENSES.txt")
+
+        self.assertIn("RunAsInvoker", content)
+        self.assertIn("Zero-Runtime-Dependency", content)
+        self.assertIn("dependencies = []", content)
+        self.assertIn("MIT License", content)
+        self.assertIn("PSFL-2.0", content)
+        self.assertIn("Apache License Version 2.0", content)
+        self.assertIn("§ 521 BGB", content)
+
+    def test_pep621_twenty_topics_saturation(self) -> None:
+        """Verify pyproject.toml keywords list matches all 20 saturated GitHub topics."""
+        pyproject = self.pyproject_path.read_text(encoding="utf-8")
+        expected_topics = [
+            "agent-ready",
+            "antigravity",
+            "claude-code",
+            "codex",
+            "developer-tools",
+            "documentation-template",
+            "documentation-tools",
+            "ellmos",
+            "ellmos-ai",
+            "governance",
+            "llm-agents",
+            "llm-documentation",
+            "local-first",
+            "markdown",
+            "multi-agent",
+            "open-bricks",
+            "project-docs",
+            "project-template",
+            "session-handoff",
+            "zero-egress",
+        ]
+        self.assertEqual(len(expected_topics), 20)
+        for topic in expected_topics:
+            self.assertIn(f'"{topic}"', pyproject, f"Missing topic '{topic}' in pyproject.toml keywords")
+
+    def test_marketing_log_recency_pfad_b(self) -> None:
+        """Verify MARKETING-LOG.txt contains the 2026-09-29 Pfad B audit record."""
+        mlog_path = REPO_ROOT / "MARKETING-LOG.txt"
+        self.assertTrue(mlog_path.is_file(), "Missing MARKETING-LOG.txt")
+        content = mlog_path.read_text(encoding="utf-8")
+        self.assertIn("2026-09-29 — Pfad B", content)
+        self.assertIn("ASCII 4-View Architecture Topology", content)
+        self.assertIn("THIRD_PARTY_LICENSES.txt", content)
 
 
 if __name__ == "__main__":
