@@ -53,14 +53,25 @@ data/
 *-WORKSTATION*
 *-WORKSTATION-LG*
 *-ASUS-GEI*
+*-IDEAPAD*
+*-IDEAPAD-GEI*
 *.sync-temp-*
 *.sync-conflict-*
 *.conflict
+Desktop.ini
+ehthumbs.db
+TASKPLAN_*.md
 
 # Canonical lock files
 LOCK
 LOCK.*
 LOCK*.txt
+LOCK.dev.*
+LOCK.antigravity.*
+LOCK.bugsearch.*
+LOCK.user.*
+LOCK.until.*
+LOCK.condition.*
 LOCK.permissions.json
 uv.lock
 !package-lock.json

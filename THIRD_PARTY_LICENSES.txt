@@ -4,9 +4,10 @@ THIRD-PARTY SOFTWARE LICENSES & LEVEL 1 SBOM AUDIT TRAIL
 
 Project:               ellmos-ai/project-docs-template
 Version:               0.1.2 (frozen per T-20260920-167562623)
-Stand:                 2026-09-29
+Stand:                 2026-10-02
 Repository License:    MIT License (see LICENSE)
 Attribution Notice:    see NOTICE
+Contributing:          see CONTRIBUTING.md
 Markdown Companion:    see THIRD_PARTY_LICENSES.md
 Security Policy:       see SECURITY.md (48-hour response SLA)
 Governance Standards:  INV-LOCAL-01 through INV-SLA-10

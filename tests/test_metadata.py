@@ -53,6 +53,8 @@ class MetadataAndManifestTests(unittest.TestCase):
             "pyproject.toml",
             "ellmos-module.v2.json",
             "THIRD_PARTY_LICENSES.md",
+            "THIRD_PARTY_LICENSES.txt",
+            "CONTRIBUTING.md",
             "MARKETING-LOG.txt",
         ]
         for filename in required_files:
@@ -374,7 +376,7 @@ class MetadataAndManifestTests(unittest.TestCase):
     def test_pyproject_pytest_addopts_and_bug_tracker(self) -> None:
         """Verify pyproject.toml contains standard pytest addopts and Bug Tracker URL."""
         content = self.pyproject_path.read_text(encoding="utf-8")
-        self.assertIn('addopts = "-ra -v"', content, "pyproject.toml must configure addopts = '-ra -v'")
+        self.assertIn('addopts = "-ra -v', content, "pyproject.toml must configure addopts with '-ra -v'")
         self.assertIn('"Bug Tracker" =', content, "pyproject.toml must contain Bug Tracker URL")
 
     def test_root_notice_attribution(self) -> None:
@@ -599,6 +601,121 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("2026-09-29 — Pfad B", content)
         self.assertIn("ASCII 4-View Architecture Topology", content)
         self.assertIn("THIRD_PARTY_LICENSES.txt", content)
+
+
+    def test_contributing_file_exists_and_bilingual_structure(self) -> None:
+        """Verify CONTRIBUTING.md exists with bilingual EN/DE sections and all 10 invariants."""
+        contrib_path = REPO_ROOT / "CONTRIBUTING.md"
+        self.assertTrue(contrib_path.is_file(), "CONTRIBUTING.md must exist in root")
+        content = contrib_path.read_text(encoding="utf-8")
+        self.assertIn("# Contributing to project-docs-template", content)
+        self.assertIn('<a id="english"></a>', content)
+        self.assertIn('<a id="deutsch"></a>', content)
+        self.assertIn("RunAsInvoker", content)
+        self.assertIn("Plan D Architecture", content)
+        self.assertIn("T-20260920-167562623", content)
+        self.assertIn("security@ellmos.ai", content)
+        for inv in [
+            "INV-LOCAL-01",
+            "INV-SEC-02",
+            "INV-FAIL-03",
+            "INV-STG-04",
+            "INV-HANDOFF-05",
+            "INV-TIER-06",
+            "INV-SYNC-07",
+            "INV-AUDIT-08",
+            "INV-LIC-09",
+            "INV-SLA-10",
+        ]:
+            self.assertIn(inv, content, f"Missing {inv} in CONTRIBUTING.md")
+
+    def test_auto_assign_workflow_contract(self) -> None:
+        """Verify auto-assign.yml workflow configuration and permissions."""
+        wf_path = REPO_ROOT / ".github" / "workflows" / "auto-assign.yml"
+        self.assertTrue(wf_path.is_file(), "auto-assign.yml missing")
+        content = wf_path.read_text(encoding="utf-8")
+        self.assertIn("actions/github-script@v7", content)
+        self.assertIn("timeout-minutes: 5", content)
+        self.assertIn("pull-requests: write", content)
+        self.assertIn("issues: write", content)
+        self.assertIn("cancel-in-progress: true", content)
+
+    def test_label_sync_workflow_and_labels_contract(self) -> None:
+        """Verify label-sync.yml workflow and labels.yml configuration."""
+        wf_path = REPO_ROOT / ".github" / "workflows" / "label-sync.yml"
+        self.assertTrue(wf_path.is_file(), "label-sync.yml missing")
+        content = wf_path.read_text(encoding="utf-8")
+        self.assertIn("EndBug/label-sync@v2", content)
+        self.assertIn("timeout-minutes: 5", content)
+        self.assertIn("issues: write", content)
+
+        labels_path = REPO_ROOT / ".github" / "labels.yml"
+        self.assertTrue(labels_path.is_file(), "labels.yml missing")
+        labels_content = labels_path.read_text(encoding="utf-8")
+        for label_name in [
+            "bug",
+            "enhancement",
+            "good first issue",
+            "help wanted",
+            "documentation",
+            "duplicate",
+            "wontfix",
+            "priority: high",
+            "priority: low",
+            "needs-triage",
+            "stale",
+        ]:
+            self.assertIn(label_name, labels_content, f"Missing label {label_name}")
+
+    def test_pyproject_contributing_url(self) -> None:
+        """Verify Contributing URL in pyproject.toml."""
+        content = self.pyproject_path.read_text(encoding="utf-8")
+        self.assertIn(
+            'Contributing = "https://github.com/ellmos-ai/project-docs-template/blob/main/CONTRIBUTING.md"',
+            content,
+        )
+        self.assertIn("--basetemp=.pytest_temp", content)
+
+    def test_extended_multihost_and_agent_lock_defense(self) -> None:
+        """Verify root and template .gitignore defend against multi-host tokens and agent locks."""
+        for path in [REPO_ROOT / ".gitignore", REPO_ROOT / "template" / ".gitignore"]:
+            content = path.read_text(encoding="utf-8")
+            for pattern in [
+                "*-IDEAPAD*",
+                "*-IDEAPAD-GEI*",
+                "Desktop.ini",
+                "ehthumbs.db",
+                "TASKPLAN_*.md",
+                "LOCK.dev.*",
+                "LOCK.antigravity.*",
+                "LOCK.bugsearch.*",
+                "LOCK.user.*",
+                "LOCK.until.*",
+                "LOCK.condition.*",
+            ]:
+                self.assertIn(pattern, content, f"{path.name} must ignore {pattern}")
+
+    def test_changelog_recent_pfad_a_20261002_entry(self) -> None:
+        """Verify CHANGELOG.md documents 2026-10-02 Pfad A hygiene run."""
+        content = self.changelog_path.read_text(encoding="utf-8")
+        self.assertIn("### 2026-10-02 - Pfad A", content)
+        self.assertIn("CONTRIBUTING.md", content)
+        self.assertIn("auto-assign.yml", content)
+        self.assertIn("label-sync.yml", content)
+
+    def test_marketing_log_recency_pfad_a_20261002(self) -> None:
+        """Verify MARKETING-LOG.txt contains the 2026-10-02 Pfad A audit entry."""
+        content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
+        self.assertIn("## 2026-10-02 — Pfad A", content)
+        self.assertIn("CONTRIBUTING.md", content)
+
+    def test_sbom_companion_re_audit_20261002(self) -> None:
+        """Verify THIRD_PARTY_LICENSES.md and .txt reflect Stand 2026-10-02 and Contributing."""
+        md_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
+        self.assertIn("Audit Date:** 2026-10-02", md_content)
+        txt_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.txt").read_text(encoding="utf-8")
+        self.assertIn("Stand:                 2026-10-02", txt_content)
+        self.assertIn("Contributing:          see CONTRIBUTING.md", txt_content)
 
 
 if __name__ == "__main__":

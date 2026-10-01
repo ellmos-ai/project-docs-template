@@ -1,4 +1,4 @@
-## Last-checked: 2026-09-25
+## Last-checked: 2026-10-02
 
 # ellmos-ai/project-docs-template
 
@@ -17,9 +17,11 @@ Primary audience:
 Important files:
 - `README.md`: human-facing overview, 18-point bilingual navigation, target personas, and comparative architecture.
 - `README_de.md`: complete German documentation, 18-Punkte-Schnellnavigation, and user guide.
+- `CONTRIBUTING.md`: bilingual development and invariant compliance guidelines (INV-LOCAL-01..INV-SLA-10).
 - `NOTICE`: legal copyright attribution and ecosystem notice.
 - `MARKETING-LOG.txt`: Pfad A repository hygiene & Pfad B discoverability log.
 - `THIRD_PARTY_LICENSES.md`: Level 1 Software Bill of Materials (SBOM) and Governance Invariants Cross-Reference Matrix.
+- `THIRD_PARTY_LICENSES.txt`: Level 1 SBOM plain-text companion with Invariant cross-reference matrix.
 - `template/TEMPLATE.md`: rationale, profile definitions, and file-by-file explanation.
 - `template/_tools/init-project`: profile-based scaffold generator (`MINIMAL`, `STANDARD`, `FULL`).
 - `template/_tools/init-project --upgrade`: one-step, manifest/hash-verified profile upgrade for existing generated projects; changed or unowned files fail closed rather than being merged.
@@ -34,7 +36,7 @@ Important files:
 
 ## Verification
 
-- `pytest` (60 passed, 7 subtests passed) on Linux, Windows and macOS
+- `pytest` (68 passed, 7 subtests passed) on Linux, Windows and macOS
 - `ruff check .` (100% clean)
 - `compileall` (100% clean)
 

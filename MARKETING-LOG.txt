@@ -5,6 +5,28 @@ Verantwortlich: Pfad A & Pfad B Automation (Hygiene, Discoverability, UX & Gover
 
 ---
 
+## 2026-10-02 — Pfad A: Repository Hygiene, CI Lifecycle Workflows, Lock Defense, Bilingual Contributing & Metadata Contracts
+
+### 1. Repository Hygiene & Automation Governance
+- **Target Repository:** `ellmos-ai/project-docs-template`
+- **Audit Date:** 2026-10-02
+- **Focus:** CI Lifecycle Workflows (`auto-assign.yml`, `label-sync.yml`, `labels.yml`), Bilingual Contributing Guidelines (`CONTRIBUTING.md`), Multi-Host Cloud-Sync & Lock Defense, PEP 621 Metadata Parity, Level 1 SBOM Text Companion Re-Audit, and Contract Test Expansion.
+
+### 2. Executed Measures
+1. **Version-Freeze Disziplin:** Version `0.1.2` strikt unverändert beibehalten per `T-20260920-167562623` (keine unautorisierte Versionsänderung). Alle Neuerungen unter `## [Unreleased]` in `CHANGELOG.md` dokumentiert.
+2. **CI/CD Lifecycle Workflows:**
+   - `.github/workflows/auto-assign.yml` mit `actions/github-script@v7`, `timeout-minutes: 5`, Concurrency `cancel-in-progress: true` (`auto-assign-${{ github.ref }}`) und least-privilege permissions (`pull-requests: write`, `issues: write`) provisioniert.
+   - `.github/workflows/label-sync.yml` mit `EndBug/label-sync@v2`, `timeout-minutes: 5`, Concurrency `cancel-in-progress: true` (`label-sync-${{ github.ref }}`) und least-privilege permissions (`issues: write`) provisioniert.
+   - `.github/labels.yml` mit 11 kanonischen Standard-Labels gemäß GOVERNANCE.md §4.2 provisioniert.
+3. **Bilinguale Contributing Guidelines (`CONTRIBUTING.md`):** Vollständiger Leitfaden auf Deutsch und Englisch mit Spezifikation aller 10 Governance- und Laufzeitinvarianten (`INV-LOCAL-01` bis `INV-SLA-10`), unprivilegiertem `RunAsInvoker` Modus (`INV-SEC-02`), Plan D Klon-Setup (`C:\_Local_DEV\repos\project-docs-template`), Version-Freeze-Disziplin, Pre-Commit Quality Gates und 48h Security Response SLA.
+4. **Multi-Host Cloud-Sync-, Lock- und Cache-Defense:** Root und Template `.gitignore` gehärtet gegen Multi-Host-Tokens (`*-IDEAPAD*`, `*-IDEAPAD-GEI*`), Betriebssystem-Caches (`Desktop.ini`, `ehthumbs.db`), Agenten-Planungsdateien (`TASKPLAN_*.md`) sowie kanonische Entwicklungs- und Agenten-Locks (`LOCK.dev.*`, `LOCK.antigravity.*`, `LOCK.bugsearch.*`, `LOCK.user.*`, `LOCK.until.*`, `LOCK.condition.*`).
+5. **PEP 621 Standardisierung in `pyproject.toml`:** `Contributing` URL unter `[project.urls]` registriert; `[tool.pytest.ini_options]` mit `addopts = "-ra -v --basetemp=.pytest_temp"` und gehärtetem `norecursedirs` (.turbo, .nyc_output) standardisiert.
+6. **Level 1 SBOM Text-Companion Re-Audit:** `THIRD_PARTY_LICENSES.md` und `THIRD_PARTY_LICENSES.txt` re-auditiert Stand `2026-10-02` mit unprivileged `RunAsInvoker` Non-Elevation-Garantie, § 521 BGB Haftungsausschluss, Zero-Copyleft und Zero-Runtime-Dependencies.
+7. **Dokumentations- & Kontext-Parität:** `README.md` und `README_de.md` Badges für `Contributing` und Last Checked (`2026-10-02`) aktualisiert; `llms.txt` Stand `2026-10-02` harmonisiert.
+8. **Automatisierte Vertragstests (`tests/test_metadata.py`):** 8 neue Contract-Tests für `CONTRIBUTING.md`, CI Lifecycle Workflows, Standard-Labels, PEP 621 URLs, erweiterte .gitignore Lock-Defense und Re-Audit Stand 2026-10-02.
+
+---
+
 ## 2026-09-29 — Pfad B: Discoverability, Bilateral Dual HTML Anchors, ASCII 4-View Topology, Level 1 SBOM Plain-Text Companion & 20 Topics Saturation
 
 ### 1. Repository Discoverability & SEO Saturation

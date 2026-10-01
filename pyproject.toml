@@ -58,6 +58,7 @@ Documentation = "https://github.com/ellmos-ai/project-docs-template#readme"
 Repository = "https://github.com/ellmos-ai/project-docs-template"
 Issues = "https://github.com/ellmos-ai/project-docs-template/issues"
 "Bug Tracker" = "https://github.com/ellmos-ai/project-docs-template/issues"
+Contributing = "https://github.com/ellmos-ai/project-docs-template/blob/main/CONTRIBUTING.md"
 Changelog = "https://github.com/ellmos-ai/project-docs-template/blob/main/CHANGELOG.md"
 Security = "https://github.com/ellmos-ai/project-docs-template/blob/main/SECURITY.md"
 "Third-Party Licenses" = "https://github.com/ellmos-ai/project-docs-template/blob/main/THIRD_PARTY_LICENSES.md"
@@ -71,11 +72,11 @@ Umbrella = "https://open-bricks.org"
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-addopts = "-ra -v"
+addopts = "-ra -v --basetemp=.pytest_temp"
 pythonpath = ["."]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-norecursedirs = [".pytest_temp", ".pytest_tmp*", ".git", ".tox", "build", "dist", ".venv"]
+norecursedirs = [".pytest_temp", ".pytest_tmp*", ".git", ".tox", ".turbo", ".nyc_output", "build", "dist", ".venv"]
 
 
 [tool.ruff]

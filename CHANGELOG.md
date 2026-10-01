@@ -2,7 +2,26 @@
 
 All notable public-facing changes to this repository are documented here.
 
-## [Unreleased] - Pfad B Discoverability, Dual HTML Anchors, ASCII 4-View Architecture Topology, Level 1 SBOM Text Companion & 20 Topics Saturation [2026-09-29]
+## [Unreleased]
+
+### 2026-10-02 - Pfad A CI Lifecycle Workflows, Lock Defense, Bilingual Contributing & Metadata Contracts
+
+- **Version-Freeze Disziplin (T-20260920-167562623)**: Version `0.1.2` strikt unverändert beibehalten; alle Modifikationen unter `## [Unreleased]` geführt.
+- **CI/CD Lifecycle Workflows Provisioning (`.github/workflows/auto-assign.yml`, `label-sync.yml`, `.github/labels.yml`)**:
+  - `.github/workflows/auto-assign.yml` neu angelegt mit `actions/github-script@v7`, `timeout-minutes: 5`, Concurrency `cancel-in-progress: true` (`auto-assign-${{ github.ref }}`) und least-privilege permissions (`pull-requests: write`, `issues: write`).
+  - `.github/workflows/label-sync.yml` neu angelegt mit `EndBug/label-sync@v2`, `timeout-minutes: 5`, Concurrency `cancel-in-progress: true` (`label-sync-${{ github.ref }}`) und least-privilege permissions (`issues: write`).
+  - `.github/labels.yml` mit 11 kanonischen Standard-Labels gemäß GOVERNANCE.md §4.2 provisioniert.
+- **Bilinguale Contributing Guidelines (`CONTRIBUTING.md`)**: Vollständiger Leitfaden auf Deutsch und Englisch mit Spezifikation aller 10 Governance- und Laufzeitinvarianten (`INV-LOCAL-01` bis `INV-SLA-10`), unprivilegiertem `RunAsInvoker` Modus (`INV-SEC-02`), Plan D Klon-Setup (`C:\_Local_DEV\repos\project-docs-template`), Version-Freeze-Disziplin, Pre-Commit Quality Gates und 48h Security Response SLA.
+- **Multi-Host Cloud-Sync-, Lock- und Cache-Härtung (`.gitignore` & `template/.gitignore`)**: Gehärtet gegen Multi-Host-Tokens (`*-IDEAPAD*`, `*-IDEAPAD-GEI*`), Betriebssystem-Caches (`Desktop.ini`, `ehthumbs.db`), Agenten-Planungsdateien (`TASKPLAN_*.md`) sowie kanonische Entwicklungs- und Agenten-Locks (`LOCK.dev.*`, `LOCK.antigravity.*`, `LOCK.bugsearch.*`, `LOCK.user.*`, `LOCK.until.*`, `LOCK.condition.*`).
+- **PEP 621 Standardisierung in `pyproject.toml`**: `Contributing` URL unter `[project.urls]` registriert; `[tool.pytest.ini_options]` mit `addopts = "-ra -v --basetemp=.pytest_temp"` und gehärtetem `norecursedirs` (.turbo, .nyc_output) standardisiert.
+- **Level 1 SBOM Text-Companion Re-Audit (`THIRD_PARTY_LICENSES.md` & `THIRD_PARTY_LICENSES.txt`)**: Re-Audit Stand `2026-10-02` mit unprivileged `RunAsInvoker` Non-Elevation-Garantie, § 521 BGB Haftungsausschluss, Zero-Copyleft und Zero-Runtime-Dependencies.
+- **Dokumentations- & Kontext-Parität**:
+  - `README.md` und `README_de.md`: Last-Checked Badge auf `2026-10-02` aktualisiert, `Contributing` Badge ergänzt, Test-Counter auf neue Gesamtzahl synchronisiert unter striktem Erhalt aller 18 bilateralen Schnellnavigations-Anker `sec-01`..`sec-18`.
+  - `llms.txt`: `## Last-checked: 2026-10-02`, Verweise auf `CONTRIBUTING.md` und `THIRD_PARTY_LICENSES.txt` ergänzt, Test-Baseline aktualisiert.
+  - `MARKETING-LOG.txt`: Section 13 Pfad A Revisionsbericht Stand 2026-10-02 dokumentiert.
+- **Automatisierte Vertragstest-Erweiterung (`tests/test_metadata.py`)**: 8 neue automatisierte Contract-Tests für `CONTRIBUTING.md`, CI Lifecycle Workflows, Standard-Labels, PEP 621 URLs, erweiterte .gitignore Lock-Defense und Re-Audit Stand 2026-10-02.
+
+### 2026-09-29 - Pfad B Discoverability, Dual HTML Anchors, ASCII 4-View Architecture Topology, Level 1 SBOM Text Companion & 20 Topics Saturation
 
 - **Version-Freeze Disziplin (T-20260920-167562623)**: Version `0.1.2` strikt unverändert beibehalten; kein vorzeitiger Release-Bump.
 - **Bilinguale 18-Punkte-Navigationsparität & wechselseitige HTML-Anker**: Vollständige 18-Punkte-Schnellnavigation in `README.md` und `README_de.md` mit reziproken dualen HTML-Ankern (`<a id="sec-01"></a>`..`<a id="sec-18"></a>`) und synchronisierten Shields.io-Badges (`last checked-2026--09--29`, `Level 1 SBOM: Audited | Plain Text`).
