@@ -4,6 +4,22 @@ All notable public-facing changes to this repository are documented here.
 
 ## [Unreleased]
 
+### 2026-10-30 - Pfad B Discoverability, Terminal Execution Showcase, Badges Currency & Level 1 SBOM Re-Audit
+
+- **Version-Freeze Disziplin (T-20260920-167562623)**: Version `0.1.2` strikt unverändert beibehalten per Flottenstandard; keine unautorisierte Release-Änderung in Pfad A/B.
+- **Terminal-Showcase & CLI-Nutzerführung (Section 9)**:
+  - Vollständige Überarbeitung von Abschnitt 9 in `README.md` und `README_de.md` mit exakter CLI-Parameterspezifikation (`--target`, `--name`, `--profile`, `--dry-run`, `--git`).
+  - Integration eines realistischen Terminal-Ablauf-Showcases, der den Staging-Prüfablauf, die Frontmatter-Validierung und die Manifest-Erzeugung (`.project-docs-template.json`) Schritt für Schritt darstellt.
+  - Dokumentation typischer Folge-Workflows (`_tools/doc-lint --fix --update-dates`, `_tools/todo-archive --apply`, `_tools/workflows-sync --apply`).
+  - Wahrung vollständiger bilingualer struktureller Parität (fenced code blocks & headings).
+- **Badges & RAG-Kontext Aktualisierung**:
+  - `README.md` und `README_de.md`: Last-Checked Badge auf `2026-10-30` aktualisiert, Test-Counter auf neue Gesamtanzahl angepasst unter striktem Erhalt aller 18 bilateralen Navigationsanker (`sec-01`..`sec-18`).
+  - `llms.txt`: `## Last-checked: 2026-10-30` und Test-Baseline synchronisiert.
+- **Level 1 SBOM Text-Companion Re-Audit**:
+  - `THIRD_PARTY_LICENSES.md` und `THIRD_PARTY_LICENSES.txt` Stand auf `2026-10-30` re-auditiert mit Bestätigung aller 10 Governance-Invarianten (`INV-LOCAL-01`..`INV-SLA-10`), `RunAsInvoker` Non-Elevation und Zero-Runtime-Dependencies (`dependencies = []`).
+- **Automatisierte Vertragstests (`tests/test_metadata.py`)**:
+  - Vertragstests um `test_terminal_execution_session_showcase`, `test_marketing_log_recency_pfad_b_20261030`, `test_changelog_recent_pfad_b_20261030_entry` erweitert und `test_sbom_companion_re_audit_20261030` aktualisiert.
+
 ### 2026-10-02 - Pfad A CI Lifecycle Workflows, Lock Defense, Bilingual Contributing & Metadata Contracts
 
 - **Version-Freeze Disziplin (T-20260920-167562623)**: Version `0.1.2` strikt unverändert beibehalten; alle Modifikationen unter `## [Unreleased]` geführt.

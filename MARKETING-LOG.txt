@@ -5,6 +5,38 @@ Verantwortlich: Pfad A & Pfad B Automation (Hygiene, Discoverability, UX & Gover
 
 ---
 
+## 2026-10-30 — Pfad B: Discoverability, Terminal Execution Session Showcase, Badges Currency, SBOM Re-Audit & Contract Hardening
+
+### 1. Repository Discoverability & SEO Saturation
+- **Target Repository:** `ellmos-ai/project-docs-template`
+- **Audit Date:** 2026-10-30
+- **Auditor / Automation:** Gemini (Antigravity) — Pfad B (Marketing, Discoverability, README & UX)
+- **Focus:** Quick Start Terminal Walkthrough Showcase, Accurate CLI Parameters (`--target`, `--name`, `--profile`), Badges Currency (Stand 2026-10-30), Level 1 SBOM Re-Audit, RAG Context Synchronization (`llms.txt`), and Automated Contract Test Expansion.
+
+### 2. Executed Measures
+1. **Version-Freeze Disziplin (T-20260920-167562623):** Version `0.1.2` in `pyproject.toml` und `ellmos-module.v2.json` strikt unverändert beibehalten (kein unerlaubter Versionsbump in Pfad-A/B-Läufen). Alle Erweiterungen unter `## [Unreleased]` in `CHANGELOG.md` erfasst.
+2. **Terminal-Showcase & CLI-Nutzerführung (Section 9):**
+   - Präzisierung der Befehlssyntax in `README.md` und `README_de.md` auf die tatsächliche Schnittstelle des Generators (`template/_tools/init-project --target /path/to/my-project --name "my-project" --profile STANDARD`).
+   - Integration eines realistischen Terminal-Ablaufs in beiden Sprachversionen, der die staging-basierte Frontmatter-Validierung, die atomare Bereitstellung und das Erzeugen des SHA-256-Manifests (`.project-docs-template.json`) transparent visualisiert.
+   - Dokumentation typischer Folge-Workflows (`_tools/doc-lint`, `_tools/doc-lint --fix --update-dates`, `_tools/todo-archive --apply`).
+   - 100% Codeblock- und Überschriften-Parität zwischen `README.md` und `README_de.md`.
+3. **Badges & RAG-Kontext Aktualisierung:**
+   - Badges in `README.md` und `README_de.md` auf Stand `2026-10-30` und aktuelle Test-Suite-Größe synchronisiert unter striktem Erhalt aller 18 bilateralen Navigationsanker (`sec-01`..`sec-18`).
+   - `llms.txt` Header `## Last-checked: 2026-10-30` und Test-Baseline aktualisiert.
+4. **Level 1 SBOM Re-Audit Stand 2026-10-30:**
+   - `THIRD_PARTY_LICENSES.md` und `THIRD_PARTY_LICENSES.txt` mit Prüfdatum `2026-10-30` re-auditiert.
+   - Bestätigung aller 10 Invarianten (`INV-LOCAL-01`..`INV-SLA-10`), `RunAsInvoker` Non-Elevation und Zero-Runtime-Dependencies (`dependencies = []`).
+5. **Automatisierte Vertragstests (`tests/test_metadata.py`):**
+   - Vertragstests um `test_terminal_execution_session_showcase`, `test_marketing_log_recency_pfad_b_20261030`, `test_changelog_recent_pfad_b_20261030_entry` erweitert und `test_sbom_companion_re_audit_20261030` aktualisiert.
+   - Gesamtsuite vollständig grün.
+
+### 3. Nicht-automatisierte Handlungsempfehlungen (Recommendations)
+- **REC-20261030-01 (Template-Internationalisierung):** Übersetzung der Template-Vorlagen unter `template/` (bisher deutschsprachige Vorlagentexte für `CLAUDE.md`, `START.md`, `STATE.md`) in eine englische Paritätsfassung oder Bereitstellung eines `--lang en/de` Flags im `init-project` Generator (siehe Eintrag in `TODO.md`).
+- **REC-20261030-02 (Ökosystem-Kataloge):** Verlinkung von `project-docs-template` in relevanzbezogenen kuratierten GitHub-Listen (z. B. Awesome-LLM-Agents, Awesome-Local-AI, Open-Bricks Directory) zur Steigerung der organischen Discoverability.
+- **REC-20261030-03 (Animiertes Terminal-Visual):** Erstellung eines Terminal-GIFs oder SVG-Visuals (z. B. via `vhs` oder `asciinema`) für den oberen Bereich von `README.md` zur noch schnelleren Erfassung durch Erstbesucher.
+
+---
+
 ## 2026-10-02 — Pfad A: Repository Hygiene, CI Lifecycle Workflows, Lock Defense, Bilingual Contributing & Metadata Contracts
 
 ### 1. Repository Hygiene & Automation Governance

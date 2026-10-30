@@ -709,13 +709,48 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("## 2026-10-02 — Pfad A", content)
         self.assertIn("CONTRIBUTING.md", content)
 
-    def test_sbom_companion_re_audit_20261002(self) -> None:
-        """Verify THIRD_PARTY_LICENSES.md and .txt reflect Stand 2026-10-02 and Contributing."""
+    def test_sbom_companion_re_audit_20261030(self) -> None:
+        """Verify THIRD_PARTY_LICENSES.md and .txt reflect Stand 2026-10-30 and Contributing."""
         md_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
-        self.assertIn("Audit Date:** 2026-10-02", md_content)
+        self.assertIn("Audit Date:** 2026-10-30", md_content)
         txt_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.txt").read_text(encoding="utf-8")
-        self.assertIn("Stand:                 2026-10-02", txt_content)
+        self.assertIn("Stand:                 2026-10-30", txt_content)
         self.assertIn("Contributing:          see CONTRIBUTING.md", txt_content)
+
+    def test_terminal_execution_session_showcase(self) -> None:
+        """Verify Section 9 terminal execution showcase and CLI workflows in both READMEs."""
+        en_content = self.readme_en_path.read_text(encoding="utf-8")
+        de_content = self.readme_de_path.read_text(encoding="utf-8")
+
+        # English README Section 9 checks
+        self.assertIn("Deterministic Scaffolding Walkthrough", en_content)
+        self.assertIn("--target /path/to/my-project", en_content)
+        self.assertIn("==> Target:  /path/to/my-project", en_content)
+        self.assertIn("==> Profil: STANDARD", en_content)
+        self.assertIn("doc-lint --fix --update-dates", en_content)
+
+        # German README Section 9 checks
+        self.assertIn("Deterministischer Bereitstellungsablauf", de_content)
+        self.assertIn("--target /pfad/zu/meinem-projekt", de_content)
+        self.assertIn("==> Target:  /pfad/zu/meinem-projekt", de_content)
+        self.assertIn("==> Profil: STANDARD", de_content)
+        self.assertIn("doc-lint --fix --update-dates", de_content)
+
+    def test_marketing_log_recency_pfad_b_20261030(self) -> None:
+        """Verify MARKETING-LOG.txt contains the 2026-10-30 Pfad B audit and recommendations."""
+        content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
+        self.assertIn("## 2026-10-30 — Pfad B", content)
+        self.assertIn("Terminal Execution Session Showcase", content)
+        self.assertIn("REC-20261030-01", content)
+        self.assertIn("REC-20261030-02", content)
+        self.assertIn("REC-20261030-03", content)
+
+    def test_changelog_recent_pfad_b_20261030_entry(self) -> None:
+        """Verify CHANGELOG.md documents 2026-10-30 Pfad B discoverability improvements."""
+        content = self.changelog_path.read_text(encoding="utf-8")
+        self.assertIn("### 2026-10-30 - Pfad B", content)
+        self.assertIn("Terminal Execution Showcase", content)
+        self.assertIn("T-20260920-167562623", content)
 
 
 if __name__ == "__main__":

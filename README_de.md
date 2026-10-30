@@ -6,7 +6,7 @@
 [![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-68%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-71%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Mitwirken](https://img.shields.io/badge/Mitwirken-Richtlinien-blue.svg)](./CONTRIBUTING.md)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
@@ -20,7 +20,7 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: English](https://img.shields.io/badge/Language-English-blue.svg)](./README.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--10--02-informational.svg)](./MARKETING-LOG.txt)
+[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--10--30-informational.svg)](./MARKETING-LOG.txt)
 [![Drittanbieter-Lizenzen](https://img.shields.io/badge/lizenzen-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
 [![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Aktiv-blueviolet.svg)](./MARKETING-LOG.txt)
 
@@ -28,7 +28,7 @@ Agenten-optimierte Projektdokumentations-Vorlage mit START/STATE/TODO/DONE,
 Workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
 
 > [!NOTE]
-> **KI / LLM-Indexierung**: KI-Agenten und automatisierte Werkzeuge können [llms.txt](llms.txt) für eine maschinenlesbare Übersicht, Suchbegriffe und Disambiguierung einsehen. Letzte Prüfung: **2026-10-02**.
+> **KI / LLM-Indexierung**: KI-Agenten und automatisierte Werkzeuge können [llms.txt](llms.txt) für eine maschinenlesbare Übersicht, Suchbegriffe und Disambiguierung einsehen. Letzte Prüfung: **2026-10-30**.
 
 > Unabhängiges Projekt — keine geschäftliche Verbindung zu Anthropic, OpenAI oder Google.
 > Siehe [Marken](#marken).
@@ -277,28 +277,78 @@ Die eigentlichen Vorlagendateien liegen unter [`template/`](./template/).
 
 ## <a id="sec-09"></a><a id="schnellstart"></a>9. Schnellstart & CLI-Workflows
 
-Repository klonen und Generator aufrufen:
+Repository klonen und in Sekunden ein agenten-fähiges Arbeitsverzeichnis einrichten:
 
 ```bash
 git clone https://github.com/ellmos-ai/project-docs-template.git
 cd project-docs-template
 
-# Standard-Profil im Zielverzeichnis erzeugen
-python template/_tools/init-project /pfad/zu/meinem-projekt --profile standard
+# Erstellung vorab prüfen, ohne Dateien zu schreiben (Trockenlauf)
+python template/_tools/init-project --target /pfad/zu/meinem-projekt --name "mein-projekt" --profile STANDARD --dry-run
 
-# Trockenlauf zur Prüfung
-python template/_tools/init-project /pfad/zu/meinem-projekt --profile full --dry-run
+# STANDARD-Profil generieren (12 Root-Verträge & Tools mit SHA-256-Manifest)
+python template/_tools/init-project --target /pfad/zu/meinem-projekt --name "mein-projekt" --profile STANDARD
+
+# Optional: Direkt Git-Repository mit initialem Commit anlegen
+python template/_tools/init-project --target /pfad/zu/meinem-projekt --name "mein-projekt" --profile STANDARD --git
 ```
 
-Verfügbare CLI-Befehle im generierten Projekt:
+### Deterministischer Bereitstellungsablauf (Terminal-Showcase)
+
+Bei Ausführung von `init-project` validiert der Generator sämtliche YAML-Frontmatter in einem isolierten temporären Staging-Verzeichnis, bevor die bereinigten Artefakte atomar ins Zielverzeichnis übernommen werden:
+
+```text
+==> Root:    /pfad/zu/.mein-projekt.staging-xyz123
+==> Max age: 30 days
+
+Results:
+  OK   CLAUDE.md
+  OK   START.md
+  OK   STATE.md
+
+OK: Alle geprüften Files bestehen (oder wurden gefixt)
+==> Target:  /pfad/zu/meinem-projekt
+==> Name:    mein-projekt
+==> Author:  Alex Developer
+==> Date:    2026-10-30
+
+==> Profil: STANDARD
+    Ernsthafte Projekte mit mehrmonatiger Lebensdauer
+  OK: AGENTS.md
+  OK: CLAUDE.md
+  OK: README.md
+  OK: START.md
+  OK: STATE.md
+  OK: CHANGELOG.md
+  OK: HEADER-RULES.md
+  OK: CUT-AND-CLUE.md
+  OK: DECISIONS.md
+  OK: PATTERNS.md
+  OK: TODO.md
+  OK: DONE.md
+  OK: .gitignore
+  OK: _tools/README.md
+  OK: _tools/todo-archive
+  OK: _tools/doc-lint
+
+==> Fertig: /pfad/zu/meinem-projekt
+```
+
+### Typische CLI-Wartungsabläufe im generierten Projekt
+
+Generierte Arbeitsbereiche enthalten eigenständige, abhängigkeitsfreie Werkzeuge unter `_tools/`:
+
 ```bash
-# Projektdokumentation und YAML-Frontmatter prüfen
+# Projektdokumentation und YAML-Frontmatter auf Gültigkeit & Aktualität prüfen
 python _tools/doc-lint
 
-# Erledigte Aufgaben aus TODO.md nach DONE.md archivieren
+# Fehlende Frontmatter-Felder automatisch ergänzen & Datumsstempel aktualisieren
+python _tools/doc-lint --fix --update-dates
+
+# Erledigte Aufgaben atomar aus TODO.md nach DONE.md archivieren
 python _tools/todo-archive --apply
 
-# Workflow-Tabellen über Router hinweg synchronisieren
+# Workflow-Tabellen über Router hinweg abgleichen (FULL-Profil)
 python _tools/workflows-sync --apply
 ```
 

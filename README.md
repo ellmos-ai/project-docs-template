@@ -6,7 +6,7 @@
 [![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-68%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-71%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Contributing](https://img.shields.io/badge/Contributing-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
@@ -20,7 +20,7 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Last Checked](https://img.shields.io/badge/last%20checked-2026--10--02-informational.svg)](./MARKETING-LOG.txt)
+[![Last Checked](https://img.shields.io/badge/last%20checked-2026--10--30-informational.svg)](./MARKETING-LOG.txt)
 [![Third-Party Licenses](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
 [![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
@@ -28,7 +28,7 @@ Agent-ready project documentation template with START/STATE/TODO/DONE,
 workflows, lightweight tooling, and LLM-friendly project memory.
 
 > [!NOTE]
-> **AI / LLM Indexing**: AI agents and automated tools can inspect [llms.txt](llms.txt) for a machine-readable summary, search terms, and disambiguation details. Last checked: **2026-10-02**.
+> **AI / LLM Indexing**: AI agents and automated tools can inspect [llms.txt](llms.txt) for a machine-readable summary, search terms, and disambiguation details. Last checked: **2026-10-30**.
 
 > Independent project — not affiliated with Anthropic, OpenAI, or Google.
 > See [Trademarks](#trademarks).
@@ -278,28 +278,78 @@ The actual template files live in [`template/`](./template/).
 
 ## <a id="sec-09"></a><a id="quick-start"></a>9. Quick Start & Common CLI Workflows
 
-Clone the repository and run the generator:
+Clone the repository and scaffold an agent-ready workspace in seconds:
 
 ```bash
 git clone https://github.com/ellmos-ai/project-docs-template.git
 cd project-docs-template
 
-# Generate standard profile in target directory
-python template/_tools/init-project /path/to/my-project --profile standard
+# Inspect scaffold generation without writing changes (dry-run)
+python template/_tools/init-project --target /path/to/my-project --name "my-project" --profile STANDARD --dry-run
 
-# Dry-run inspection
-python template/_tools/init-project /path/to/my-project --profile full --dry-run
+# Render STANDARD profile (12 root contracts & tools with SHA-256 manifest)
+python template/_tools/init-project --target /path/to/my-project --name "my-project" --profile STANDARD
+
+# Optional: initialize Git repository with staged initial commit
+python template/_tools/init-project --target /path/to/my-project --name "my-project" --profile STANDARD --git
 ```
 
-Available CLI commands in generated projects:
+### Deterministic Scaffolding Walkthrough (Terminal Output)
+
+When executing `init-project`, the generator validates all YAML frontmatter in an isolated sibling staging area before atomically promoting clean artifacts into the target root:
+
+```text
+==> Root:    /path/to/.my-project.staging-xyz123
+==> Max age: 30 days
+
+Results:
+  OK   CLAUDE.md
+  OK   START.md
+  OK   STATE.md
+
+OK: Alle geprüften Files bestehen (oder wurden gefixt)
+==> Target:  /path/to/my-project
+==> Name:    my-project
+==> Author:  Alex Developer
+==> Date:    2026-10-30
+
+==> Profil: STANDARD
+    Ernsthafte Projekte mit mehrmonatiger Lebensdauer
+  OK: AGENTS.md
+  OK: CLAUDE.md
+  OK: README.md
+  OK: START.md
+  OK: STATE.md
+  OK: CHANGELOG.md
+  OK: HEADER-RULES.md
+  OK: CUT-AND-CLUE.md
+  OK: DECISIONS.md
+  OK: PATTERNS.md
+  OK: TODO.md
+  OK: DONE.md
+  OK: .gitignore
+  OK: _tools/README.md
+  OK: _tools/todo-archive
+  OK: _tools/doc-lint
+
+==> Fertig: /path/to/my-project
+```
+
+### Common CLI Maintenance Workflows in Generated Projects
+
+Generated workspaces include lightweight, zero-dependency tools in `_tools/`:
+
 ```bash
-# Lint project documentation and verify YAML frontmatter
+# Lint project documentation and verify YAML frontmatter & staleness
 python _tools/doc-lint
 
-# Archive completed tasks from TODO.md into DONE.md
+# Automatically insert missing frontmatter fields & refresh verification dates
+python _tools/doc-lint --fix --update-dates
+
+# Atomically archive completed tasks from TODO.md into DONE.md
 python _tools/todo-archive --apply
 
-# Synchronize workflow tables across routers
+# Synchronize workflow tables across routers (FULL profile)
 python _tools/workflows-sync --apply
 ```
 
