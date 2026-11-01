@@ -4,9 +4,10 @@ The repository is release-ready only when all commands below pass from the
 repository root with Python 3.10 or newer:
 
 ```bash
-python -m compileall -q tests
-python -m unittest discover -s tests -v
+ruff check .
 python template/_tools/doc-lint --root template
+python -m compileall -q tests template
+python -m pytest -ra -v
 git diff --check
 ```
 
@@ -27,6 +28,6 @@ The regression suite must prove:
   retained as a new event, aliased paths are rejected, and both input files
   are restored when the second replacement fails.
 
-GitHub Actions repeats compilation and the full suite on Linux, Windows, and
-macOS with Python 3.10 and 3.13. A release or tag must not be created while any
-matrix job is failing.
+GitHub Actions repeats compilation, template linting, and the full test suite
+on Linux, Windows, and macOS across Python 3.10, 3.11, 3.12, and 3.13. A release
+or tag must not be created while any matrix job is failing.
