@@ -752,6 +752,29 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("Terminal Execution Showcase", content)
         self.assertIn("T-20260920-167562623", content)
 
+    def test_ci_template_doc_lint_step(self) -> None:
+        """Verify CI workflow executes template/_tools/doc-lint for metadata conformance."""
+        ci_content = self.ci_workflow_path.read_text(encoding="utf-8")
+        self.assertIn("template/_tools/doc-lint --root template", ci_content)
+
+    def test_label_sync_action_pinning(self) -> None:
+        """Verify label-sync.yml workflow uses commit-pinned Node 24 checkout action."""
+        wf_path = REPO_ROOT / ".github" / "workflows" / "label-sync.yml"
+        self.assertTrue(wf_path.is_file(), "label-sync.yml missing")
+        content = wf_path.read_text(encoding="utf-8")
+        self.assertRegex(
+            content,
+            r"uses: actions/checkout@[0-9a-f]{40}\b",
+            "actions/checkout in label-sync.yml must be pinned to a full 40-character commit SHA",
+        )
+
+    def test_changelog_recent_pfad_a_20261101_entry(self) -> None:
+        """Verify CHANGELOG.md documents 2026-11-01 Pfad A CI template linting and release gate parity."""
+        content = self.changelog_path.read_text(encoding="utf-8")
+        self.assertIn("### 2026-11-01 - Pfad A", content)
+        self.assertIn("doc-lint --root template", content)
+        self.assertIn("T-20260920-167562623", content)
+
 
 if __name__ == "__main__":
     unittest.main()

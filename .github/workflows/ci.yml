@@ -45,6 +45,9 @@ jobs:
       - name: Lint with Ruff
         run: ruff check .
 
+      - name: Lint template metadata
+        run: python template/_tools/doc-lint --root template
+
       - name: Compile Python modules
         run: python -m compileall -q tests template
 

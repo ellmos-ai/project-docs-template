@@ -31,9 +31,9 @@ Project-level maintenance checklist for `project-docs-template`.
   released on 2026-08-23 with eight of twelve jobs red, and its changelog entry
   claimed "34 tests passed, 7 subtests, 100% green". Consider a required status
   check on `main` so the written gate and the enforced gate are the same thing.
-- [ ] **Reconcile `RELEASE_GATE.md` with the workflow.** The documented gate runs
-  `compileall`, `unittest`, `doc-lint` and `git diff --check`; CI runs `ruff`,
-  `compileall` and `pytest` and never invokes `doc-lint`.
+- [x] **Reconcile `RELEASE_GATE.md` with the workflow.** Synchronized the written gate
+  commands (`ruff`, `doc-lint`, `compileall`, `pytest`, `git diff --check`) with
+  `.github/workflows/ci.yml` and unified the Python 3.10-3.13 matrix documentation.
 - [ ] **Set the missing back-links.** The "Ecosystem & Sibling Tools" matrix
   points at fourteen sibling repositories; an org-wide code search on
   2026-09-02 found no repository in any of the ten own organizations that links

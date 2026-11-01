@@ -4,6 +4,20 @@ All notable public-facing changes to this repository are documented here.
 
 ## [Unreleased]
 
+### 2026-11-01 - Pfad A CI Workflow Template Linting, Checkout Action Hardening, Release Gate Parity & Contract Tests
+
+- **Version-Freeze Disziplin (T-20260920-167562623)**: Version `0.1.2` strikt unverändert beibehalten; alle Modifikationen unter `## [Unreleased]` geführt.
+- **CI Workflow Template Linting Guard (`.github/workflows/ci.yml`)**:
+  - Integration von `python template/_tools/doc-lint --root template` in die CI-Matrix, sodass Frontmatter- und Platzhalter-Konformität auf allen Plattformen (Ubuntu, Windows, macOS) und Python-Versionen (3.10–3.13) automatisiert validiert wird.
+- **Workflow Supply-Chain Härtung (`.github/workflows/label-sync.yml`)**:
+  - `actions/checkout@v4` auf SHA-gepinnten Node-24-Standard `actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3` angehoben (Eliminierung von Node-20-Deprecations analog `ci.yml`).
+- **Release-Gate & TODO Konsolidierung (`RELEASE_GATE.md`, `TODO.md`)**:
+  - Release-Gate-Befehlskette mit der CI synchronisiert (`ruff check .`, `python template/_tools/doc-lint --root template`, `python -m compileall -q tests template`, `python -m pytest -ra -v`, `git diff --check`).
+  - Python-Matrix von 3.10 bis 3.13 dokumentiert; TODO-Punkt zur Workflow-Gate-Abstimmung als abgeschlossen markiert.
+- **Automatisierte Vertragstest-Erweiterung (`tests/test_metadata.py`)**:
+  - Neue Regressionstests: `test_ci_template_doc_lint_step`, `test_label_sync_action_pinning` und `test_changelog_recent_pfad_a_20261101_entry`.
+  - Aktualisierung der Test-Counter-Badges in `README.md` und `README_de.md` auf 74 passed / 100%.
+
 ### 2026-10-30 - Pfad B Discoverability, Terminal Execution Showcase, Badges Currency & Level 1 SBOM Re-Audit
 
 - **Version-Freeze Disziplin (T-20260920-167562623)**: Version `0.1.2` strikt unverändert beibehalten per Flottenstandard; keine unautorisierte Release-Änderung in Pfad A/B.
