@@ -201,10 +201,10 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("Fail-Closed", sec_content)
         self.assertIn("Non-Elevation", sec_content)
 
-        self.assertIn("100%25%20Offline", readme_en)
-        self.assertIn("Zero--Egress", readme_en)
-        self.assertIn("100%25%20Offline", readme_de)
-        self.assertIn("Zero--Egress", readme_de)
+        self.assertIn("local%20tools", readme_en)
+        self.assertIn("no%20telemetry", readme_en)
+        self.assertIn("local%20tools", readme_de)
+        self.assertIn("no%20telemetry", readme_de)
 
     def test_template_directory_completeness(self) -> None:
         template_dir = REPO_ROOT / "template"
@@ -268,25 +268,25 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("Research & Scientific Pipeline Developers", en_content)
 
         self.assertTrue("Zielgruppen & Kern-Anwendungsfälle" in de_content or "Zielgruppen" in de_content)
-        self.assertIn("Multi-Agenten Flotten-Ingenieure", de_content)
-        self.assertIn("Solo-Entwickler & Open-Source-Maintainer", de_content)
-        self.assertIn("Enterprise Architecture & AI Compliance Leads", de_content)
+        self.assertIn("Teams mit mehreren Coding-Agenten", de_content)
+        self.assertIn("Solo-Entwickler:innen und Open-Source-Maintainer:innen", de_content)
+        self.assertIn("Verantwortliche für Architektur und KI-Governance", de_content)
         self.assertIn("Forschungs- & Pipeline-Entwickler", de_content)
 
-    def test_comparative_architecture_matrix(self) -> None:
-        """Verify Comparative Architecture table in both English and German READMEs."""
+    def test_project_capability_boundaries(self) -> None:
+        """Verify project capability and boundary tables in both English and German READMEs."""
         en_content = self.readme_en_path.read_text(encoding="utf-8")
         de_content = self.readme_de_path.read_text(encoding="utf-8")
 
-        self.assertTrue("Comparative Architecture" in en_content)
-        self.assertIn("Generic Markdown Dumps", en_content)
-        self.assertIn("Heavy SaaS Wikis", en_content)
-        self.assertIn("Rigid Agent Frameworks", en_content)
+        self.assertTrue("Project Capabilities & Limits" in en_content)
+        self.assertIn("INV-STG-04", en_content)
+        self.assertIn("INV-HANDOFF-05", en_content)
+        self.assertIn("INV-AUDIT-08", en_content)
 
-        self.assertTrue("Architekturvergleich" in de_content or "Vergleichsmatrix" in de_content)
-        self.assertIn("Generische Markdown-Ablage", de_content)
-        self.assertIn("Schwere SaaS-Wikis", de_content)
-        self.assertIn("Starre Agenten-Frameworks", de_content)
+        self.assertTrue("Projektumfang und Grenzen" in de_content)
+        self.assertIn("INV-STG-04", de_content)
+        self.assertIn("INV-HANDOFF-05", de_content)
+        self.assertIn("INV-AUDIT-08", de_content)
 
     def test_third_party_licenses_content(self) -> None:
         """Verify THIRD_PARTY_LICENSES.md structure and invariants."""
@@ -528,13 +528,13 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("VIEW 1: CLI COCKPIT", readme_en)
         self.assertIn("VIEW 2: TIERED PROFILE ENGINE", readme_en)
         self.assertIn("VIEW 3: RUNTIME PERSISTENCE", readme_en)
-        self.assertIn("VIEW 4: SECURITY BOUNDARY", readme_en)
+        self.assertIn("VIEW 4: DOCUMENTED SECURITY POLICY", readme_en)
 
         # German README views
         self.assertIn("SICHT 1: CLI-COCKPIT", readme_de)
-        self.assertIn("SICHT 2: GESTAFFELTE PROFIL-ENGINE", readme_de)
+        self.assertIn("SICHT 2: PROFIL-ENGINE", readme_de)
         self.assertIn("SICHT 3: LAUFZEIT-PERSISTENZ", readme_de)
-        self.assertIn("SICHT 4: SICHERHEITSPERIMETER", readme_de)
+        self.assertIn("SICHT 4: LOKALE TOOLS", readme_de)
 
     def test_level1_sbom_plaintext_companion_contract(self) -> None:
         """Verify THIRD_PARTY_LICENSES.txt exists and meets all compliance invariants."""
@@ -611,7 +611,7 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("# Contributing to project-docs-template", content)
         self.assertIn('<a id="english"></a>', content)
         self.assertIn('<a id="deutsch"></a>', content)
-        self.assertIn("RunAsInvoker", content)
+        self.assertIn("Caller Process Context", content)
         self.assertIn("Plan D Architecture", content)
         self.assertIn("T-20260920-167562623", content)
         self.assertIn("security@ellmos.ai", content)
@@ -723,14 +723,14 @@ class MetadataAndManifestTests(unittest.TestCase):
         de_content = self.readme_de_path.read_text(encoding="utf-8")
 
         # English README Section 9 checks
-        self.assertIn("Deterministic Scaffolding Walkthrough", en_content)
+        self.assertIn("Staged Generation Walkthrough", en_content)
         self.assertIn("--target /path/to/my-project", en_content)
         self.assertIn("==> Target:  /path/to/my-project", en_content)
         self.assertIn("==> Profil: STANDARD", en_content)
         self.assertIn("doc-lint --fix --update-dates", en_content)
 
         # German README Section 9 checks
-        self.assertIn("Deterministischer Bereitstellungsablauf", de_content)
+        self.assertIn("Generierung mit Staging", de_content)
         self.assertIn("--target /pfad/zu/meinem-projekt", de_content)
         self.assertIn("==> Target:  /pfad/zu/meinem-projekt", de_content)
         self.assertIn("==> Profil: STANDARD", de_content)
