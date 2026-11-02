@@ -4,9 +4,9 @@ All notable public-facing changes to this repository are documented here.
 
 ## [Unreleased]
 
-- Add the complete Spanish guide and reciprocal EN/DE/ES navigation and discovery index. Align READMEs and bilingual contribution guidance with detected-conflict checks, conditional rollback, journaled task archival, inherited process context, and best-effort security response policy. Preserve existing generated discovery projections, runtime behavior and version0.1.2.
+- Add the complete French guide, reciprocal four-language navigation and discovery indexing. Correct a surplus table separator in the English process-context row; no runtime or version change.
 
-## [Unreleased]
+- Add the complete Spanish guide and reciprocal EN/DE/ES navigation and discovery index. Align READMEs and bilingual contribution guidance with detected-conflict checks, conditional rollback, journaled task archival, inherited process context, and best-effort security response policy. Preserve existing generated discovery projections, runtime behavior and version0.1.2.
 
 ### 2026-11-01 - Pfad A CI Workflow Template Linting, Checkout Action Hardening, Release Gate Parity & Contract Tests
 

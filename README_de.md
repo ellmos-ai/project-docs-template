@@ -1,6 +1,6 @@
 # Project Docs Template (Deutsche Dokumentation)
 
-**[English](README.md) · [Deutsch](README_de.md) · [Español](README_es.md)**
+**[English](README.md) · [Deutsch](README_de.md) · [Español](README_es.md) · [Français](README_fr.md)**
 
 <p align="center"><img src="assets/banner.png" width="100%" alt="Project Docs Template Banner"></p>
 

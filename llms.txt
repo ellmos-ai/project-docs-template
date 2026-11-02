@@ -18,6 +18,7 @@ Important files:
 - `README.md`: human-facing overview, 18-point navigation, target personas, and project capabilities with implementation limits.
 - `README_de.md`: complete German documentation, 18-Punkte-Schnellnavigation, and user guide.
 - `README_es.md`: complete Spanish documentation and user guide.
+- `README_fr.md`: complete French documentation and user guide.
 - `CONTRIBUTING.md`: bilingual development and invariant compliance guidelines (INV-LOCAL-01..INV-SLA-10).
 - `NOTICE`: legal copyright attribution and ecosystem notice.
 - `MARKETING-LOG.txt`: Pfad A repository hygiene & Pfad B discoverability log.
@@ -58,7 +59,7 @@ deterministic documentation staging and profile upgrades
 ## Language
 
 The repository documentation (`README.md`, `llms.txt`, `SECURITY.md`,
-`RELEASE_GATE.md`) is English, with German `README_de.md` and Spanish `README_es.md` guides. The generated
+`RELEASE_GATE.md`) is English, with German `README_de.md`, Spanish `README_es.md`, and French `README_fr.md` guides. The generated
 artefacts are not: the template bodies under `template/` and the CLI output of
 the tools in `template/_tools/` are currently German. File names, profile
 markers and YAML front matter keys are language-neutral. There is no language

@@ -1,6 +1,6 @@
 # Project Docs Template
 
-**[English](README.md) · [Deutsch](README_de.md) · [Español](README_es.md)**
+**[English](README.md) · [Deutsch](README_de.md) · [Español](README_es.md) · [Français](README_fr.md)**
 
 <p align="center"><img src="assets/banner.png" width="100%" alt="Project Docs Template banner"></p>
 
@@ -240,7 +240,7 @@ The project documents ten runtime, staging, and governance invariants across its
 | Canonical ID | Invariant | Documented behavior and scope |
 |:---|:---|:---|
 | **INV-LOCAL-01** | **Local-First & Zero-Egress** | `SECURITY.md` documents local-disk operation for template generation and the listed maintenance scripts, with no outbound telemetry or network traffic during instantiation or upgrade. |
-| **INV-SEC-02** | **Caller Process Context** | The scripts inherit the invoking process context; the CLI does not request privilege elevation. | A privileged caller stays privileged; no standard-user enforcement or certification is claimed. |
+| **INV-SEC-02** | **Caller Process Context** | The scripts inherit the invoking process context; the CLI does not request privilege elevation. A privileged caller stays privileged; no standard-user enforcement or certification is claimed. |
 | **INV-FAIL-03** | **Fail-Closed Checks** | New generation rejects an existing non-empty target; upgrades reject detected edits to managed files and unowned collisions before commit. Generation still creates the parent/staging area and writes in staging before promotion. |
 | **INV-STG-04** | **Staged Upgrade & Guarded Recovery** | Upgrades check manifest hashes and stage a profile before commit. Backups and hash checks support rollback attempts; restoration is conditional and can be blocked by further filesystem errors or concurrent changes. |
 | **INV-HANDOFF-05** | **Agent Session Context** | `START.md` and `STATE.md` store project and session context. Whether agents read, follow, or retain it depends on their behavior and the surrounding workflow. |
