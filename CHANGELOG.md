@@ -4,6 +4,9 @@ All notable public-facing changes to this repository are documented here.
 
 ## [Unreleased]
 
+### Hindi user guide (2026-11-03)
+- Add the complete Hindi README with reciprocal eight-language navigation and discovery indexing. Preserve implementation and security-policy limits, generated discovery projection, runtime, template bodies and version0.1.2.
+
 - Add the complete Simplified Chinese guide, reciprocal seven-language navigation and discovery indexing. Preserve implementation and policy limits, generated discovery projection, runtime and version0.1.2.
 
 - Add the complete Japanese guide, reciprocal six-language navigation and discovery indexing. Preserve implementation and policy limits, generated discovery projection, runtime and version0.1.2.

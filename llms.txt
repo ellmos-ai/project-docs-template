@@ -22,6 +22,7 @@ Important files:
 - `README_ru.md`: complete Russian documentation and user guide.
 - `README_ja.md`: complete Japanese documentation and user guide.
 - `README_zh.md`: complete Simplified Chinese documentation and user guide.
+- `README_hi.md`: complete Hindi documentation and user guide.
 - `CONTRIBUTING.md`: bilingual development and invariant compliance guidelines (INV-LOCAL-01..INV-SLA-10).
 - `NOTICE`: legal copyright attribution and ecosystem notice.
 - `MARKETING-LOG.txt`: Pfad A repository hygiene & Pfad B discoverability log.
@@ -62,7 +63,7 @@ deterministic documentation staging and profile upgrades
 ## Language
 
 The repository documentation (`README.md`, `llms.txt`, `SECURITY.md`,
-`RELEASE_GATE.md`) is English, with German `README_de.md`, Spanish `README_es.md`, French `README_fr.md`, Russian `README_ru.md`, Japanese `README_ja.md`, and Simplified Chinese `README_zh.md` guides. The generated
+`RELEASE_GATE.md`) is English, with German `README_de.md`, Spanish `README_es.md`, French `README_fr.md`, Russian `README_ru.md`, Japanese `README_ja.md`, Simplified Chinese `README_zh.md`, and Hindi `README_hi.md` guides. The generated
 artefacts are not: the template bodies under `template/` and the CLI output of
 the tools in `template/_tools/` are currently German. File names, profile
 markers and YAML front matter keys are language-neutral. There is no language
