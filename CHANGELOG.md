@@ -4,6 +4,9 @@ All notable public-facing changes to this repository are documented here.
 
 ## [Unreleased]
 
+### Complete World Set user guides (2026-11-03)
+- Add the complete Bengali and Portuguese READMEs, completing eleven-language documentation with reciprocal navigation and discovery indexing. Preserve implementation and security-policy limits, generated discovery projection, runtime, template bodies and version0.1.2.
+
 ### Arabic user guide (2026-11-03)
 - Add the complete Arabic README with reciprocal nine-language navigation and discovery indexing. Preserve implementation and security-policy limits, generated discovery projection, runtime, template bodies and version0.1.2.
 
