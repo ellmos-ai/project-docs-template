@@ -1,6 +1,6 @@
 # Modèle de documentation de projet — Project Docs Template
 
-**[English](README.md) · [Deutsch](README_de.md) · [Español](README_es.md) · [Français](README_fr.md) · [Русский](README_ru.md) · [日本語](README_ja.md)**
+**[English](README.md) · [Deutsch](README_de.md) · [Español](README_es.md) · [Français](README_fr.md) · [Русский](README_ru.md) · [日本語](README_ja.md) · [简体中文](README_zh.md)**
 
 <p align="center"><img src="assets/banner.png" width="100%" alt="Bannière Project Docs Template"></p>
 

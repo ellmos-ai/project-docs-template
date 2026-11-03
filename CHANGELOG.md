@@ -4,6 +4,8 @@ All notable public-facing changes to this repository are documented here.
 
 ## [Unreleased]
 
+- Add the complete Simplified Chinese guide, reciprocal seven-language navigation and discovery indexing. Preserve implementation and policy limits, generated discovery projection, runtime and version0.1.2.
+
 - Add the complete Japanese guide, reciprocal six-language navigation and discovery indexing. Preserve implementation and policy limits, generated discovery projection, runtime and version0.1.2.
 
 - Add the complete Russian guide, reciprocal five-language navigation and discovery indexing. Preserve implementation and policy limits, generated discovery projection, runtime and version0.1.2.
