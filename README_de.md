@@ -469,11 +469,29 @@ Das vollständige Level 1 Software Bill of Materials (SBOM) und die Invarianten-
 | [`open-bricks`](https://github.com/open-bricks) | Dachorganisation für Entwickler- und KI-Werkzeuge | Portal |
 
 <!-- BEGIN GENERATED ELLMOS BUNDLE DISCOVERY -->
-### Bundles und Partner Entdeckungsprojektion
-Generierte Entdeckungsprojektion für `module:project-docs-template` aus `catalog:v4-bundles` (`546290dafbaafd810df1d59ef5a3d7183738472b48cd5a8a81f1e8f2b64d852e`). Ziel-Sichtbarkeit: `public`.
 
-- **`ellmos-dev-lifecycle-bundle`**: Rolle `declared-component`, Anforderung `required`. Partner: `module:bundle-installer`, `module:ellmos-code-tools`, `module:ellmos-tests`, `module:github-onedrive-mirror`, `module:stack-system-installer`.
-- **`ellmos-knowledge-bundle`**: Rolle `declared-component`, Anforderung `recommended`. Partner: `module:KnowledgeDigest`, `module:WikiStub-Seed`, `module:report-forge`, `module:web-scraper`.
+## Bundles und Partner
+
+Generierte Discovery-Projektion für `module:project-docs-template` aus `catalog:v4-bundles` (`9ab64b71e0c9ac29442f688cdc32ee05b08e2576544841014b23074d8c27f870`).
+Ziel-Repository-Sichtbarkeit: `public`. Bundle-Manifeste bleiben die Autorität für Mitgliedschaften; dieser Abschnitt installiert oder aktiviert keine Komponenten.
+Discovery-Freigabe: `public` Modul-Registry-Eintrag, ausdrückliche Default-deny-Bundle-Allowlist.
+
+### `ellmos-dev-lifecycle-bundle`
+
+- Sichtbarkeit des Bundle-Rezepts: `private`; Rolle: `project-documentation-scaffold-and-linter`; Anforderung: `required`.
+- Funktion in diesem Bundle: Generiert und lintert agentengerechte Projektdokumentation (START, STATE, TODO, DONE) für Repositories im Entwicklungslebenszyklus.
+- Modulpartner: `module:bundle-installer`, `module:ellmos-code-tools`, `module:ellmos-installer`, `module:ellmos-tests`, `module:github-onedrive-mirror`.
+- Skill-Partner: `skill:bugfix-protocol`, `skill:bugsweep`, `skill:dev-cycle`, `skill:encoding-fix`, `skill:github-repo-care`, `skill:migrate-rename`, `skill:nulcleaner`, `skill:pipeline-optimizer`, `skill:plugin-system`, `skill:project-onboarding`, `skill:trampelpfadanalyse`.
+
+### `ellmos-knowledge-bundle`
+
+- Sichtbarkeit des Bundle-Rezepts: `private`; Rolle: `structured-project-knowledge-template`; Anforderung: `recommended`.
+- Funktion in diesem Bundle: Pflegt agentenlesbare Projektdokumentationsvorlagen und Speicherdateien (START, STATE, TODO, DONE) als strukturiertes lokales Wissen.
+- Modulpartner: `module:KnowledgeDigest`, `module:WikiStub-Seed`, `module:report-forge`, `module:web-scraper`.
+- Skill-Partner: `skill:bilingual-doc-sync`, `skill:docs-analysis`, `skill:document-chunker`.
+
+Kompositions- und Runtime-Details werden bewusst nicht offengelegt.
+
 <!-- END GENERATED ELLMOS BUNDLE DISCOVERY -->
 
 ---
