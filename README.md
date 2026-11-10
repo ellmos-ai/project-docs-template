@@ -1,5 +1,7 @@
 # Project Docs Template
 
+**[English](README.md) · [Deutsch](README_de.md) · [Español](README_es.md) · [Français](README_fr.md) · [Русский](README_ru.md) · [日本語](README_ja.md) · [简体中文](README_zh.md) · [हिन्दी](README_hi.md) · [العربية](README_ar.md) · [বাংলা](README_bn.md) · [Português](README_pt.md)**
+
 <p align="center"><img src="assets/banner.png" width="100%" alt="Project Docs Template banner"></p>
 
 [![Template](https://img.shields.io/badge/template-agent--ready_project_docs-2f6f5e)](https://github.com/ellmos-ai/project-docs-template)
@@ -8,11 +10,11 @@
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
 [![Pytest](https://img.shields.io/badge/pytest-74%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Contributing](https://img.shields.io/badge/Contributing-Guidelines-blue.svg)](./CONTRIBUTING.md)
-[![Privacy](https://img.shields.io/badge/privacy-100%25%20Offline%20%7C%20Zero--Egress-success.svg)](./SECURITY.md)
+[![Privacy: Local Tools, No Telemetry](https://img.shields.io/badge/privacy-local%20tools%20%7C%20no%20telemetry-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
-[![Security SLA](https://img.shields.io/badge/Security%20SLA-48h%20%2F%205d-blue.svg)](./SECURITY.md)
-[![Level 1 SBOM](https://img.shields.io/badge/Level%201%20SBOM-Audited%20%7C%20Plain%20Text-brightgreen.svg)](./THIRD_PARTY_LICENSES.txt)
-[![RunAsInvoker](https://img.shields.io/badge/RunAsInvoker-Certified-success.svg)](./THIRD_PARTY_LICENSES.md)
+[![Security Reporting](https://img.shields.io/badge/security-reporting_policy-blue.svg)](./SECURITY.md)
+[![Dependency Inventory](https://img.shields.io/badge/dependency--inventory-plain%20text-blue.svg)](./THIRD_PARTY_LICENSES.txt)
+[![Execution Context](https://img.shields.io/badge/execution-invoking_process_context-informational.svg)](./SECURITY.md)
 [![Attribution: NOTICE](https://img.shields.io/badge/Attribution-NOTICE-blue.svg)](./NOTICE)
 [![Ecosystem: ellmos-ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
 [![Umbrella: open-bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
@@ -39,7 +41,7 @@ workflows, lightweight tooling, and LLM-friendly project memory.
 2. [Visual Architecture Topology & Decoupled Layers](#visual-architecture-topology)
 3. [End-to-End Multi-Agent Lifecycle & Tooling Flow](#end-to-end-multi-agent-lifecycle)
 4. [Target Personas & High-Intent SEO Queries](#target-personas--core-use-cases)
-5. [Comparative Architecture Matrix vs. Alternatives](#comparative-matrix-vs-alternatives)
+5. [Project Capabilities & Limits](#comparative-matrix-vs-alternatives)
 6. [Governance & Runtime Invariants Matrix](#governance--runtime-invariants)
 7. [When to Use This Template](#use-this-template-when)
 8. [What Is Included & Scaffold Structure](#what-is-included)
@@ -48,8 +50,8 @@ workflows, lightweight tooling, and LLM-friendly project memory.
 11. [Profile Comparison Matrix (MINIMAL / STANDARD / FULL)](#profile-comparison)
 12. [Design Principles & Architecture Invariants](#design-principles)
 13. [Testing, Verification & Quality Gates](#verification)
-14. [Security Policy & Vulnerability SLAs](#security-policy)
-15. [Third-Party Licenses & Level 1 SBOM](#third-party-licenses--transparency)
+14. [Security Policy & Vulnerability Reporting](#security-policy)
+15. [Third-Party Licenses & Dependency Inventory](#third-party-licenses--transparency)
 16. [Bundles, Partners & Ecosystem Sibling Tools](#ecosystem--sibling-tools)
 17. [Trademarks & Independence Notice](#trademarks)
 18. [Statutory Notice, Liability Limitation & License (§ 521 BGB)](#license)
@@ -60,20 +62,20 @@ workflows, lightweight tooling, and LLM-friendly project memory.
 
 `project-docs-template` provides a lightweight, agent-ready documentation and project memory architecture engineered for autonomous AI coding agents (Claude Code, OpenAI Codex, Antigravity/Gemini), multi-agent swarms, and human maintainers operating across software, research, and operations repositories.
 
-Instead of turning projects into heavyweight, rigid operating systems or relying on proprietary SaaS portals, `project-docs-template` operates through transparent, standard plain-text Markdown registers (`START.md`, `STATE.md`, `TODO.md`, `DONE.md`, `DECISIONS.md`). Universal entry contracts (`CLAUDE.md`, `AGENTS.md`) ensure that every agent bootstrapping into the workspace instantly acquires exact project state, architectural invariants, and active task items without hallucinations or context drift.
+Instead of turning projects into heavyweight, rigid operating systems or relying on proprietary SaaS portals, `project-docs-template` uses transparent, standard plain-text Markdown registers (`START.md`, `STATE.md`, `TODO.md`, `DONE.md`, `DECISIONS.md`). Universal entry contracts (`CLAUDE.md`, `AGENTS.md`) give agents a consistent place to read project state, architectural invariants, and active tasks. They provide context; they cannot guarantee that an agent interprets or follows it accurately.
 
 ### Core Value Propositions
-- **100% Local-First & Zero-Egress**: Operates entirely within local filesystem checkouts without network calls, telemetry, or external API dependencies.
+- **Local-First Operation**: `SECURITY.md` documents local-disk operation without telemetry or outbound network calls for template generation and the listed maintenance tools.
 - **Zero Runtime Dependencies**: Pure Python standard library (3.10+) for all scaffolding, staging, validation, and task archival tools.
-- **Deterministic Multi-Agent Handoff**: Dedicated session bootstrap (`START.md`) and live status snapshot (`STATE.md`) guarantee frictionless agent-to-agent and session-to-session handoffs.
-- **Merge-Safe Profile Upgrades**: SHA-256 manifest tracking (`.project-docs-template.json`) enables safe upgrades from `MINIMAL` to `STANDARD` or `FULL` without overwriting custom project code or documents.
-- **Transactional Task Archival**: Atomic two-file journaling (`todo-archive`) cleanly rolls completed tasks into `DONE.md` to keep `TODO.md` focused and concise.
+- **Shared Session Context for Agent Handoffs**: Dedicated session notes (`START.md`) and a current-state snapshot (`STATE.md`) provide a common reference for later sessions. The files support handoffs but do not guarantee agent behavior or prevent context loss.
+- **Profile Upgrades with Change Detection**: SHA-256 manifest tracking (`.project-docs-template.json`) checks managed files and lets upgrades refuse detected edits or unowned collisions before committing the next profile step.
+- **Journaled Task Archival**: `todo-archive` stages updates to both task files, records a journal, attempts rollback after replacement errors, and can recover an interrupted pair commit. Divergent files can leave the journal for manual review.
 
 ---
 
 ## <a id="sec-02"></a><a id="visual-architecture-topology"></a><a id="architecture--flow"></a>2. Visual Architecture Topology & Decoupled Layers
 
-The diagram below illustrates the four decoupled operational tiers of `project-docs-template`, from developer/agent interfaces down to persistent repository state, validation gates, and cloud-sync defenses:
+The diagram below illustrates the four operational tiers of `project-docs-template`, from developer/agent interfaces down to repository files, validation, and documented cloud-sync conflict filters:
 
 ```mermaid
 flowchart TD
@@ -112,7 +114,7 @@ flowchart TD
 |                  [VIEW 1: CLI COCKPIT, LINTER & AGENT INTERFACE HARNESS]                         |
 |  - init-project: Deterministic scaffolding, SHA-256 manifest stamping & profile migrations      |
 |  - doc-lint: Static markdown validation, frontmatter linting & header contract enforcement       |
-|  - todo-archive: Atomic two-file task ledger journaling (TODO.md -> DONE.md)                     |
+|  - todo-archive: Journaled two-file task archive with staged replacement & recovery            |
 |  - workflows-sync: Bidirectional orchestration synchronization & prompt template extraction      |
 +--------------------------------------------------------------------------------------------------+
                                                 |
@@ -122,13 +124,13 @@ flowchart TD
 |  - MINIMAL Profile: Lightweight context boundary (CLAUDE.md, AGENTS.md, START.md, STATE.md)     |
 |  - STANDARD Profile: Complete project memory (TODO.md, DONE.md, DECISIONS.md, PATTERNS.md)       |
 |  - FULL Profile: Enterprise architecture & governance (WORKFLOWS.md, TOOLS.md, GLOSSARY.md)      |
-|  - SHA-256 Manifest: .project-docs-template.json protects custom user edits against collisions   |
+|  - SHA-256 Manifest: tracks managed files and detects edits or unowned collisions                |
 +--------------------------------------------------------------------------------------------------+
                                                 |
                                                 v
 +--------------------------------------------------------------------------------------------------+
 |                  [VIEW 3: RUNTIME PERSISTENCE, REPOSITORY MEMORY & AUDIT]                        |
-|  - Universal Agent Bootstrap: CLAUDE.md / AGENTS.md instant workspace alignment                  |
+|  - Entry Instructions: CLAUDE.md / AGENTS.md provide a place to read project guidance             |
 |  - Session Memory: START.md (session bootloader) & STATE.md (live operational ledger)            |
 |  - Task Tracking: Structured task cards, recurring checklists, and verification criteria        |
 |  - Decision Ledger: ADR-style architectural records (DECISIONS.md) & code patterns (PATTERNS.md)|
@@ -136,11 +138,11 @@ flowchart TD
                                                 |
                                                 v
 +--------------------------------------------------------------------------------------------------+
-|                  [VIEW 4: SECURITY BOUNDARY, AIR-GAP & RUNASINVOKER ZERO-EGRESS]                 |
-|  - Unprivileged User-Mode: RunAsInvoker guarantee, 0 administrative elevation, 0 UAC prompts     |
-|  - Zero-Egress Invariant: 100% offline, 0 network sockets, 0 phone-home calls, 0 telemetry       |
-|  - Multi-Host Cloud-Sync Defense: .gitignore filters for conflict copies (*-WORKSTATION-LG*)    |
-|  - Legal & Governance: § 521 BGB Gefälligkeit liability cap, 48h Security SLA (INV-SLA-10)       |
+|                  [VIEW 4: DOCUMENTED SECURITY POLICY & FILE CONFLICT FILTERS]                     |
+|  - User Context: tools run without requiring administrator or root elevation                    |
+|  - Zero-Egress Policy: SECURITY.md documents local operation without outbound traffic             |
+|  - Conflict-Copy Filters: .gitignore lists known cloud-sync conflict patterns                    |
+|  - Legal & Governance: § 521 BGB notice; SECURITY.md says best-effort, no guaranteed response    |
 +--------------------------------------------------------------------------------------------------+
 ```
 
@@ -148,7 +150,7 @@ flowchart TD
 
 ## <a id="sec-03"></a><a id="end-to-end-multi-agent-lifecycle"></a>3. End-to-End Multi-Agent Lifecycle & Tooling Flow
 
-The sequence diagram below demonstrates how human engineers and autonomous AI coding agents interact with `project-docs-template` across scaffolding, session bootstrap, task completion, and merge-safe profile upgrades:
+The sequence diagram below shows how human engineers and AI coding agents can use `project-docs-template` during scaffolding, session startup, task completion, and profile upgrades. The documentation provides handoff context; the agent remains responsible for reading and applying it.
 
 ```mermaid
 sequenceDiagram
@@ -162,7 +164,7 @@ sequenceDiagram
 
     Note over Engineer,FS: Phase 1: Project Initialization & Profile Scaffolding
     Engineer->>CLI: Execute init-project --profile standard
-    CLI->>FS: Verify target directory is clean or merge-safe
+    CLI->>FS: Check target is absent or empty
     CLI->>FS: Stage START.md, STATE.md, TODO.md, DECISIONS.md
     CLI->>Manifest: Compute SHA-256 file hashes & write manifest
     Manifest-->>Engineer: Scaffold complete (0 external dependencies)
@@ -173,12 +175,12 @@ sequenceDiagram
     NextAgent->>Linter: Run doc-lint to verify placeholder-free frontmatter
     Linter-->>NextAgent: Verification passed (Clean metadata)
 
-    Note over NextAgent,Linter: Phase 3: Task Completion & Transactional Archival
+    Note over NextAgent,Linter: Phase 3: Task Completion & Journaled Archival
     NextAgent->>FS: Mark task complete in TODO.md
     NextAgent->>Linter: Execute todo-archive --apply
-    Linter->>FS: Atomically cut completed tasks from TODO.md
-    Linter->>FS: Append archived tasks into DONE.md
-    FS-->>NextAgent: Archival committed safely (Journal verified)
+    Linter->>FS: Stage TODO.md and DONE.md updates, record journal
+    Linter->>FS: Replace DONE.md, then TODO.md
+    FS-->>NextAgent: Pair update completed, journal cleared
 
     Note over Engineer,NextAgent: Phase 4: Merge-Safe Profile Upgrade
     Engineer->>CLI: Upgrade profile: init-project --upgrade full
@@ -192,12 +194,12 @@ sequenceDiagram
 
 ## <a id="sec-04"></a><a id="target-personas--discoverability"></a><a id="target-personas--core-use-cases"></a>4. Target Personas & Core Use Cases
 
-`project-docs-template` is engineered to solve context drift, handoff loss, and governance friction across four primary technical user journeys:
+`project-docs-template` is designed to help address context drift, handoff loss, and governance friction across four primary technical user journeys:
 
 | Target Persona | Key Pain Point | How `project-docs-template` Solves It | Core Artifacts |
 |:---|:---|:---|:---|
-| **Multi-Agent Systems Engineers** | Heterogeneous coding agents (Claude Code, Antigravity/Gemini, Codex) lose project context between sessions and invent divergent file formats. | Universal entry point contracts (`CLAUDE.md`, `AGENTS.md`) and dedicated bootstrap/state registers (`START.md`, `STATE.md`) guarantee deterministic agent handoffs. | `CLAUDE.md`, `AGENTS.md`, `START.md`, `STATE.md` |
-| **Solo Developers & Open-Source Maintainers** | Juggling issues, feature backlogs, and release histories without heavy, distracting project management SaaS (Jira, Linear). | Minimal-overhead markdown task loops (`TODO.md`, `DONE.md`) paired with a transactional archival tool (`todo-archive`) and standard `CHANGELOG.md`. | `TODO.md`, `DONE.md`, `_tools/todo-archive`, `CHANGELOG.md` |
+| **Multi-Agent Systems Engineers** | Heterogeneous coding agents (Claude Code, Antigravity/Gemini, Codex) can lose project context between sessions or use divergent file formats. | Universal entry point contracts (`CLAUDE.md`, `AGENTS.md`) and session/state registers (`START.md`, `STATE.md`) give agents a shared place to read instructions and recorded context. Reliable handoffs still depend on agents and maintainers using those files. | `CLAUDE.md`, `AGENTS.md`, `START.md`, `STATE.md` |
+| **Solo Developers & Open-Source Maintainers** | Juggling issues, feature backlogs, and release histories without a heavy project-management SaaS platform. | Minimal-overhead Markdown task loops (`TODO.md`, `DONE.md`) paired with the journaled archival tool (`todo-archive`) and standard `CHANGELOG.md`. | `TODO.md`, `DONE.md`, `_tools/todo-archive`, `CHANGELOG.md` |
 | **Enterprise Architecture & AI Governance Leads** | Lack of auditable decision trails, compliance transparency, and risk of accidental data egress in corporate agent workflows. | Architecture Decision Records (`DECISIONS.md`), strict `SECURITY.md` local-first invariants, and zero external runtime dependencies. | `DECISIONS.md`, `SECURITY.md`, `THIRD_PARTY_LICENSES.md` |
 | **Research & Scientific Pipeline Developers** | Complex multi-stage experiment pipelines drift over weeks of autonomous LLM reasoning runs. | Scalable FULL profile with operational runbooks (`WORKFLOWS.md`), domain terminology (`GLOSSARY.md`), and automated table sync (`workflows-sync`). | `WORKFLOWS.md`, `GLOSSARY.md`, `_tools/workflows-sync` |
 
@@ -212,41 +214,41 @@ sequenceDiagram
 
 ---
 
-## <a id="sec-05"></a><a id="comparative-matrix-vs-alternatives"></a><a id="comparative-architecture"></a>5. Comparative Architecture Matrix vs. Alternatives
+## <a id="sec-05"></a><a id="comparative-matrix-vs-alternatives"></a><a id="comparative-architecture"></a>5. Project Capabilities & Limits
 
-The matrix below compares `project-docs-template` against single README markdown dumps, heavy SaaS wikis, rigid agent frameworks, and ad-hoc shell scripts across our 10 Governance and Technical Invariants (`INV-LOCAL-01` to `INV-SLA-10`):
+The table below summarizes the ten documented project invariants and the behavior and limits supported by this source commit:
 
-| # | Invariant & Dimension | project-docs-template | Generic Markdown Dumps | Heavy SaaS Wikis (Notion / Jira) | Rigid Agent Frameworks (CrewAI / AutoGPT) | Ad-Hoc Scripts / Folder Flags |
-|---|:---|:---:|:---:|:---:|:---:|:---:|
-| 1 | **INV-LOCAL-01: Zero-Egress & Local-First** | ✅ 100% Offline (Zero network calls) | ⚠️ Partial (unverified) | ❌ Cloud-only (egress mandatory) | ⚠️ Often requires external APIs | ✅ Local files |
-| 2 | **INV-SEC-02: Unprivileged `RunAsInvoker`** | ✅ Non-root user space only | ✅ User space | ⚠️ Browser / SaaS auth | ⚠️ Container / service permissions | ✅ User space |
-| 3 | **INV-FAIL-03: Fail-Closed Staging** | ✅ Refuses dirty/unowned targets | ❌ Silent file overwrites | ⚠️ Conflict resolution UI | ⚠️ Fragile runtime errors | ❌ Uncontrolled overwrites |
-| 4 | **INV-STG-04: Transactional Upgrades** | ✅ SHA-256 Manifest rollback | ❌ None (manual copy-paste) | ❌ SaaS vendor locked | ❌ Often breaking upgrades | ❌ None |
-| 5 | **INV-HANDOFF-05: Multi-Agent Handoff** | ✅ Standard `START.md` & `STATE.md` | ❌ None (monolithic text blob) | ❌ Poor API exports | ⚠️ Proprietary schemas | ⚠️ Ad-hoc notes |
-| 6 | **INV-TIER-06: Tiered Scalable Profiles** | ✅ MINIMAL, STANDARD, FULL | ❌ One-size-fits-none | ⚠️ Complex manual boards | ❌ Fixed monolithic schema | ❌ Undefined |
-| 7 | **INV-SYNC-07: Cloud-Sync & Lock Defense** | ✅ Root & template ignore guards | ❌ None (conflict copy accumulation) | ❌ SaaS cloud only | ❌ Unmanaged local sync | ❌ High collision risk |
-| 8 | **INV-AUDIT-08: Human-Readable Archival** | ✅ `TODO.md` / `DONE.md` + journal | ❌ Bloated single TODO list | ⚠️ Opaque database entries | ⚠️ Binary / JSON state logs | ❌ Unstructured files |
-| 9 | **INV-LIC-09: 100% Permissive Dependency Stack** | ✅ MIT (Zero runtime dependencies) | ✅ Markdown only | ❌ Commercial proprietary | ⚠️ Complex Python dependency tree | ⚠️ Unspecified |
-| 10 | **INV-SLA-10: 48h Response / 5d Triage SLA** | ✅ Formal security SLA policy | ❌ None | ⚠️ Commercial SLA tier only | ⚠️ Community forum triage | ❌ None |
+| # | Invariant | Documented capability | Scope / limit |
+|---|:---|:---|:---|
+| 1 | **INV-LOCAL-01: Local-first, zero egress** | `SECURITY.md` states that template generation and listed maintenance tools operate on local disk without outbound telemetry or network traffic. | This is the documented scope for these tools, not an operating-system network sandbox. |
+| 2 | **INV-SEC-02: Caller process context** | The scripts inherit the invoking process context; the CLI does not request privilege elevation. | A privileged caller stays privileged; no standard-user enforcement or certification is claimed. |
+| 3 | **INV-FAIL-03: Fail-closed checks** | Generation rejects an existing non-empty target; upgrades reject detected edits to managed files and unowned collisions before commit. | Generation creates its parent/staging area and writes staged files before promotion; this is not a blanket no-write guarantee. |
+| 4 | **INV-STG-04: Staged profile upgrades** | Upgrades verify manifest hashes, stage the next profile, back up files, and use hash-guarded rollback attempts if commit fails. | Restoration is conditional; concurrent changes or further filesystem errors can prevent full rollback. |
+| 5 | **INV-HANDOFF-05: Session context** | `START.md` and `STATE.md` provide shared project and session records for agents and maintainers. | The template cannot ensure that an agent reads, follows, or retains those records. |
+| 6 | **INV-TIER-06: Tiered profiles** | The template provides `MINIMAL`, `STANDARD`, and `FULL` profiles; upgrades proceed one profile step at a time. | These are documentation scaffolds, not a runtime agent framework. |
+| 7 | **INV-SYNC-07: Conflict-copy filtering** | Repository and template `.gitignore` files list patterns for known conflict copies and lock files. | Ignore patterns do not coordinate concurrent writers or provide a live distributed lock. |
+| 8 | **INV-AUDIT-08: TODO/DONE archival** | `todo-archive` journals and stages the two-file update, attempts rollback after replacement errors, and can recover an interrupted pair commit. | Divergent files leave the journal for manual review; rollback can itself fail in a catastrophic filesystem case. |
+| 9 | **INV-LIC-09: Runtime dependency scope** | The project declares `dependencies = []` and uses the Python standard library at runtime. | This describes runtime dependencies; development and test tools are separate. |
+| 10 | **INV-SLA-10: Security response policy** | `SECURITY.md` prioritizes fixes on a best-effort basis for supported `0.1.x` and states that response time is not guaranteed. | Do not infer a 48-hour response or 5-business-day triage commitment; follow the listed private reporting channels. |
 
 ---
 
 ## <a id="sec-06"></a><a id="governance--runtime-invariants"></a>6. Governance & Runtime Invariants Matrix
 
-`project-docs-template` guarantees 10 fundamental runtime, staging, and governance invariants across all scaffolding tools, maintenance CLI utilities, and generated repository profiles:
+The project documents ten runtime, staging, and governance invariants across its scaffolding tools, maintenance CLI utilities, and generated repository profiles:
 
-| Canonical ID | Invariant Title | Core Operational Guarantee |
+| Canonical ID | Invariant | Documented behavior and scope |
 |:---|:---|:---|
-| **INV-LOCAL-01** | **100% Local-First & Zero-Egress** | Operates strictly on local filesystems. Never transmits telemetry, tracking data, or network payloads. |
-| **INV-SEC-02** | **Unprivileged Execution (`RunAsInvoker`)** | Executes entirely in standard unprivileged user mode. Never requests sudo, administrator rights, or root privileges. |
-| **INV-FAIL-03** | **Fail-Closed Default Semantics** | Aborts safely without modifying files when encountering collisions, dirty staging roots, or unparseable YAML frontmatter. |
-| **INV-STG-04** | **Transactional & Merge-Safe Staging** | Profile upgrades verify SHA-256 hashes against `.project-docs-template.json`. Any modified or unowned file triggers a clean rollback. |
-| **INV-HANDOFF-05** | **Multi-Agent Session Handoff & Memory** | Structured `START.md` and `STATE.md` files provide deterministic context recovery for AI coding agents across sessions. |
-| **INV-TIER-06** | **Tiered Scalable Profiles** | Three graduated profiles (`MINIMAL`, `STANDARD`, `FULL`) balance documentation structure against maintenance overhead. |
-| **INV-SYNC-07** | **Multi-Host Cloud-Sync Defense** | Both root and template `.gitignore` files filter conflict copies (`* (kopie)*`, `*-WORKSTATION*`, `*-ASUS-GEI*`) and locks. |
-| **INV-AUDIT-08** | **Human-Readable Backlog & Archival** | Clean Markdown task tracking with transactional, rollback-safe completed task archival via `todo-archive`. |
-| **INV-LIC-09** | **100% Permissive Audited Stack** | Zero external runtime dependencies; all development and packaging dependencies are MIT/PSFL/Apache-2.0 audited. |
-| **INV-SLA-10** | **Dual Security Response SLA** | Committed 48-hour response and 5-business-day triage window via canonical security channels (`security@ellmos.ai`). |
+| **INV-LOCAL-01** | **Local-First & Zero-Egress** | `SECURITY.md` documents local-disk operation for template generation and the listed maintenance scripts, with no outbound telemetry or network traffic during instantiation or upgrade. |
+| **INV-SEC-02** | **Caller Process Context** | The scripts inherit the invoking process context; the CLI does not request privilege elevation. A privileged caller stays privileged; no standard-user enforcement or certification is claimed. |
+| **INV-FAIL-03** | **Fail-Closed Checks** | New generation rejects an existing non-empty target; upgrades reject detected edits to managed files and unowned collisions before commit. Generation still creates the parent/staging area and writes in staging before promotion. |
+| **INV-STG-04** | **Staged Upgrade & Guarded Recovery** | Upgrades check manifest hashes and stage a profile before commit. Backups and hash checks support rollback attempts; restoration is conditional and can be blocked by further filesystem errors or concurrent changes. |
+| **INV-HANDOFF-05** | **Agent Session Context** | `START.md` and `STATE.md` store project and session context. Whether agents read, follow, or retain it depends on their behavior and the surrounding workflow. |
+| **INV-TIER-06** | **Tiered Scalable Profiles** | The three profiles (`MINIMAL`, `STANDARD`, `FULL`) provide different documentation structures and maintenance scope. |
+| **INV-SYNC-07** | **Cloud-Sync Conflict Filtering** | Root and template `.gitignore` files filter listed conflict-copy and lock-file patterns; they do not coordinate live writers. |
+| **INV-AUDIT-08** | **Journaled Task Archival** | `todo-archive` stages `TODO.md` and `DONE.md`, records a journal, attempts restoration after a replacement error, and supports recovery of an interrupted pair commit. Divergence leaves the journal for manual review. |
+| **INV-LIC-09** | **Runtime Dependencies** | Runtime dependencies are declared as `dependencies = []` and use the Python standard library. Development and test tooling is outside that runtime-dependency claim. |
+| **INV-SLA-10** | **Security Reporting Policy** | `SECURITY.md` lists best-effort maintenance for `0.1.x` and says there is no guaranteed response time; it prioritizes security fixes. |
 
 ---
 
@@ -294,9 +296,9 @@ python template/_tools/init-project --target /path/to/my-project --name "my-proj
 python template/_tools/init-project --target /path/to/my-project --name "my-project" --profile STANDARD --git
 ```
 
-### Deterministic Scaffolding Walkthrough (Terminal Output)
+### Staged Generation Walkthrough (Terminal Output)
 
-When executing `init-project`, the generator validates all YAML frontmatter in an isolated sibling staging area before atomically promoting clean artifacts into the target root:
+When `init-project` runs, it creates a sibling staging directory, renders the selected profile, runs preparation and validation, writes its manifest, and then promotes the staged result. The target may be absent or an existing empty directory:
 
 ```text
 ==> Root:    /path/to/.my-project.staging-xyz123
@@ -346,7 +348,7 @@ python _tools/doc-lint
 # Automatically insert missing frontmatter fields & refresh verification dates
 python _tools/doc-lint --fix --update-dates
 
-# Atomically archive completed tasks from TODO.md into DONE.md
+# Archive completed tasks with journaling
 python _tools/todo-archive --apply
 
 # Synchronize workflow tables across routers (FULL profile)
@@ -360,18 +362,18 @@ python _tools/workflows-sync --apply
 
 ## <a id="sec-10"></a><a id="merge-safe-profile-upgrades"></a>10. Merge-Safe Profile Upgrades & Migration
 
-Existing projects can be upgraded to higher profiles safely:
+Existing projects can be upgraded to the next profile step:
 
 ```bash
 # Upgrade existing project to FULL profile
 python template/_tools/init-project /path/to/my-project --upgrade full
 ```
 
-### Safety Guarantees During Upgrade
-- **Manifest Verification**: Reads `.project-docs-template.json` to verify current profile and SHA-256 hashes.
-- **Fail-Closed on Unowned Collisions**: If a file to be added already exists and was not part of the previous profile, the upgrade aborts immediately.
-- **Fail-Closed on User Mutations**: If a template file was modified by the user, the upgrade refuses to overwrite it without explicit confirmation.
-- **Rollback Guarantee**: In case of any I/O failure or abort, the manifest and filesystem state roll back cleanly to the prior state.
+### Safety Checks During Upgrade
+- **Manifest Verification**: Reads `.project-docs-template.json` and compares hashes for managed files.
+- **Fail-Closed on Unowned Collisions**: If a file to be added already exists outside the prior manifest, the upgrade aborts before committing changes to the target. A staging directory may already have been created.
+- **Refusal on Managed-File Changes**: If a managed file no longer matches its manifest hash, the upgrade refuses to proceed. No confirmation prompt or automatic overwrite is offered.
+- **Conditional Rollback Attempt**: During commit, backups and current-hash checks support restoration of files changed by that invocation. If another change is detected, restoration is skipped to avoid overwriting it; a further filesystem error can also prevent rollback from completing.
 
 ---
 
@@ -396,10 +398,10 @@ python template/_tools/init-project /path/to/my-project --upgrade full
 ## <a id="sec-12"></a><a id="design-principles"></a>12. Design Principles & Architecture Invariants
 
 - **Separation of Concerns**: Every file has a single, well-defined operational responsibility.
-- **Explicit Session Handoff**: Session start and current state are documented in short, predictable files (`START.md`, `STATE.md`).
+- **Explicit Session Handoff**: Session start and current state are documented in short, predictable files (`START.md`, `STATE.md`) for agents and maintainers to consult.
 - **Low Maintenance Burden**: Focuses on high-value context documents rather than generating sprawling, unmaintained wikis.
 - **Router Pattern**: High-level routers (`WORKFLOWS.md`, `TOOLS.md`) index details rather than duplicating them.
-- **Transactional Task Lifecycle**: Completed tasks are pruned into `DONE.md` atomically instead of bloating the active task backlog.
+- **Journaled Task Lifecycle**: `todo-archive` uses a journal and staged file replacement to archive completed tasks; recovery depends on the journal and current file state.
 
 See [`template/TEMPLATE.md`](./template/TEMPLATE.md) for the complete design rationale.
 
@@ -407,7 +409,7 @@ See [`template/TEMPLATE.md`](./template/TEMPLATE.md) for the complete design rat
 
 ## <a id="sec-13"></a><a id="verification"></a>13. Testing, Verification & Quality Gates
 
-The entire test suite can be run with Python's standard `unittest` or `pytest`:
+The test suite is run with Python's standard `unittest` or `pytest`:
 
 ```bash
 # Run test suite via pytest
@@ -417,22 +419,22 @@ pytest -ra -v
 python -m unittest discover -s tests -v
 ```
 
-The test suite exercises every profile, real Git repository initialization, frontmatter repair, workflow metadata escaping, and transactional TODO/DONE rollback behavior. The same suite runs across Linux, Windows, and macOS; see [`RELEASE_GATE.md`](./RELEASE_GATE.md).
+The tests cover all profiles, Git initialization, YAML frontmatter repair, workflow metadata escaping, refusal of modified or colliding upgrade targets, rollback on an injected manifest-commit failure, rollback after an injected second TODO/DONE replacement failure, and recovery of an interrupted archive from its journal. The same suite is configured for Linux, Windows, and macOS; see [`RELEASE_GATE.md`](./RELEASE_GATE.md).
 
 ---
 
-## <a id="sec-14"></a><a id="security-policy"></a>14. Security Policy & Vulnerability SLAs
+## <a id="sec-14"></a><a id="security-policy"></a>14. Security Policy & Vulnerability Reporting
 
-`project-docs-template` enforces strict security invariants:
-- **Zero-Egress Invariant**: All scaffolding and maintenance operations execute offline with zero network connectivity.
-- **Deterministic Staging**: Scaffolds and profile upgrades perform safe staging and abort cleanly upon collisions.
-- **Dual Security SLAs**: Committed **48-hour response** and **5-business-day triage** window.
+`project-docs-template` follows the policy documented in `SECURITY.md`:
+- **Local-First & Zero-Egress**: `SECURITY.md` states that template generation and the listed maintenance tools operate on local disk without outbound telemetry or network traffic during instantiation and upgrade.
+- **Staged Generation and Upgrade Checks**: Generation stages its output beside the target, validates before promotion, and rejects existing non-empty targets. Profile upgrades check managed hashes and unowned collisions before commit; rollback remains conditional.
+- **Supported Versions and Response Policy**: `SECURITY.md` lists `0.1.x` on `main` as best-effort maintenance and prioritizes security fixes, with no guaranteed response time. Versions below `0.1.0` are unsupported.
 
-Security reports must be sent through private channels as documented in [`SECURITY.md`](./SECURITY.md) (`security@ellmos.ai`, `security@open-bricks.org`, `support@lukasgeiger.com`), never via public issues.
+Report potential vulnerabilities as documented in [`SECURITY.md`](./SECURITY.md): use the GitHub Private Security Advisory (preferred) or the listed direct maintainer contacts. Please do not report unpatched vulnerabilities in public issues; coordinated disclosure is requested until a patch is released. The policy lists `security@ellmos.ai`, `support@lukasgeiger.com`, and `lukas@open-bricks.org`.
 
 ---
 
-## <a id="sec-15"></a><a id="third-party-licenses--transparency"></a>15. Third-Party Licenses & Level 1 SBOM
+## <a id="sec-15"></a><a id="third-party-licenses--transparency"></a>15. Third-Party Licenses & Dependency Inventory
 
 `project-docs-template` maintains a **strict Zero-Runtime-Dependency architecture** (`dependencies = []`). All runtime code relies exclusively on Python's standard library (3.10+).
 
@@ -443,7 +445,7 @@ Security reports must be sent through private channels as documented in [`SECURI
 | **ruff** | Development / QA | MIT / Apache-2.0 | 100% Permissive |
 | **setuptools** | Build Backend | MIT License | 100% Permissive |
 
-For the complete Level 1 Software Bill of Materials (SBOM), audited dependency matrix, and Invariant Cross-Reference Matrix (`INV-LOCAL-01` to `INV-SLA-10`), see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) and the plain-text companion [THIRD_PARTY_LICENSES.txt](THIRD_PARTY_LICENSES.txt).
+The declared runtime and development dependency licenses and dependency inventory are listed in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) and the plain-text companion [THIRD_PARTY_LICENSES.txt](THIRD_PARTY_LICENSES.txt). These files document the listed entries; no independent audit or Level 1 SBOM certification is claimed here.
 
 ---
 
@@ -455,7 +457,7 @@ For the complete Level 1 Software Bill of Materials (SBOM), audited dependency m
 |:---|:---|:---|
 | [`policy-registry`](https://github.com/ellmos-ai/policy-registry) | Machine-readable policy registry with signed delegations | CLI / API / MCP |
 | [`DevCenter`](https://github.com/dev-bricks/DevCenter) | Local-first Python IDE and developer toolkit | GUI / PySide6 |
-| [`CodeBox`](https://github.com/dev-bricks/CodeBox) | Isolated code playground and execution environment | GUI / CLI |
+| [`CodeBox`](https://github.com/dev-bricks/CodeBox) | Desktop code editor and IDE | GUI / PySide6 |
 | [`companion-for-agy`](https://github.com/ellmos-ai/companion-for-agy) | Extension & companion suite for Antigravity AI agents | CLI / Node.js |
 | [`safe-start-for-codex`](https://github.com/dev-bricks/safe-start-for-codex) | Defensive bootstrapping and environment verifier | CLI / Python |
 | [`automizer-for-claude-desktop`](https://github.com/dev-bricks/automizer-for-claude-desktop) | Bridge & automation toolkit for Claude Desktop | CLI / Python |
@@ -465,8 +467,8 @@ For the complete Level 1 Software Bill of Materials (SBOM), audited dependency m
 | [`clutch`](https://github.com/ellmos-ai/clutch) | Provider-neutral LLM router and model orchestration engine | CLI / Python |
 | [`memoryhooker`](https://github.com/ellmos-ai/memoryhooker) | Session memory extraction & hook injector | CLI / Python |
 | [`workflowhooker`](https://github.com/ellmos-ai/workflowhooker) | Workflow automation lifecycle triggers | CLI / Python |
-| [`ellmos-controlcenter-mcp`](https://github.com/ellmos-ai/ellmos-controlcenter-mcp) | MCP server for system inspection and skill discovery | MCP / Python |
-| [`ellmos-filecommander-mcp`](https://github.com/ellmos-ai/ellmos-filecommander-mcp) | MCP server for safe local file operations | MCP / Python |
+| [`ellmos-controlcenter-mcp`](https://github.com/ellmos-ai/ellmos-controlcenter-mcp) | MCP server for system inspection and skill discovery | MCP |
+| [`ellmos-filecommander-mcp`](https://github.com/ellmos-ai/ellmos-filecommander-mcp) | MCP server for safe local file operations | MCP |
 | [`open-bricks`](https://github.com/open-bricks) | Umbrella organization for developer & AI tools | Portal |
 
 <!-- BEGIN GENERATED ELLMOS BUNDLE DISCOVERY -->
