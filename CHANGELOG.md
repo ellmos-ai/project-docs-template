@@ -4,6 +4,25 @@ All notable public-facing changes to this repository are documented here.
 
 ## [Unreleased]
 
+### Complete World Set user guides (2026-11-03)
+- Add the complete Bengali and Portuguese READMEs, completing eleven-language documentation with reciprocal navigation and discovery indexing. Preserve implementation and security-policy limits, generated discovery projection, runtime, template bodies and version0.1.2.
+
+### Arabic user guide (2026-11-03)
+- Add the complete Arabic README with reciprocal nine-language navigation and discovery indexing. Preserve implementation and security-policy limits, generated discovery projection, runtime, template bodies and version0.1.2.
+
+### Hindi user guide (2026-11-03)
+- Add the complete Hindi README with reciprocal eight-language navigation and discovery indexing. Preserve implementation and security-policy limits, generated discovery projection, runtime, template bodies and version0.1.2.
+
+- Add the complete Simplified Chinese guide, reciprocal seven-language navigation and discovery indexing. Preserve implementation and policy limits, generated discovery projection, runtime and version0.1.2.
+
+- Add the complete Japanese guide, reciprocal six-language navigation and discovery indexing. Preserve implementation and policy limits, generated discovery projection, runtime and version0.1.2.
+
+- Add the complete Russian guide, reciprocal five-language navigation and discovery indexing. Preserve implementation and policy limits, generated discovery projection, runtime and version0.1.2.
+
+- Add the complete French guide, reciprocal four-language navigation and discovery indexing. Correct a surplus table separator in the English process-context row; no runtime or version change.
+
+- Add the complete Spanish guide and reciprocal EN/DE/ES navigation and discovery index. Align READMEs and bilingual contribution guidance with detected-conflict checks, conditional rollback, journaled task archival, inherited process context, and best-effort security response policy. Preserve existing generated discovery projections, runtime behavior and version0.1.2.
+
 ### 2026-11-01 - Pfad A CI Workflow Template Linting, Checkout Action Hardening, Release Gate Parity & Contract Tests
 
 - **Version-Freeze Disziplin (T-20260920-167562623)**: Version `0.1.2` strikt unverändert beibehalten; alle Modifikationen unter `## [Unreleased]` geführt.
