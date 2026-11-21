@@ -40,9 +40,9 @@ PROFILE_ROOT_FILES = {
     "FULL": {
         "CLAUDE.md", "AGENTS.md", "README.md", "START.md", "STATE.md",
         "ARCHITECTURE.md", "CHANGELOG.md", "HEADER-RULES.md",
-        "CUT-AND-CLUE.md", "DECISIONS.md", "PATTERNS.md", "WORKFLOWS.md",
-        "TOOLS.md", "TODO.md", "DONE.md", "GLOSSARY.md", ".gitignore",
-        ".project-docs-template.json",
+        "CUT-AND-CLUE.md", "MOVED-STUB.md", "DECISIONS.md", "PATTERNS.md",
+        "MASTER-REGISTRY.md", "WORKFLOWS.md", "TOOLS.md", "TODO.md",
+        "DONE.md", "GLOSSARY.md", ".gitignore", ".project-docs-template.json",
     },
 }
 
@@ -561,6 +561,89 @@ class SourceSyntaxTests(unittest.TestCase):
         for path in (INIT, DOC_LINT, TODO_ARCHIVE, WORKFLOWS_SYNC):
             with self.subTest(tool=path.name):
                 ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+
+
+class RootSteeringConceptsTests(unittest.TestCase):
+    def test_self_healing_headers_and_footers_across_templates(self) -> None:
+        governed_docs = [
+            "CLAUDE.md", "START.md", "STATE.md", "TODO.md", "DONE.md",
+            "DECISIONS.md", "PATTERNS.md", "CHANGELOG.md", "HEADER-RULES.md",
+            "CUT-AND-CLUE.md", "MASTER-REGISTRY.md", "MOVED-STUB.md",
+            "REG-TEMPLATE.md", "TODO-SUBLIST.md", "ARCHITECTURE.md",
+            "WORKFLOWS.md", "TOOLS.md", "GLOSSARY.md", "TEMPLATE.md",
+        ]
+        for filename in governed_docs:
+            with self.subTest(file=filename):
+                text = (TEMPLATE / filename).read_text(encoding="utf-8")
+                self.assertIn("Selbstkorrektur", text, f"Selbstkorrektur missing in {filename}")
+                self.assertIn("Selbstheilung", text, f"Selbstheilung missing in {filename}")
+                self.assertIn("CUT-AND-CLUE.md", text, f"CUT-AND-CLUE.md wiring missing in {filename}")
+                self.assertIn("REMEMBER: ENDUSERTEXTE BEKOMMEN ECHTE UMLAUTE", text, f"Footer missing in {filename}")
+
+    def test_cut_and_clue_wiring_and_relative_portability(self) -> None:
+        clue_text = (TEMPLATE / "CUT-AND-CLUE.md").read_text(encoding="utf-8")
+        self.assertNotIn("[absoluter Pfad", clue_text)
+        self.assertIn("relative", clue_text)
+        self.assertIn("_tools/todo-archive --apply", clue_text)
+        self.assertIn("TODO-<BEREICH>.md", clue_text)
+
+        header_text = (TEMPLATE / "HEADER-RULES.md").read_text(encoding="utf-8")
+        self.assertIn("Das 2-Ebenen-Header-System", header_text)
+        self.assertIn("Ebene 1: Maschinenlesbares YAML-Frontmatter", header_text)
+        self.assertIn("Ebene 2: Strukturierter Markdown-Header", header_text)
+        self.assertIn("Datierte Zählstände", header_text)
+
+    def test_todo_sublist_and_master_registry_blueprints(self) -> None:
+        todo_text = (TEMPLATE / "TODO.md").read_text(encoding="utf-8")
+        self.assertIn("Aufspalt-Regel", todo_text)
+        self.assertIn("TODO-<BEREICH>.md", todo_text)
+        self.assertIn("TODO-SUBLIST.md", todo_text)
+
+        sublist_text = (TEMPLATE / "TODO-SUBLIST.md").read_text(encoding="utf-8")
+        self.assertIn("[`TODO.md`](./TODO.md)", sublist_text)
+        self.assertIn("[`DONE.md`](./DONE.md)", sublist_text)
+        self.assertIn("_tools/todo-archive --todo TODO-<BEREICH>.md --done DONE.md --apply", sublist_text)
+
+        registry_text = (TEMPLATE / "MASTER-REGISTRY.md").read_text(encoding="utf-8")
+        self.assertIn("Nicht als Registry verwenden", registry_text)
+        self.assertIn("REG-TEMPLATE.md", registry_text)
+        self.assertIn("Pflege-Regel", registry_text)
+
+        reg_tpl_text = (TEMPLATE / "REG-TEMPLATE.md").read_text(encoding="utf-8")
+        self.assertIn("Registry-Regel & Abgrenzung", reg_tpl_text)
+        self.assertIn("[`MASTER-REGISTRY.md`](./MASTER-REGISTRY.md)", reg_tpl_text)
+
+        moved_text = (TEMPLATE / "MOVED-STUB.md").read_text(encoding="utf-8")
+        for field in ("moved_to:", "moved_on:", "reason:", "moved_by:", "remove_when:"):
+            self.assertIn(field, moved_text)
+
+        # Verify todo-archive works cleanly on a TODO-<BEREICH>.md sublist file
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            sub_todo = root / "TODO-IT.md"
+            done = root / "DONE.md"
+            sub_todo.write_text("# TODO-IT\n\n- [x] sublist task\n- [ ] open sublist task\n", encoding="utf-8")
+            done.write_text("# DONE\n", encoding="utf-8")
+            run(sys.executable, TODO_ARCHIVE, "--todo", sub_todo, "--done", done, "--apply")
+            self.assertNotIn("- [x] sublist task", sub_todo.read_text(encoding="utf-8"))
+            self.assertIn("- [ ] open sublist task", sub_todo.read_text(encoding="utf-8"))
+            self.assertIn("- [x] sublist task", done.read_text(encoding="utf-8"))
+
+    def test_public_template_privacy_gate(self) -> None:
+        forbidden_patterns = (
+            re.compile(r"[a-zA-Z]:[/\\]Users[/\\]", re.IGNORECASE),
+            re.compile(r"/(?:Users|home)/[A-Za-z0-9._-]+/", re.IGNORECASE),
+            re.compile(r"\b(?:ASUS-GEI|WORKSTATION-LG|IDEAPAD-GEI|_Local_DEV|TO-DECIDE-USER)\b"),
+            re.compile(r"\bT-\d{8}-\d+\b"),
+            re.compile(r"\blukas\b", re.IGNORECASE),
+        )
+        for md_path in sorted(TEMPLATE.rglob("*.md")):
+            content = md_path.read_text(encoding="utf-8")
+            for pattern in forbidden_patterns:
+                self.assertIsNone(
+                    pattern.search(content),
+                    f"Privacy violation ({pattern.pattern}) in {md_path.relative_to(REPO)}",
+                )
 
 
 if __name__ == "__main__":

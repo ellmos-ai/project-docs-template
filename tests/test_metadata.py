@@ -216,12 +216,16 @@ class MetadataAndManifestTests(unittest.TestCase):
             "START.md",
             "STATE.md",
             "TODO.md",
+            "TODO-SUBLIST.md",
             "DONE.md",
             "DECISIONS.md",
             "PATTERNS.md",
             "CHANGELOG.md",
             "HEADER-RULES.md",
             "CUT-AND-CLUE.md",
+            "MOVED-STUB.md",
+            "MASTER-REGISTRY.md",
+            "REG-TEMPLATE.md",
             "ARCHITECTURE.md",
             "WORKFLOWS.md",
             "TOOLS.md",
@@ -774,6 +778,14 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("### 2026-11-01 - Pfad A", content)
         self.assertIn("doc-lint --root template", content)
         self.assertIn("T-20260920-167562623", content)
+
+    def test_readme_documents_new_root_governance_templates(self) -> None:
+        """Verify README.md and README_de.md document MASTER-REGISTRY, MOVED-STUB, TODO-SUBLIST, and REG-TEMPLATE."""
+        en_content = self.readme_en_path.read_text(encoding="utf-8")
+        de_content = self.readme_de_path.read_text(encoding="utf-8")
+        for token in ("MASTER-REGISTRY.md", "MOVED-STUB.md", "TODO-SUBLIST.md", "REG-TEMPLATE.md", "CUT-AND-CLUE.md"):
+            self.assertIn(token, en_content, f"{token} missing in README.md")
+            self.assertIn(token, de_content, f"{token} missing in README_de.md")
 
 
 if __name__ == "__main__":

@@ -45,7 +45,7 @@ cd [projekt]
 ```
 [projekt]/
 ├── [haupt-code]/
-├── [config]/
+├── [konfig-ordner]/
 ├── workflows/      # Multi-Step-Playbooks
 ├── _tools/         # Admin-Utilities
 └── .github/        # GitHub-Config
@@ -58,9 +58,12 @@ Für Details siehe [ARCHITECTURE.md](./ARCHITECTURE.md).
 
 | Für... | lies... |
 |---|---|
+| Agenten-Instruktionen | [CLAUDE.md](./CLAUDE.md) (Redirect: [AGENTS.md](./AGENTS.md)) |
 | Erste Schritte | [START.md](./START.md) |
 | Aktuellen Stand | [STATE.md](./STATE.md) |
+| Aktive & erledigte Aufgaben | [TODO.md](./TODO.md) und [DONE.md](./DONE.md) |
 <!-- profiles:FULL -->
+| Register-Verzeichnis | [MASTER-REGISTRY.md](./MASTER-REGISTRY.md) |
 | Architektur & Module | [ARCHITECTURE.md](./ARCHITECTURE.md) |
 <!-- /profiles -->
 <!-- profiles:STANDARD,FULL -->
@@ -70,7 +73,8 @@ Für Details siehe [ARCHITECTURE.md](./ARCHITECTURE.md).
 | Best Practices | [PATTERNS.md](./PATTERNS.md) |
 <!-- /profiles -->
 <!-- profiles:FULL -->
-| Workflows | [WORKFLOWS.md](./WORKFLOWS.md) |
+| Umzugs-Pointer (`*.MOVED.md`) | [MOVED-STUB.md](./MOVED-STUB.md) |
+| Workflows & Tools | [WORKFLOWS.md](./WORKFLOWS.md) und [TOOLS.md](./TOOLS.md) |
 | Begriffe | [GLOSSARY.md](./GLOSSARY.md) |
 <!-- /profiles -->
 <!-- profiles:STANDARD,FULL -->
@@ -85,4 +89,4 @@ Lege bei Bedarf eine projektspezifische `CONTRIBUTING.md` an.
 
 ## License
 
-[Lizenz oder Hinweis „proprietär / nicht zur Weitergabe"]
+[Lizenz oder Hinweis „proprietär / nicht zur Weitergabe“]

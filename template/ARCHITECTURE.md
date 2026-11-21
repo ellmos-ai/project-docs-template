@@ -1,6 +1,16 @@
 # ARCHITECTURE.md — Struktur & Modul-Graph
 
-> **Zweck:** High-level Struktur, Komponenten-Beziehungen, Data-Flow.
+**Version:** 0.1.0
+**Aktualisiert:** [YYYY-MM-DD]
+**Grund:** [Was wurde warum geändert]
+**Zweck:** High-level Struktur, Komponenten-Beziehungen und Datenfluss von [Projektname].
+
+> **Selbstkorrektur:** Wenn du veraltete Passagen oder Verweise entdeckst, oder sogar missgeleitet wirst, korrigiere diese Datei autonom. Wenn du etwas Neues gebaut oder erstellt hast, prüfe: Hättest du es durch das Lesen der Dateien, die du gelesen hast, bereits gefunden und/oder richtig verstanden? Wenn nicht, setze dort an und behebe es, sodass du es gefunden und verstanden hättest.
+
+> **Selbstheilung:** Werden mehrere aktive Dateien derselben Rolle oder Nummer nebeneinander erkannt (z. B. durch Sync-Konflikte), zuerst vollständig diffen und verlustfrei zusammenführen; nichts Einzigartiges stillschweigend löschen. Aktive Locks (`LOCK*.txt`) haben Vorrang.
+
+> **Dateigröße:** Wenn diese Datei zu lang wird: Verwende das Cut-and-Clue-Verfahren → [`CUT-AND-CLUE.md`](./CUT-AND-CLUE.md).
+
 > **Pflege:** Manuelle Abschnitte (Overview, Rationale) sind sofort nutzbar.
 > Optional kann später ein projektspezifisches `_tools/arch-update` den
 > AUTOGEN-Block pflegen.
@@ -95,17 +105,21 @@ davon kritisch ist.]
 | Dependency | Purpose | Criticality |
 |---|---|---|
 | [GitHub API] | [Repo-Management] | hoch |
-| [Telegram Bot API] | [Benachrichtigungen] | mittel |
+| [Notification API] | [Benachrichtigungen] | mittel |
 
 ## Design Rationale (manuell)
 
-[Warum diese Architektur und nicht eine andere? Verweise auf DECISIONS.md
+[Warum diese Architektur und nicht eine andere? Verweise auf `DECISIONS.md`
 für tiefere Entscheidungs-Hintergründe.]
 
-Siehe auch [DECISIONS.md](./DECISIONS.md) für die ADRs (Architecture
+Siehe auch [`DECISIONS.md`](./DECISIONS.md) für die ADRs (Architecture
 Decision Records).
 
 ## Historie
 
 - **[YYYY-MM-DD]** — Initiale Architektur dokumentiert
 - **[YYYY-MM-DD]** — Modul X hinzugefügt
+
+---
+
+<!-- REMEMBER: ENDUSERTEXTE BEKOMMEN ECHTE UMLAUTE ä ö ü Ä Ö Ü ß -->

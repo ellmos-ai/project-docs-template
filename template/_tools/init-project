@@ -59,8 +59,9 @@ PROFILES = {
         "root_files": [
             "CLAUDE.md", "AGENTS.md", "README.md", "START.md", "STATE.md",
             "ARCHITECTURE.md", "CHANGELOG.md", "HEADER-RULES.md",
-            "CUT-AND-CLUE.md", "DECISIONS.md", "PATTERNS.md", "WORKFLOWS.md",
-            "TOOLS.md", "TODO.md", "DONE.md", "GLOSSARY.md",
+            "CUT-AND-CLUE.md", "MOVED-STUB.md", "DECISIONS.md", "PATTERNS.md",
+            "MASTER-REGISTRY.md", "WORKFLOWS.md", "TOOLS.md", "TODO.md",
+            "DONE.md", "GLOSSARY.md",
         ],
         "subdirs": ["workflows", "_tools", ".github"],
         "tools": ["init-project", "todo-archive", "doc-lint", "workflows-sync"],

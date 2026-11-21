@@ -1,4 +1,4 @@
-## Last-checked: 2026-10-30
+## Last-checked: 2026-11-21
 
 # ellmos-ai/project-docs-template
 
@@ -39,9 +39,11 @@ Important files:
 - `RELEASE_GATE.md`: commands and evidence required before release.
 - `SECURITY.md`: bilingual vulnerability-reporting policy: best-effort support for 0.1.x, no guaranteed response time, and private reporting contacts.
 - `template/START.md`: session bootstrap pattern.
-- `template/STATE.md`: current-state snapshot pattern.
-- `template/TODO.md` and `template/DONE.md`: active and completed task surfaces.
-- `template/DECISIONS.md` and `template/PATTERNS.md`: decision and practice logs.
+- `template/STATE.md`: current-state snapshot pattern with waterline/split rule.
+- `template/TODO.md` and `template/DONE.md`: active and completed task surfaces (with `TODO-SUBLIST.md` domain-splitting pattern).
+- `template/MASTER-REGISTRY.md` and `template/REG-TEMPLATE.md`: central register index and sub-register blueprint.
+- `template/HEADER-RULES.md`, `template/CUT-AND-CLUE.md`, and `template/MOVED-STUB.md`: 2-level self-healing headers, relative file splitting, and move pointers.
+- `template/DECISIONS.md` and `template/PATTERNS.md`: decision, append-only `NACHTRAG`, and practice logs.
 
 ## Verification
 
