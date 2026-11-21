@@ -1,5 +1,18 @@
 # Changelog
 
+**Version:** 0.1.0
+**Aktualisiert:** [YYYY-MM-DD]
+**Grund:** [Was wurde warum geändert]
+**Zweck:** Release-Chronik für menschliche Nutzer und externe Stakeholder von [Projektname].
+
+> **Selbstkorrektur:** Wenn du veraltete Passagen oder Verweise entdeckst, oder sogar missgeleitet wirst, korrigiere diese Datei autonom. Wenn du etwas Neues gebaut oder erstellt hast, prüfe: Hättest du es durch das Lesen der Dateien, die du gelesen hast, bereits gefunden und/oder richtig verstanden? Wenn nicht, setze dort an und behebe es, sodass du es gefunden und verstanden hättest.
+
+> **Selbstheilung:** Werden mehrere aktive Dateien derselben Rolle oder Nummer nebeneinander erkannt (z. B. durch Sync-Konflikte), zuerst vollständig diffen und verlustfrei zusammenführen; nichts Einzigartiges stillschweigend löschen. Aktive Locks (`LOCK*.txt`) haben Vorrang.
+
+> **Dateigröße:** Wenn diese Datei zu lang wird: Verwende das Cut-and-Clue-Verfahren → [`CUT-AND-CLUE.md`](./CUT-AND-CLUE.md).
+
+---
+
 Alle nennenswerten Änderungen an diesem Projekt werden hier dokumentiert.
 
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
@@ -16,14 +29,7 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 - [Änderungen an bestehenden Features]
 
 ### Behoben
-- `_tools/doc-lint` erkennt das kanonische `project-docs`-Quelltemplate jetzt als Placeholder-Modus, damit der strikte Root-Check nicht an absichtlichen Template-Platzhaltern scheitert.
-- YAML-Frontmatter-Platzhalter in `CLAUDE.md`, `START.md` und `STATE.md` als gültige Strings gequotet, damit Template-Instanzen keine Parser-Fallen im Header erben.
-- `_tools/init-project` kopiert `_tools/` jetzt profilgerecht statt den Generator selbst und weitere Template-Helfer ungefragt in neue Projekte zu legen.
-- `_tools/doc-lint` bewahrt das Feld `reason_last_change` in `CLAUDE.md` jetzt auch bei `--fix` und `--update-dates`, statt es versehentlich aus dem Header zu verlieren.
-
-### Geändert
-- `STANDARD` und `FULL` rollen `HEADER-RULES.md` und `CUT-AND-CLUE.md` jetzt konsistent mit aus; Profilzählungen und Root-Doku wurden auf den aktuellen 16-Dateien-Stand nachgezogen.
-- `HEADER-RULES.md` beschreibt für Projekt-Steuerdateien und Aufgabenlisten jetzt wieder eindeutig den `.md`-Standard statt eines konkurrierenden `.txt`-Schemas.
+- [Bugfixes]
 
 ### Entfernt
 - [Entfernte Features]
@@ -45,5 +51,9 @@ dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 > lebt in [`DONE.md`](./DONE.md). **CHANGELOG.md** ist für Release-Level
 > und bedeutsame Ereignisse — nicht für jeden einzelnen Task.
 >
-> Bei Release: erledigte DONE.md-Einträge werden zu einem Unreleased-Block
+> Bei Release: erledigte `DONE.md`-Einträge werden zu einem Unreleased-Block
 > zusammengefasst und hier archiviert.
+
+---
+
+<!-- REMEMBER: ENDUSERTEXTE BEKOMMEN ECHTE UMLAUTE ä ö ü Ä Ö Ü ß -->

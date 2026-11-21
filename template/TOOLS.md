@@ -1,6 +1,16 @@
 # TOOLS.md — Router zu Admin-Utilities
 
-> **Zweck:** Navigation. „Welches Tool macht was?"
+**Version:** 0.1.0
+**Aktualisiert:** [YYYY-MM-DD]
+**Grund:** [Was wurde warum geändert]
+**Zweck:** Navigations-Router zu allen Utility-Scripts unter `_tools/` („Welches Tool macht was?“).
+
+> **Selbstkorrektur:** Wenn du veraltete Passagen oder Verweise entdeckst, oder sogar missgeleitet wirst, korrigiere diese Datei autonom. Wenn du etwas Neues gebaut oder erstellt hast, prüfe: Hättest du es durch das Lesen der Dateien, die du gelesen hast, bereits gefunden und/oder richtig verstanden? Wenn nicht, setze dort an und behebe es, sodass du es gefunden und verstanden hättest.
+
+> **Selbstheilung:** Werden mehrere aktive Dateien derselben Rolle oder Nummer nebeneinander erkannt (z. B. durch Sync-Konflikte), zuerst vollständig diffen und verlustfrei zusammenführen; nichts Einzigartiges stillschweigend löschen. Aktive Locks (`LOCK*.txt`) haben Vorrang.
+
+> **Dateigröße:** Wenn diese Datei zu lang wird: Verwende das Cut-and-Clue-Verfahren → [`CUT-AND-CLUE.md`](./CUT-AND-CLUE.md).
+
 > **Content:** Siehe `_tools/*` — hier steht **kein** Implementierungs-Detail.
 > **Abgrenzung zu `core/`:** `core/` wird von der Haupt-Pipeline (`run.py` o.ä.)
 > orchestriert. `_tools/` wird **manuell per Hand** aufgerufen — seltene
@@ -22,7 +32,7 @@
 |---|---|---|---|
 | [`_tools/doc-lint`](./_tools/doc-lint) | Validiert YAML-Frontmatter in Meta-Files (CLAUDE/START/STATE), prüft Staleness | python | bei Commit / regelmäßig |
 | [`_tools/workflows-sync`](./_tools/workflows-sync) | Generiert `WORKFLOWS.md`-Router aus `workflows/*.md` (AUTOGEN-Block) | python | bei neuem Workflow |
-| [`_tools/todo-archive`](./_tools/todo-archive) | Verschiebt `[x]`-Einträge aus `TODO.md` nach `DONE.md` mit Datum | python | regelmäßig |
+| [`_tools/todo-archive`](./_tools/todo-archive) | Verschiebt `[x]`-Einträge aus `TODO.md` (oder `TODO-<BEREICH>.md`) nach `DONE.md` mit Datum | python | regelmäßig |
 
 ## Optionale Referenzen, nicht im Template gebündelt
 
@@ -72,3 +82,7 @@ Siehe [`_tools/README.md`](./_tools/README.md) für:
 - Header-Kommentar-Format (Zweck, Usage, Requirements, Safety)
 - Safety-Standards (`set -euo pipefail`, trap-Handler)
 - Dokumentations-Pflicht (Eintrag hier + in `_tools/README.md`)
+
+---
+
+<!-- REMEMBER: ENDUSERTEXTE BEKOMMEN ECHTE UMLAUTE ä ö ü Ä Ö Ü ß -->

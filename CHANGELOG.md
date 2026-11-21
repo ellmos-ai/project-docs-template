@@ -4,6 +4,14 @@ All notable public-facing changes to this repository are documented here.
 
 ## [Unreleased]
 
+### Root-Steuerkonzepte & Vorlagen-Ausbau (2026-11-21)
+- Add `template/TODO-SUBLIST.md` (`TODO-<BEREICH>.md` blueprint) and expand `template/TODO.md` with task-splitting rules, index navigation, shrink-back guidance, and shared `DONE.md` archival via `_tools/todo-archive`.
+- Add `template/MASTER-REGISTRY.md` (included in `FULL` profile) as central register index and `template/REG-TEMPLATE.md` as generic sub-register blueprint.
+- Add `template/MOVED-STUB.md` (included in `FULL` profile) for portable file/folder move pointers (`*.MOVED.md`).
+- Upgrade `template/HEADER-RULES.md` with the 2-level header standard (YAML frontmatter vs. Markdown metadata), full self-healing conflict/merge clauses, dated count rules, and consistent headers/footers across all template documents.
+- Upgrade `template/CUT-AND-CLUE.md` to portable relative paths, index-split mode, `_tools/todo-archive` precedence, and wire it across `CLAUDE.md`, `START.md`, `STATE.md`, `TODO.md`, `DONE.md`, `TEMPLATE.md`, `README.md`, and `README_de.md`.
+- Add append-only `NACHTRAG` correction pattern to `template/DECISIONS.md` and measurement/falsification checklist to `template/PATTERNS.md`; keep package version `0.1.2` frozen.
+
 ### Complete World Set user guides (2026-11-03)
 - Add the complete Bengali and Portuguese READMEs, completing eleven-language documentation with reciprocal navigation and discovery indexing. Preserve implementation and security-policy limits, generated discovery projection, runtime, template bodies and version0.1.2.
 

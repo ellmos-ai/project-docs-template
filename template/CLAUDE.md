@@ -16,9 +16,9 @@ description: |
 
 # CLAUDE.md — Instructions für AI Coding Agents
 
-> **Für LLM-Agenten (Claude Code, Codex, Cursor, Cline, Aider, Windsurf, Copilot).**
+> **Für LLM-Agenten (Claude Code, Codex, Cursor, Cline, Aider, Windsurf, Copilot, Gemini/Antigravity).**
 > Diese Datei wird von Claude Code **automatisch** in den Kontext geladen.
-> Andere Agents lesen zuerst `AGENTS.md` → Redirect hierher.
+> Andere Agents lesen zuerst [`AGENTS.md`](./AGENTS.md) → Redirect hierher.
 >
 > **YAML-Header oben** ist maschinenlesbar und wird von `_tools/doc-lint` validiert.
 > Bei Änderungen an der Doku: `updated` und `last_verified` nachziehen.
@@ -27,8 +27,10 @@ description: |
 
 > **Selbstkorrektur:** Wenn du veraltete Passagen oder Verweise entdeckst, oder sogar missgeleitet wirst, korrigiere diese Datei autonom. Wenn du etwas Neues gebaut oder erstellt hast, prüfe: Hättest du es durch das Lesen der Dateien, die du gelesen hast, bereits gefunden und/oder richtig verstanden? Wenn nicht, setze dort an und behebe es, sodass du es gefunden und verstanden hättest.
 
+> **Selbstheilung:** Werden mehrere aktive Dateien derselben Rolle oder Nummer nebeneinander erkannt (z. B. durch Sync-Konflikte), zuerst vollständig diffen und verlustfrei in die kanonische Datei zusammenführen; nichts Einzigartiges stillschweigend löschen. Aktive Locks (`LOCK*.txt`) haben Vorrang.
+
 <!-- profiles:STANDARD,FULL -->
-> **Dateigröße:** Wenn diese Datei zu lang wird, verwende das Cut-and-Clue-Verfahren → `CUT-AND-CLUE.md` (Pointer-Verfahren mit Vorläufer/Nachfolger-Dateien).
+> **Dateigröße:** Wenn diese Datei zu lang wird, verwende das Cut-and-Clue-Verfahren → [`CUT-AND-CLUE.md`](./CUT-AND-CLUE.md) (Pointer-Verfahren mit Vorläufer/Nachfolger-Dateien).
 <!-- /profiles -->
 
 ## Projekt
@@ -69,7 +71,9 @@ Arbeite als [Senior Dev / Researcher / ...] mit Fokus auf [correctness / speed /
 - **NIEMALS** Credentials committen (`.env`, `*.key`, `credentials.json`, tokens)
 - **NIEMALS** `git push --force` auf `main`/`master` (wenn unvermeidbar, nur über ein projektspezifisch geprüftes Admin-Playbook)
 - **NIEMALS** destructive Operationen ohne explizite User-Bestätigung (`rm -rf`, `DROP TABLE`, `git reset --hard`)
-- **IMMER** bei Python auf Windows: `PYTHONIOENCODING=utf-8` vor dem Call
+- **IMMER** vor Änderungen aktive Sperren (`LOCK*.txt`) prüfen und respektieren (Fail-Closed: gesperrte Bereiche nicht anfassen)
+- **NIEMALS** Automationslaufdaten oder reine Prüfprotokolle in `CLAUDE.md` oder `AGENTS.md` schreiben (Protokolltrennung: diese gehören in `DONE.md`, `CHANGELOG.md` oder dedizierte Logs)
+- **IMMER** bei Python auf Windows: `PYTHONIOENCODING=utf-8` (oder `python -X utf8`) vor dem Call
 - **IMMER** vor Push: `git status` prüfen
 
 ## Soft Guidelines
@@ -109,22 +113,22 @@ Details siehe [`ARCHITECTURE.md`](./ARCHITECTURE.md). Kurz:
 |---|---|
 | [`START.md`](./START.md) | Session-Bootstrap — lies als Erstes beim Session-Start |
 | [`STATE.md`](./STATE.md) | Wo-stehen-wir-Snapshot — aktueller Stand |
-| [`TODO.md`](./TODO.md) | Aktive Tasks |
+| [`TODO.md`](./TODO.md) | Aktive Tasks (optional Verzeichnis auf `TODO-<BEREICH>.md`-Unterlisten) |
 | [`DONE.md`](./DONE.md) | Erledigte Tasks (archiviert via `_tools/todo-archive`) |
-<!-- profiles:FULL -->
-| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Struktur & Modul-Graph (auto-generiert) |
-<!-- /profiles -->
 <!-- profiles:STANDARD,FULL -->
+| [`HEADER-RULES.md`](./HEADER-RULES.md) | Standard-Header, Selbstheilung & Footer für Steuerdateien |
+| [`CUT-AND-CLUE.md`](./CUT-AND-CLUE.md) | Pointer- und Split-Verfahren für übergroße Dateien |
 | [`DECISIONS.md`](./DECISIONS.md) | Warum-Entscheidungen (ADRs) |
 | [`PATTERNS.md`](./PATTERNS.md) | Do/Don't mit Code-Beispielen |
+| [`CHANGELOG.md`](./CHANGELOG.md) | Chronik |
 <!-- /profiles -->
 <!-- profiles:FULL -->
+| [`MASTER-REGISTRY.md`](./MASTER-REGISTRY.md) | Zentraler Index aller Projekt-Register |
+| [`MOVED-STUB.md`](./MOVED-STUB.md) | Umzugs-Pointer-Standard (`*.MOVED.md`) |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Struktur & Modul-Graph (auto-generiert) |
 | [`WORKFLOWS.md`](./WORKFLOWS.md) | Router zu Multi-Step-Playbooks |
 | [`TOOLS.md`](./TOOLS.md) | Router zu Admin-Utilities |
 | [`GLOSSARY.md`](./GLOSSARY.md) | Projekt-Jargon |
-<!-- /profiles -->
-<!-- profiles:STANDARD,FULL -->
-| [`CHANGELOG.md`](./CHANGELOG.md) | Chronik |
 <!-- /profiles -->
 
 ## Domain-Kontext
@@ -207,4 +211,4 @@ Einstiegspunkt, der auf diese Datei verweist.
 
 ---
 
-<!-- REMEMBER: ENDUSERTEXTE BEKOMMEN ECHTE UMLAUTE Ü Ö Ä -->
+<!-- REMEMBER: ENDUSERTEXTE BEKOMMEN ECHTE UMLAUTE ä ö ü Ä Ö Ü ß -->

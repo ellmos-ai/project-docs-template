@@ -267,11 +267,12 @@ is meant to sit inside ordinary software, research, or operations repositories.
 
 ## <a id="sec-08"></a><a id="what-is-included"></a>8. What Is Included & Scaffold Structure
 
-- `CLAUDE.md` and `AGENTS.md` for agent instructions
+- `CLAUDE.md` and `AGENTS.md` for agent instructions (with self-correction, self-healing, lock respect, and protocol separation)
 - `START.md` and `STATE.md` for session bootstrap and current state
-- `TODO.md` and `DONE.md` with optional archival tooling
-- `DECISIONS.md`, `PATTERNS.md`, `CHANGELOG.md`, and `HEADER-RULES.md`
-- Optional FULL-profile routers: `WORKFLOWS.md`, `TOOLS.md`, `GLOSSARY.md`
+- `TODO.md` and `DONE.md` with optional archival tooling (`_tools/todo-archive`) and domain sublist blueprint (`TODO-SUBLIST.md`)
+- `DECISIONS.md`, `PATTERNS.md`, `CHANGELOG.md`, `HEADER-RULES.md`, and `CUT-AND-CLUE.md`
+- Optional FULL-profile routers & governance: `MASTER-REGISTRY.md`, `MOVED-STUB.md`, `WORKFLOWS.md`, `TOOLS.md`, `GLOSSARY.md`
+- Copy-on-demand blueprints in [`template/`](./template/): `TODO-SUBLIST.md` (`TODO-<AREA>.md`) and `REG-TEMPLATE.md` (sub-registers)
 - Local helpers in `_tools/`, including `init-project`, `doc-lint`, `todo-archive`, and `workflows-sync`
 
 The actual template files live in [`template/`](./template/).
@@ -388,10 +389,13 @@ python template/_tools/init-project /path/to/my-project --upgrade full
 | `_tools/doc-lint` (Documentation Linter) | ✅ Included | ✅ Included | ✅ Included |
 | `DECISIONS.md` (Architecture Decisions) | — | ✅ Included | ✅ Included |
 | `PATTERNS.md` (Design Patterns) | — | ✅ Included | ✅ Included |
-| `CHANGELOG.md` & `HEADER-RULES.md` | — | ✅ Included | ✅ Included |
+| `CHANGELOG.md`, `HEADER-RULES.md` & `CUT-AND-CLUE.md` | — | ✅ Included | ✅ Included |
+| `MASTER-REGISTRY.md` & `MOVED-STUB.md` | — | — | ✅ Included |
 | `WORKFLOWS.md` & `_tools/workflows-sync` | — | — | ✅ Included |
 | `TOOLS.md` & `GLOSSARY.md` (Domain Routers) | — | — | ✅ Included |
 | `ARCHITECTURE.md` & `.github/` Workflows | — | — | ✅ Included |
+
+> **On-demand blueprints in `template/`:** `TODO-SUBLIST.md` (`TODO-<AREA>.md` task splitting) and `REG-TEMPLATE.md` (custom sub-registers) stay in `template/` and are copied into a project only when needed.
 
 ---
 
@@ -400,7 +404,8 @@ python template/_tools/init-project /path/to/my-project --upgrade full
 - **Separation of Concerns**: Every file has a single, well-defined operational responsibility.
 - **Explicit Session Handoff**: Session start and current state are documented in short, predictable files (`START.md`, `STATE.md`) for agents and maintainers to consult.
 - **Low Maintenance Burden**: Focuses on high-value context documents rather than generating sprawling, unmaintained wikis.
-- **Router Pattern**: High-level routers (`WORKFLOWS.md`, `TOOLS.md`) index details rather than duplicating them.
+- **Router & Index Pattern**: High-level indexes (`MASTER-REGISTRY.md`, `WORKFLOWS.md`, `TOOLS.md`, and `TODO.md` when split into sublists) point to details rather than duplicating them.
+- **Self-Healing & Split Discipline**: Templates include standardized self-correction, conflict-safe self-healing headers, relative Cut-and-Clue splitting (`CUT-AND-CLUE.md`), and move pointers (`MOVED-STUB.md`).
 - **Journaled Task Lifecycle**: `todo-archive` uses a journal and staged file replacement to archive completed tasks; recovery depends on the journal and current file state.
 
 See [`template/TEMPLATE.md`](./template/TEMPLATE.md) for the complete design rationale.

@@ -266,11 +266,12 @@ Dies ist eine Dokumentations- und Koordinationsvorlage, kein Laufzeitframework. 
 
 ## <a id="sec-08"></a><a id="was-enthalten-ist"></a>8. Lieferumfang & Scaffold-Struktur
 
-- `CLAUDE.md` und `AGENTS.md` für Agenten-Anweisungen
+- `CLAUDE.md` und `AGENTS.md` für Agenten-Anweisungen (inkl. Selbstkorrektur, Selbstheilung, Lock-Schutz und Protokolltrennung)
 - `START.md` und `STATE.md` für Sitzungs-Bootstrap und aktuellen Status
-- `TODO.md` und `DONE.md` mit optionaler journalgestützter Archivierung
-- `DECISIONS.md`, `PATTERNS.md`, `CHANGELOG.md` und `HEADER-RULES.md`
-- Optionale FULL-Profil-Router: `WORKFLOWS.md`, `TOOLS.md`, `GLOSSARY.md`
+- `TODO.md` und `DONE.md` mit optionaler journalgestützter Archivierung (`_tools/todo-archive`) und Unterlisten-Vorlage (`TODO-SUBLIST.md`)
+- `DECISIONS.md`, `PATTERNS.md`, `CHANGELOG.md`, `HEADER-RULES.md` und `CUT-AND-CLUE.md`
+- Optionale FULL-Profil-Router & Governance: `MASTER-REGISTRY.md`, `MOVED-STUB.md`, `WORKFLOWS.md`, `TOOLS.md`, `GLOSSARY.md`
+- Bedarfs-Kopiervorlagen in [`template/`](./template/): `TODO-SUBLIST.md` (`TODO-<BEREICH>.md`) und `REG-TEMPLATE.md` (Unterregister)
 - Lokale Werkzeuge in `_tools/`: `init-project`, `doc-lint`, `todo-archive` und `workflows-sync`
 
 Die eigentlichen Vorlagendateien liegen unter [`template/`](./template/).
@@ -387,10 +388,13 @@ python template/_tools/init-project /pfad/zu/meinem-projekt --upgrade full
 | `_tools/doc-lint` (Dokumentations-Linter) | ✅ Enthalten | ✅ Enthalten | ✅ Enthalten |
 | `DECISIONS.md` (Architekturentscheidungen) | — | ✅ Enthalten | ✅ Enthalten |
 | `PATTERNS.md` (Design-Patterns) | — | ✅ Enthalten | ✅ Enthalten |
-| `CHANGELOG.md` & `HEADER-RULES.md` | — | ✅ Enthalten | ✅ Enthalten |
+| `CHANGELOG.md`, `HEADER-RULES.md` & `CUT-AND-CLUE.md` | — | ✅ Enthalten | ✅ Enthalten |
+| `MASTER-REGISTRY.md` & `MOVED-STUB.md` | — | — | ✅ Enthalten |
 | `WORKFLOWS.md` & `_tools/workflows-sync` | — | — | ✅ Enthalten |
 | `TOOLS.md` & `GLOSSARY.md` (Domänen-Router) | — | — | ✅ Enthalten |
 | `ARCHITECTURE.md` & `.github/` Workflows | — | — | ✅ Enthalten |
+
+> **Bedarfs-Kopiervorlagen in `template/`:** `TODO-SUBLIST.md` (`TODO-<BEREICH>.md` für Aufgaben-Aufspaltung) und `REG-TEMPLATE.md` (eigene Unterregister) verbleiben in `template/` und werden nur bei konkretem Bedarf ins Projekt kopiert.
 
 ---
 
@@ -399,7 +403,8 @@ python template/_tools/init-project /pfad/zu/meinem-projekt --upgrade full
 - **Klare Aufgabenverteilung**: Jede Datei besitzt eine einzige, präzise definierte operative Rolle.
 - **Explizite Übergabe**: Sitzungsstart und aktueller Projektstatus sind in kurzen, vorhersehbaren Registern dokumentiert (`START.md`, `STATE.md`).
 - **Niedriger Pflegeaufwand**: Konzentration auf hochwertige Kontextdateien statt unübersichtlicher Monster-Wikis.
-- **Router-Muster**: Übergeordnete Router (`WORKFLOWS.md`, `TOOLS.md`) verweisen auf Details, statt sie zu duplizieren.
+- **Router- & Index-Muster**: Übergeordnete Indizes (`MASTER-REGISTRY.md`, `WORKFLOWS.md`, `TOOLS.md` sowie `TODO.md` bei Aufspaltung in Unterlisten) verweisen auf Details, statt sie zu duplizieren.
+- **Selbstheilung & Split-Disziplin**: Vorlagen verankern standardisierte Selbstkorrektur, konflikt-sichere Selbstheilungs-Header, relatives Cut-and-Clue (`CUT-AND-CLUE.md`) und Umzugs-Stubs (`MOVED-STUB.md`).
 - **Journalgestützte Archivierung**: Das Werkzeug aktualisiert `TODO.md` und `DONE.md` über Staging und ein Journal; Wiederherstellung wird versucht, kann aber bei abweichenden Dateien eine manuelle Prüfung erfordern.
 
 Vollständige Hintergründe und Dateierklärungen finden sich in [`template/TEMPLATE.md`](./template/TEMPLATE.md).

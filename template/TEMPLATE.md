@@ -1,12 +1,22 @@
 # TEMPLATE.md — Meta-Info zu diesem Template
 
-> **Nicht ins Zielprojekt kopieren.** Diese Datei ist die Bedienungsanleitung
-> für das Template selbst und wird beim Ausrollen weggelassen oder gelöscht.
+**Version:** 1.2
+**Aktualisiert:** 2026-11-21
+**Grund:** Erweiterung um TODO-Unterlisten (`TODO-SUBLIST.md`), `MASTER-REGISTRY.md` + `REG-TEMPLATE.md`, `MOVED-STUB.md`, 2-Ebenen-Header/Selbstheilungs-Header und standardmäßige Cut-and-Clue-Verdrahtung
+**Zweck:** Bedienungsanleitung, Profil-Architektur und Rollenübersicht für das `project-docs`-Template selbst (nicht ins Zielprojekt kopieren).
+
+> **Selbstkorrektur:** Wenn du veraltete Passagen oder Verweise entdeckst, oder sogar missgeleitet wirst, korrigiere diese Datei autonom. Wenn du etwas Neues gebaut oder erstellt hast, prüfe: Hättest du es durch das Lesen der Dateien, die du gelesen hast, bereits gefunden und/oder richtig verstanden? Wenn nicht, setze dort an und behebe es, sodass du es gefunden und verstanden hättest.
+
+> **Selbstheilung:** Werden mehrere aktive Dateien derselben Rolle oder Nummer nebeneinander erkannt, zuerst vollständig diffen und verlustfrei zusammenführen; nichts Einzigartiges stillschweigend löschen.
+
+> **Dateigröße:** Wenn diese Datei zu lang wird: Verwende das Cut-and-Clue-Verfahren → [`CUT-AND-CLUE.md`](./CUT-AND-CLUE.md).
+
+> **Nicht ins Zielprojekt kopieren.** Diese Datei (ebenso wie die Kopiervorlagen `TODO-SUBLIST.md` und `REG-TEMPLATE.md`) dient als Referenz im Template-Repository und wird beim Ausrollen per `init-project` nicht ungefragt ins Ziel-Root kopiert.
 
 ## Was ist dieses Template
 
-Ein **Doku-Skelett** für neue Projekte, das die aus langer Diskussion
-herauskristallisierten „Gold-Set"-Dateien enthält. Jede Datei hat eine
+Ein **Doku-Skelett** für neue Projekte, das die aus langer Praxis
+herauskristallisierten „Gold-Set“-Dateien enthält. Jede Datei hat eine
 **eindeutige, nicht-überlappende Rolle** und wurde gewählt nach dem Kriterium:
 maximaler Nutzen für LLM-Agenten bei minimaler Pflegelast.
 
@@ -18,9 +28,9 @@ sie konkurrieren nicht.
 ## Wann dieses Template nutzen
 
 - Neues Software-Projekt, das von einem LLM-Agent mitgepflegt wird
-- Bestehendes Projekt, das unorganisierte .md-Files im Root hat
-- Referenz-Punkt wenn du dich fragst „welches File soll ich anlegen"
-- Als Argument wenn jemand ein 16. Root-.md-File vorschlägt
+- Bestehendes Projekt, das unorganisierte `.md`-Files im Root hat
+- Referenz-Punkt wenn du dich fragst „welches File soll ich anlegen“
+- Als Argument wenn jemand ein 19. Root-`.md`-File ohne eigene Rolle vorschlägt
 
 ## Wie das Template nutzen
 
@@ -49,7 +59,7 @@ CLAUDE.md       # Pflicht — auto-loaded von Claude Code
 README.md       # Pflicht — Human-first für GitHub
 START.md        # Session-Bootstrap
 STATE.md        # Wo-stehen-wir-Snapshot
-TODO.md         # Aktive Tasks
+TODO.md         # Aktive Tasks (mit optionaler Unterlisten-Aufspaltregel)
 DONE.md         # Erledigte Tasks
 
 _tools/         # Mindestens `todo-archive` + `doc-lint`
@@ -68,17 +78,17 @@ README.md        # Human-first
 START.md         # Session-Bootstrap (aktiv, imperativ)
 STATE.md         # Wo-stehen-wir-Snapshot
 CHANGELOG.md     # Zeit-Achse
-HEADER-RULES.md  # Header-/Footer-Konventionen für Steuer-Dateien
-CUT-AND-CLUE.md  # Pointer-Verfahren für zu lange Dateien
-DECISIONS.md     # Warum-Entscheidungen (ADR-Pattern)
+HEADER-RULES.md  # 2-Ebenen-Header, Selbstheilung & Footer für Steuer-Dateien
+CUT-AND-CLUE.md  # Pointer-/Split-Verfahren für zu lange Dateien
+DECISIONS.md     # Warum-Entscheidungen (ADR-Pattern + Nachtrag-Muster)
 PATTERNS.md      # Do/Don't mit Code-Beispielen
-TODO.md          # Aktiv
+TODO.md          # Aktiv (oder Index auf TODO-<BEREICH>.md-Unterlisten)
 DONE.md          # Erledigt (optional: mit _tools/todo-archive)
 ```
 
 **Wann:** Multi-Monats-Projekt, potenziell mehrere Mitwirkende, komplexe Entscheidungen.
 
-#### Profil **FULL** (16 Root-Files + 3 Ordner + Tools)
+#### Profil **FULL** (18 Root-Files + 3 Ordner + Tools)
 Für komplexe Projekte mit Multi-Agent-Orchestrierung oder langfristiger Wartung.
 
 ```
@@ -89,13 +99,15 @@ START.md
 STATE.md
 ARCHITECTURE.md    # Mit AUTOGEN-Markern
 CHANGELOG.md
-HEADER-RULES.md    # Header-/Footer-Konventionen für Steuer-Dateien
-CUT-AND-CLUE.md    # Pointer-Verfahren für zu lange Dateien
+HEADER-RULES.md    # 2-Ebenen-Header, Selbstheilung & Footer
+CUT-AND-CLUE.md    # Pointer-/Split-Verfahren für zu lange Dateien
+MOVED-STUB.md      # Umzugs-Pointer-Standard (*.MOVED.md)
 DECISIONS.md
 PATTERNS.md
+MASTER-REGISTRY.md # Zentraler Index aller Projekt-Register
 WORKFLOWS.md       # Router → workflows/
 TOOLS.md           # Router → _tools/
-TODO.md
+TODO.md            # Aktiv (oder Index auf Unterlisten)
 DONE.md
 GLOSSARY.md        # Jargon
 
@@ -114,7 +126,14 @@ _tools/            # Admin-Utilities + Generatoren
 ```
 
 **Wann:** Multi-Monat+ Projekt, mehrere Agents, umfangreiche Automatisierung,
-Living-Documentation mit Auto-Generatoren.
+Living-Documentation mit Auto-Generatoren und mehreren Fachregistern.
+
+### Kopiervorlagen (bei Bedarf im Zielprojekt ablegen)
+
+| Vorlage | Zweck | Wann einsetzen |
+|---|---|---|
+| [`TODO-SUBLIST.md`](./TODO-SUBLIST.md) | Bereichs- oder rollenbezogene Unter-TODO-Liste (`TODO-<BEREICH>.md`) | Wenn `TODO.md` > ~150 offene Tasks behält oder mehrere Bereiche parallel planen |
+| [`REG-TEMPLATE.md`](./REG-TEMPLATE.md) | Generische Unterregister-Vorlage (`<THEMA>-REG.md`) | Wenn neben `WORKFLOWS.md`/`TOOLS.md` ein neues Fach-, Check- oder Policy-Register entsteht (in `MASTER-REGISTRY.md` eintragen) |
 
 ### Profil-Upgrade-Pfad
 
@@ -122,13 +141,13 @@ Projekte wachsen. Ein MINIMAL-Projekt kann später STANDARD werden, STANDARD
 kann FULL werden. **Reihenfolge für Upgrades:**
 
 1. `MINIMAL → STANDARD`: Beim ersten Mal wenn du zusätzlich belastbare
-   Entscheidungs- und Historien-Doku brauchst → `CHANGELOG.md`,
-   `DECISIONS.md` und `PATTERNS.md` ergänzen.
+   Entscheidungs-, Header- und Historien-Doku brauchst → `CHANGELOG.md`,
+   `HEADER-RULES.md`, `CUT-AND-CLUE.md`, `DECISIONS.md` und `PATTERNS.md` ergänzen.
 
-2. `STANDARD → FULL`: Beim ersten Mal wenn Architektur, Workflows, GitHub-
-   Scaffolding oder Glossar eigene Router brauchen → `ARCHITECTURE.md`,
-   `WORKFLOWS.md`, `TOOLS.md`, `GLOSSARY.md`, `workflows/` und `.github/`
-   ergänzen.
+2. `STANDARD → FULL`: Beim ersten Mal wenn Architektur, Register, Workflows,
+   Umzugs-Stubs, GitHub-Scaffolding oder Glossar eigene Router brauchen →
+   `ARCHITECTURE.md`, `MASTER-REGISTRY.md`, `MOVED-STUB.md`, `WORKFLOWS.md`,
+   `TOOLS.md`, `GLOSSARY.md`, `workflows/` und `.github/` ergänzen.
 
 **Niemals prophylaktisch upgraden.** Bis der konkrete Bedarf da ist, ist die
 Zusatzdatei nur Wartungsballast.
@@ -160,14 +179,14 @@ Dateieigentum nicht sicher rekonstruiert werden kann.
 
 1. **Jede Datei hat eine eigene, nicht-überlappende Rolle** — keine Dubletten wie DECISIONS.md + DECIDED.md
 2. **Disziplin wird automatisiert statt erzwungen** — TODO→DONE via Tool, ARCHITECTURE via Generator, WORKFLOWS.md via `workflows-sync`
-3. **Router-Pattern für Skalierbarkeit** — `WORKFLOWS.md` + `workflows/*`, `TOOLS.md` + `_tools/*`
+3. **Router- & Index-Pattern für Skalierbarkeit** — `MASTER-REGISTRY.md` als Register-Index, `WORKFLOWS.md` + `workflows/*`, `TOOLS.md` + `_tools/*`, `TODO.md` → `TODO-<BEREICH>.md`
 4. **CLAUDE.md ist privilegiert weil auto-loaded** — was garantiert gelesen werden muss, gehört dort rein
 5. **Profile statt Fixed-Sets** — MINIMAL/STANDARD/FULL für verschiedene Projektgrößen, niedrige Einstiegshürde
-6. **YAML-Frontmatter für Maschinenlesbarkeit** — jedes Meta-File hat einen parsebaren Header, validierbar via `_tools/doc-lint`
+6. **YAML-Frontmatter + Selbstheilungs-Header** — Session-Kernfiles maschinenprüfbar via `_tools/doc-lint`, Governance-/Registerdateien mit Version, Zweck, Selbstkorrektur, Konflikt-Selbstheilung und Cut-and-Clue-Verweis
 
 ## Dateien im Template
 
-### Root-Files (16)
+### Root-Files (18) + Kopiervorlagen (2)
 
 | File | Rolle | Zeit-Dimension |
 |---|---|---|
@@ -178,15 +197,19 @@ Dateieigentum nicht sicher rekonstruiert werden kann.
 | `README.md` | Human-first, für GitHub-Besucher | stabil |
 | `ARCHITECTURE.md` | Struktur mit AUTOGEN-Markern | semi-stabil (Code-getrieben) |
 | `CHANGELOG.md` | Zeit-Achse, append-only | append-only |
-| `HEADER-RULES.md` | Header-/Footer-Regeln für Steuer-Dateien | stabil |
-| `CUT-AND-CLUE.md` | Pointer-Verfahren für übergroße Dateien | stabil |
-| `DECISIONS.md` | Warum-Achse, ADR-Pattern | append-only |
+| `HEADER-RULES.md` | 2-Ebenen-Header, Selbstheilung & Footer | stabil |
+| `CUT-AND-CLUE.md` | Pointer-/Split-Verfahren für übergroße Dateien | stabil |
+| `MOVED-STUB.md` | Umzugs-Pointer-Standard (`*.MOVED.md`) | stabil |
+| `DECISIONS.md` | Warum-Achse, ADR-Pattern + Nachtrag-Muster | append-only |
 | `PATTERNS.md` | Do/Don't mit Code-Beispielen, Reminders | append-only |
+| `MASTER-REGISTRY.md` | Zentraler Index aller Projekt-Register | stabil (Index) |
 | `WORKFLOWS.md` | Router → `workflows/*.md` | stabil (Router) |
 | `TOOLS.md` | Router → `_tools/*` | stabil (Router) |
-| `TODO.md` | Aktive Tasks (nur `[ ]`) | volatil |
+| `TODO.md` | Aktive Tasks (nur `[ ]`, optional Index auf `TODO-<BEREICH>.md`) | volatil |
 | `DONE.md` | Erledigte Tasks (automatisiert via `_tools/todo-archive`) | append-only |
 | `GLOSSARY.md` | Jargon, Begriffs-Definitionen | stabil |
+| `TODO-SUBLIST.md` | Kopiervorlage für bereichsbezogene Unter-TODOs *(nicht automatisch ausgerollt)* | Kopiervorlage |
+| `REG-TEMPLATE.md` | Kopiervorlage für thematische Unterregister *(nicht automatisch ausgerollt)* | Kopiervorlage |
 
 ### Strukturierte Ordner (3)
 
@@ -213,82 +236,47 @@ _tools/       # Admin-Utilities außerhalb der Haupt-Pipeline
 - `DONE.md` **ohne** Automation → wird selbst zum Moloch. Template enthält Hinweis auf `_tools/todo-archive`
 - `BOOT.md`, `BOOTING.md` → schlechter Sprach-Trigger als START.md
 - Pro-Workflow getrennte Files mit Buchstaben-Suffix (`WORKFLOW-A.md`, `WORKFLOW-B.md`) → Namens-Explosion
+- Starre Dutzend-Register pro Repo-Root ohne Bedarf → stattdessen bedarfsorientiert über `MASTER-REGISTRY.md` + `REG-TEMPLATE.md`
 
 ## Philosophie
 
 **Template ist Vorschlag, nicht Gesetz.** Wenn dein Projekt eine Datei nicht
 braucht, lass sie weg. Wenn du eine Datei brauchst die nicht hier ist, füge sie
 hinzu — aber nur wenn du eine **eindeutige Rolle** benennen kannst, die keine
-existierende Datei hat. „Ich könnte mir vorstellen das wäre nützlich" ist kein
-Grund. „Ohne dieses File kann ich X nicht erreichen" ist einer.
+existierende Datei hat. „Ich könnte mir vorstellen das wäre nützlich“ ist kein
+Grund. „Ohne dieses File kann ich X nicht erreichen“ ist einer.
 
 **Wenn eine Datei nicht gepflegt wird, ist sie ein Risiko, kein Vorteil.**
 Veraltete Doku ist schlechter als keine Doku, weil sie Vertrauen erzeugt das
-nicht gerechtfertigt ist. Lieber ein ehrliches „hier gibt's noch keine" als ein
-falsches „stand 2024-01-05".
+nicht gerechtfertigt ist. Lieber ein ehrliches „hier gibt's noch keine“ als ein
+falsches „stand 2024-01-05“.
 
-## Praxis-erprobte Erweiterungen (2026-06-02)
+## Praxis-erprobte Erweiterungen
 
-Diese Konzepte haben sich in einer produktiven Projekt-Pipeline bewährt
-und sind nun Teil des Template-Standards:
+Diese Konzepte haben sich in produktiven Projekt-Pipelines bewährt
+und sind Teil des Template-Standards:
 
-### Selbstheilungs-Passus (in alle Steuer-Dateien)
+### Selbstheilungs-Header (in alle Steuer-Dateien)
 
-Jede Root-Steuerdatei bekommt diesen Blockquote-Block direkt nach dem Header:
+Jede Root-Steuerdatei bekommt neben **Version / Aktualisiert / Grund / Zweck** den Selbstkorrektur-Block, den Multi-Writer-Selbstheilungs-Passus (Diff vor Merge, Lock-Vorrang, keine stille Löschung) sowie den `CUT-AND-CLUE.md`-Verweis und am Ende den `REMEMBER`-Footer. Siehe [`HEADER-RULES.md`](./HEADER-RULES.md).
 
-```markdown
-> Wenn du veraltete Passagen oder Verweise entdeckst, oder sogar missgeleitet
-> wirst, korrigiere diese Datei autonom. Wenn du etwas Neues gebaut oder
-> erstellt hast, prüfe: Hättest du es durch das Lesen der Dateien, die du
-> gelesen hast, bereits gefunden und/oder richtig verstanden? Wenn nicht,
-> setze dort an und behebe es, sodass du es gefunden und verstanden hättest.
+### TODO-Unterlisten & `MASTER-REGISTRY.md`
 
-> Wenn diese Datei zu lang wird: Verwende das Cut-and-Clue-Verfahren → CUT-AND-CLUE.md
-```
+Wächst `TODO.md` über ~150 offene Tasks hinaus oder arbeiten mehrere Rollen dauerhaft parallel, wird `TODO.md` zum Index für `TODO-<BEREICH>.md`-Unterlisten (`TODO-SUBLIST.md`), die gemeinsam ins zentrale `DONE.md` archivieren. Entstehen in größeren Projekten mehrere Spezialregister (Checks, Policies, Releases), verzeichnet `MASTER-REGISTRY.md` ihre Zuständigkeiten; neue Register nutzen `REG-TEMPLATE.md`.
 
-**Warum:** Verhindert Doku-Fäulnis. Gibt dem Agenten explizite Erlaubnis und Pflicht,
-veraltete Stellen selbst zu korrigieren — ohne auf menschliche Code-Reviews zu warten.
+### Cut-and-Clue-Verfahren (`CUT-AND-CLUE.md`) & Umzugs-Stubs (`MOVED-STUB.md`)
 
-### REMEMBER-Footer
-
-Am Ende jeder Steuerdatei:
-```
-<!-- REMEMBER: ENDUSERTEXTE BEKOMMEN ECHTE UMLAUTE Ü Ö Ä -->
-```
-
-**Warum:** Einfache, persistente Erinnerung die kein Extra-Dokument braucht.
-
-### Header-Felder: Zweck und Grund
-
-Jede Steuerdatei (`.md`) bekommt im Markdown-Header (nicht nur YAML):
-```
-**Version:** X.Y
-**Aktualisiert:** YYYY-MM-DD
-**Grund:** [Was wurde warum geändert]
-**Zweck:** [Ein Satz was diese Datei tut]
-```
-
-**Warum:** Das YAML-Frontmatter ist für Maschinen. Die Markdown-Felder sind für
-Agenten die die Datei im Chat-Kontext lesen ohne YAML zu parsen.
-
-### Cut-and-Clue-Verfahren (`CUT-AND-CLUE.md`)
-
-Drei Varianten für übergroße Dateien:
-- **A (Archivierung):** Logs/Registries → `_archive/DATEI_ARCHIV_v1.md`
-- **B (Sequenziell):** Aufgabenlisten mit aktiven Tasks → `TODO_2.txt`
-- **C (Sequenziell, Policies):** Regelwerke → `POLICY_2.md`, alte wird Pointer
-
-**Warum:** Verhindert monolithische Dateien (>200-400 Zeilen) die langsam werden
-und Kontext-Fenster verstopfen.
-
-### Neue Template-Dateien
-
-| Datei | Profil | Zweck |
-|---|---|---|
-| `HEADER-RULES.md` | STANDARD/FULL | Konsolidiert alle Header-Konventionen |
-| `CUT-AND-CLUE.md` | STANDARD/FULL | Pointer-Verfahren für übergroße Dateien |
+Drei Varianten für übergroße Dateien (Variante A Archivierung, Variante B Aufgaben-Unterlisten / sequenziell mit `_tools/todo-archive`-Vorrang, Variante C Policies) mit **relativen, portablen Pfaden**. Bei kompletten Datei- oder Ordner-Umzügen markiert `*.MOVED.md` den alten Ort bis zum geregelten Rückbau.
 
 ## Historie
+
+- **2026-11-21** — Erweiterung um bewährte Root-Steuerkonzepte
+  - `TODO-SUBLIST.md` + Aufspalt-/Rückführungsregel in `TODO.md`
+  - `MASTER-REGISTRY.md` (Profil `FULL`) + generische Unterregister-Vorlage `REG-TEMPLATE.md`
+  - `MOVED-STUB.md` (Profil `FULL`) für Umzugs-Pointer
+  - `HEADER-RULES.md`: 2-Ebenen-Header, vollständiger Selbstheilungs-Passus, datierte Zählstände und flächendeckender Einzug in alle Root-Vorlagen
+  - `CUT-AND-CLUE.md`: relative Pfade, Index-Split, `_tools/todo-archive`-Vorrang und durchgängige Verdrahtung
+  - `DECISIONS.md`/`PATTERNS.md`: `NACHTRAG`-Muster und Falsifizierungs-/Mess-Checkliste
 
 - **2026-06-02** — Praxis-erprobte Erweiterungen in den Template-Standard übernommen
   - Selbstheilungs-Passus, REMEMBER-Footer, Header-Felder Zweck/Grund
@@ -306,3 +294,7 @@ und Kontext-Fenster verstopfen.
   - `HEADER-RULES.md` und `CUT-AND-CLUE.md` sind jetzt auch in `STANDARD` und `FULL` generatorisch hinterlegt
   - Profilzählungen und Root-File-Liste auf den aktuellen 16-Dateien-Stand angeglichen
   - `doc-lint` bewahrt `reason_last_change` in `CLAUDE.md` jetzt auch bei `--fix`/`--update-dates`
+
+---
+
+<!-- REMEMBER: ENDUSERTEXTE BEKOMMEN ECHTE UMLAUTE ä ö ü Ä Ö Ü ß -->

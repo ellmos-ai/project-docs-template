@@ -1,8 +1,18 @@
 # PATTERNS.md — Do/Don't mit Code-Beispielen
 
+**Version:** 0.1.0
+**Aktualisiert:** [YYYY-MM-DD]
+**Grund:** [Was wurde warum geändert]
+**Zweck:** Hält wiederkehrende Do/Don't-Idiome, Fehlerbilder und Qualitäts-Checks für [Projektname] fest.
+
+> **Selbstkorrektur:** Wenn du veraltete Passagen oder Verweise entdeckst, oder sogar missgeleitet wirst, korrigiere diese Datei autonom. Wenn du etwas Neues gebaut oder erstellt hast, prüfe: Hättest du es durch das Lesen der Dateien, die du gelesen hast, bereits gefunden und/oder richtig verstanden? Wenn nicht, setze dort an und behebe es, sodass du es gefunden und verstanden hättest.
+
+> **Selbstheilung:** Werden mehrere aktive Dateien derselben Rolle oder Nummer nebeneinander erkannt (z. B. durch Sync-Konflikte), zuerst vollständig diffen und verlustfrei zusammenführen; nichts Einzigartiges stillschweigend löschen. Aktive Locks (`LOCK*.txt`) haben Vorrang.
+
+> **Dateigröße:** Wenn diese Datei zu lang wird: Verwende das Cut-and-Clue-Verfahren → [`CUT-AND-CLUE.md`](./CUT-AND-CLUE.md).
+
 > **Format:** Gepaarte ✅ RIGHT + ❌ WRONG Beispiele mit konkretem Code.
-> **Zweck:** Wiederkehrende Fehler vermeiden, wiederverwendbare Idiome festhalten.
-> **Abgrenzung zu DECISIONS.md:** Patterns sind **wiederholbar** (Code-Level),
+> **Abgrenzung zu `DECISIONS.md`:** Patterns sind **wiederholbar** (Code-/Prozess-Level),
 > Decisions sind **einmalig** (System-Level).
 
 ---
@@ -69,17 +79,34 @@ git commit -m "untrack file"   # kein Pathspec!
 
 ---
 
+## Template-Beispiel: Mess- & Falsifizierungs-Disziplin (daten-/forschungsnahe Repos)
+
+**Kontext:** Bei eigenen Messungen, Benchmarks oder Modellen genügen positive Einzelwerte nicht.
+
+### ❌ WRONG
+- Einen Testbereich so eng wählen, dass der Test die Vorhersage gar nicht widerlegen kann.
+- Strukturmerkmale ohne Vergleich gegen ein Zufalls-/Nullmodell als Signal deuten.
+- Trefferquoten („6/10 richtig“) ohne Basisrate der Mehrheitsklasse berichten.
+
+### ✅ RIGHT
+1. **Falsifizierbarkeit:** Testbereich so wählen, dass er die erwartete Grenze **beidseitig** überdeckt.
+2. **Nullmodell:** Jede Struktur- oder Muster-Aussage gegen eine Zufallskontrolle prüfen.
+3. **Bezugsgröße:** Jede Kennzahl mit Basisrate, Nullmodellwert oder Normierung angeben.
+
+---
+
 ## Reminders per Kontext
 
-### Bei Git-Operationen
-- ⚠️ IMMER vor destructive: `git status` + `git log --oneline -5`
+### Bei Git-Operationen & Multi-Writer-Betrieb
+- ⚠️ IMMER vor destructive: `git status` + `git log --oneline -5` + aktive `LOCK*.txt` prüfen
 - ⚠️ Bei `git rm --cached`: **kein Pathspec** im folgenden Commit
 - ⚠️ Bei `--force-with-lease`: prüft Remote-State, nicht blind
+- ⚠️ Sync-Konfliktkopien niemals blind löschen — zuerst diffen und verlustfrei mergen
 
 ### Bei Python auf Windows
-- ⚠️ `PYTHONIOENCODING=utf-8` vor jedem Call (cp1252-Default ist ein Gift)
-- ⚠️ Pfade in subprocess: Windows-nativ (`C:\...`), nicht Bash (`/c/...`)
-- ⚠️ `&&` funktioniert in Git Bash, aber nicht in cmd/PowerShell
+- ⚠️ `PYTHONIOENCODING=utf-8` bzw. `python -X utf8` vor jedem Call (cp1252-Default vermeiden)
+- ⚠️ Pfade in subprocess: plattformnativ (`pathlib.Path`), keine hardcodierten Benutzerpfade
+- ⚠️ `&&` funktioniert in Git Bash, aber nicht in cmd/PowerShell 5.1 (in `pwsh` 7 ja)
 
 ### Bei npm Publish
 - ⚠️ Version vorher bumpen, nicht erst im `prepublishOnly`
@@ -101,5 +128,8 @@ git commit -m "untrack file"   # kein Pathspec!
 > **Patterns ohne WRONG-Paar sind schwächer** — ohne den Kontrast lernt
 > man nicht warum das Pattern existiert.
 >
-> **Staleness:** Was 2024 wrong war, kann 2026 right sein. Bei Zweifel
-> Datum prüfen und neu bewerten.
+> **Staleness:** Was früher richtig war, kann später überholt sein — veraltete Stellen nicht still löschen, sondern mit `NACHTRAG` oder datiertem Vermerk aktualisieren.
+
+---
+
+<!-- REMEMBER: ENDUSERTEXTE BEKOMMEN ECHTE UMLAUTE ä ö ü Ä Ö Ü ß -->
