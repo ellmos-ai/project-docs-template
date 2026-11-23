@@ -8,7 +8,7 @@
 [![版本](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![平台](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-74%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-80%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![贡献指南](https://img.shields.io/badge/Contributing-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![隐私：本地工具，无遥测](https://img.shields.io/badge/privacy-local%20tools%20%7C%20no%20telemetry-success.svg)](./SECURITY.md)
 [![安全](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
@@ -22,15 +22,14 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![语言：Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![许可证：MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![最后检查日期](https://img.shields.io/badge/last%20checked-2026--10--30-informational.svg)](./MARKETING-LOG.txt)
+[![最后检查日期](https://img.shields.io/badge/last%20checked-2026--11--23-informational.svg)](./llms.txt)
 [![第三方许可证](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
-[![营销日志](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
 面向智能体的项目文档模板，包含 START/STATE/TODO/DONE，
 以及工作流、轻量工具和适合 LLM 使用的项目记忆。
 
 > [!NOTE]
-> **AI / LLM 索引**：AI 智能体和自动化工具可以查看 [llms.txt](llms.txt)，获取机器可读的摘要、搜索词和消歧说明。最后检查日期：**2026-10-30**。
+> **AI / LLM 索引**：AI 智能体和自动化工具可以查看 [llms.txt](llms.txt)，获取机器可读的摘要、搜索词和消歧说明。最后检查日期：**2026-11-23**。
 
 > 本项目独立维护，与 Anthropic、OpenAI 或 Google 无关联。
 > 参阅[商标](#trademarks)。

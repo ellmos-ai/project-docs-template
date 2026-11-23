@@ -8,8 +8,9 @@
 [![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-74%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-80%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Contributing](https://img.shields.io/badge/Contributing-Guidelines-blue.svg)](./CONTRIBUTING.md)
+[![Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-Contributor%20Covenant-blue.svg)](./CODE_OF_CONDUCT.md)
 [![Privacy: Local Tools, No Telemetry](https://img.shields.io/badge/privacy-local%20tools%20%7C%20no%20telemetry-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
 [![Security Reporting](https://img.shields.io/badge/security-reporting_policy-blue.svg)](./SECURITY.md)
@@ -19,18 +20,18 @@
 [![Ecosystem: ellmos-ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
 [![Umbrella: open-bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
 [![LLM-Ready: llms.txt](https://img.shields.io/badge/LLM--Ready-llms.txt-orange.svg)](./llms.txt)
+[![Product Skill: SKILL.md](https://img.shields.io/badge/Product%20Skill-SKILL.md-teal.svg)](./SKILL.md)
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Last Checked](https://img.shields.io/badge/last%20checked-2026--10--30-informational.svg)](./MARKETING-LOG.txt)
+[![Last Checked](https://img.shields.io/badge/last%20checked-2026--11--23-informational.svg)](./llms.txt)
 [![Third-Party Licenses](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
-[![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
 Agent-ready project documentation template with START/STATE/TODO/DONE,
 workflows, lightweight tooling, and LLM-friendly project memory.
 
 > [!NOTE]
-> **AI / LLM Indexing**: AI agents and automated tools can inspect [llms.txt](llms.txt) for a machine-readable summary, search terms, and disambiguation details. Last checked: **2026-10-30**.
+> **AI / LLM Indexing**: AI agents and automated tools can inspect [llms.txt](llms.txt) (or [llm.txt](llm.txt)) and [SKILL.md](SKILL.md) for a machine-readable summary, workflow instructions, search terms, and disambiguation details. Last checked: **2026-11-23**.
 
 > Independent project — not affiliated with Anthropic, OpenAI, or Google.
 > See [Trademarks](#trademarks).
@@ -274,12 +275,26 @@ is meant to sit inside ordinary software, research, or operations repositories.
 - Optional FULL-profile routers & governance: `MASTER-REGISTRY.md`, `MOVED-STUB.md`, `WORKFLOWS.md`, `TOOLS.md`, `GLOSSARY.md`
 - Copy-on-demand blueprints in [`template/`](./template/): `TODO-SUBLIST.md` (`TODO-<AREA>.md`) and `REG-TEMPLATE.md` (sub-registers)
 - Local helpers in `_tools/`, including `init-project`, `doc-lint`, `todo-archive`, and `workflows-sync`
+- Repository LLM & community entrypoints: [`SKILL.md`](./SKILL.md), [`llms.txt`](./llms.txt), [`llm.txt`](./llm.txt), and [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md)
 
 The actual template files live in [`template/`](./template/).
 
 ---
 
 ## <a id="sec-09"></a><a id="quick-start"></a>9. Quick Start & Common CLI Workflows
+
+<p align="center"><img src="assets/terminal-workflow.svg" width="880" alt="Project Docs Template CLI Workflow Preview"></p>
+
+### Install with your LLM
+
+Copy the prompt below into your AI coding agent (Claude Code, Codex, Gemini CLI, or Antigravity) to inspect, scaffold, and verify the repository in an isolated environment:
+
+```text
+Install and verify https://github.com/ellmos-ai/project-docs-template (prefer release tag or pinned commit; no unverified curl|sh pipes):
+1. Read llms.txt and SKILL.md in the repository root first.
+2. Create an isolated Python 3.10+ environment (.venv) and run `python template/_tools/init-project --target /tmp/docs-smoke --name "docs-smoke" --profile STANDARD --dry-run`.
+3. Verify the repository metadata and template suite with `python template/_tools/doc-lint --root template` and `python -m pytest -ra -v`, then report the results.
+```
 
 Clone the repository and scaffold an agent-ready workspace in seconds:
 
@@ -526,3 +541,5 @@ The provision of this software and template scaffold is made free of charge as a
 
 ### License
 This project is licensed under the terms of the **MIT License**. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for complete copyright attribution.
+
+> **Transparency Notice:** Concept & Sign-off: Geiger · Text assistance: LLM-supported · Banner artwork: AI-generated

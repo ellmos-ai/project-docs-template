@@ -8,7 +8,7 @@
 [![সংস্করণ](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![প্ল্যাটফর্ম](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-74%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-80%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![অবদান](https://img.shields.io/badge/Contributing-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![গোপনীয়তা: স্থানীয় টুল, টেলিমেট্রি নেই](https://img.shields.io/badge/privacy-local%20tools%20%7C%20no%20telemetry-success.svg)](./SECURITY.md)
 [![নিরাপত্তা](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
@@ -22,15 +22,14 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![ভাষা: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![লাইসেন্স: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![সর্বশেষ পরীক্ষা](https://img.shields.io/badge/last%20checked-2026--10--30-informational.svg)](./MARKETING-LOG.txt)
+[![সর্বশেষ পরীক্ষা](https://img.shields.io/badge/last%20checked-2026--11--23-informational.svg)](./llms.txt)
 [![তৃতীয় পক্ষের লাইসেন্স](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
-[![বিপণন লগ](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
 এজেন্টের জন্য প্রস্তুত প্রকল্প-নথির টেমপ্লেট, যাতে রয়েছে START/STATE/TODO/DONE,
 কর্মপ্রবাহ, হালকা টুল এবং LLM-উপযোগী প্রকল্প-স্মৃতি।
 
 > [!NOTE]
-> **AI / LLM সূচিকরণ**: AI এজেন্ট ও স্বয়ংক্রিয় টুল [llms.txt](llms.txt) দেখে মেশিনে-পাঠযোগ্য সারাংশ, অনুসন্ধান শব্দ এবং দ্ব্যর্থতা নিরসনের তথ্য পেতে পারে। সর্বশেষ পরীক্ষা: **2026-10-30**।
+> **AI / LLM সূচিকরণ**: AI এজেন্ট ও স্বয়ংক্রিয় টুল [llms.txt](llms.txt) দেখে মেশিনে-পাঠযোগ্য সারাংশ, অনুসন্ধান শব্দ এবং দ্ব্যর্থতা নিরসনের তথ্য পেতে পারে। সর্বশেষ পরীক্ষা: **2026-11-23**।
 
 > স্বাধীন প্রকল্প, Anthropic, OpenAI বা Google-এর সঙ্গে কোনো সংশ্লিষ্টতা নেই।
 > [ট্রেডমার্ক](#trademarks) দেখুন।

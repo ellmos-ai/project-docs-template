@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security Vulnerability Reporting / Sicherheitsmeldung
+    url: https://github.com/ellmos-ai/project-docs-template/security/advisories/new
+    about: Report potential security issues privately via GitHub Security Advisories / Sicherheitslücken privat über GitHub Security Advisories melden.

@@ -8,7 +8,7 @@
 [![संस्करण](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![प्लैटफ़ॉर्म](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-74%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-80%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![योगदान](https://img.shields.io/badge/Contributing-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![गोपनीयता: लोकल टूल, टेलीमेट्री नहीं](https://img.shields.io/badge/privacy-local%20tools%20%7C%20no%20telemetry-success.svg)](./SECURITY.md)
 [![सुरक्षा](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
@@ -22,15 +22,14 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![भाषा: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![लाइसेंस: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![अंतिम जाँच](https://img.shields.io/badge/last%20checked-2026--10--30-informational.svg)](./MARKETING-LOG.txt)
+[![अंतिम जाँच](https://img.shields.io/badge/last%20checked-2026--11--23-informational.svg)](./llms.txt)
 [![तृतीय-पक्ष लाइसेंस](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
-[![मार्केटिंग लॉग](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
 एजेंटों के लिए तैयार परियोजना दस्तावेज़ टेम्पलेट, जिसमें START/STATE/TODO/DONE शामिल हैं,
 साथ में वर्कफ़्लो, हल्के टूल और LLM-अनुकूल परियोजना स्मृति।
 
 > [!NOTE]
-> **AI / LLM इंडेक्सिंग**: AI एजेंट और स्वचालित टूल [llms.txt](llms.txt) में मशीन-पठनीय सारांश, खोज शब्द और अस्पष्टता दूर करने वाले विवरण देख सकते हैं। अंतिम जाँच: **2026-10-30**।
+> **AI / LLM इंडेक्सिंग**: AI एजेंट और स्वचालित टूल [llms.txt](llms.txt) में मशीन-पठनीय सारांश, खोज शब्द और अस्पष्टता दूर करने वाले विवरण देख सकते हैं। अंतिम जाँच: **2026-11-23**।
 
 > स्वतंत्र परियोजना, Anthropic, OpenAI या Google से संबद्ध नहीं।
 > [ट्रेडमार्क](#trademarks) देखें।

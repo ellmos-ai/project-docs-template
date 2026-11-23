@@ -8,7 +8,7 @@
 [![Версия](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Платформы](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-74%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-80%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Участие в разработке](https://img.shields.io/badge/Contributing-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![Конфиденциальность: локальные инструменты, без телеметрии](https://img.shields.io/badge/privacy-local%20tools%20%7C%20no%20telemetry-success.svg)](./SECURITY.md)
 [![Безопасность](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
@@ -22,15 +22,14 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Язык: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![Лицензия: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Последняя проверка](https://img.shields.io/badge/last%20checked-2026--10--30-informational.svg)](./MARKETING-LOG.txt)
+[![Последняя проверка](https://img.shields.io/badge/last%20checked-2026--11--23-informational.svg)](./llms.txt)
 [![Лицензии сторонних компонентов](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
-[![Журнал маркетинга](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
 Шаблон документации проекта, готовый для работы с агентами, с файлами START/STATE/TODO/DONE,
 рабочими процессами, лёгкими инструментами и памятью проекта, удобной для LLM.
 
 > [!NOTE]
-> **Индексация ИИ / LLM**: ИИ-агенты и автоматизированные инструменты могут обратиться к [llms.txt](llms.txt), чтобы получить машиночитаемое резюме, поисковые термины и пояснения для устранения неоднозначностей. Последняя проверка: **2026-10-30**.
+> **Индексация ИИ / LLM**: ИИ-агенты и автоматизированные инструменты могут обратиться к [llms.txt](llms.txt), чтобы получить машиночитаемое резюме, поисковые термины и пояснения для устранения неоднозначностей. Последняя проверка: **2026-11-23**.
 
 > Независимый проект, не связанный с Anthropic, OpenAI или Google.
 > См. раздел [Товарные знаки](#trademarks).

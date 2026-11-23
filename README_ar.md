@@ -8,7 +8,7 @@
 [![الإصدار](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![المنصات](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-74%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-80%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![المساهمة](https://img.shields.io/badge/Contributing-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![الخصوصية: أدوات محلية دون قياس عن بُعد](https://img.shields.io/badge/privacy-local%20tools%20%7C%20no%20telemetry-success.svg)](./SECURITY.md)
 [![الأمان](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
@@ -22,15 +22,14 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![اللغة: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![الترخيص: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![آخر تحقق](https://img.shields.io/badge/last%20checked-2026--10--30-informational.svg)](./MARKETING-LOG.txt)
+[![آخر تحقق](https://img.shields.io/badge/last%20checked-2026--11--23-informational.svg)](./llms.txt)
 [![تراخيص الجهات الخارجية](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
-[![سجل التسويق](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
 قالب لتوثيق المشروعات مهيأ للعمل مع الوكلاء، ويضم START/STATE/TODO/DONE،
 وسير العمل والأدوات الخفيفة وذاكرة للمشروع ملائمة لنماذج LLM.
 
 > [!NOTE]
-> **فهرسة AI / LLM**: يمكن لوكلاء AI والأدوات المؤتمتة الاطلاع على [llms.txt](llms.txt) للحصول على ملخص قابل للقراءة آلياً ومصطلحات بحث وتفاصيل لإزالة الالتباس. آخر تحقق: **2026-10-30**.
+> **فهرسة AI / LLM**: يمكن لوكلاء AI والأدوات المؤتمتة الاطلاع على [llms.txt](llms.txt) للحصول على ملخص قابل للقراءة آلياً ومصطلحات بحث وتفاصيل لإزالة الالتباس. آخر تحقق: **2026-11-23**.
 
 > مشروع مستقل غير تابع لـ Anthropic أو OpenAI أو Google.
 > راجع [العلامات التجارية](#trademarks).

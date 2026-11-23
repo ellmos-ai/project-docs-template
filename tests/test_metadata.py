@@ -50,12 +50,14 @@ class MetadataAndManifestTests(unittest.TestCase):
             "RELEASE_GATE.md",
             "CHANGELOG.md",
             "llms.txt",
+            "llm.txt",
+            "SKILL.md",
+            "CODE_OF_CONDUCT.md",
             "pyproject.toml",
             "ellmos-module.v2.json",
             "THIRD_PARTY_LICENSES.md",
             "THIRD_PARTY_LICENSES.txt",
             "CONTRIBUTING.md",
-            "MARKETING-LOG.txt",
         ]
         for filename in required_files:
             file_path = REPO_ROOT / filename
@@ -100,8 +102,8 @@ class MetadataAndManifestTests(unittest.TestCase):
             "Ecosystem-ellmos",
             "Umbrella-open",
             "LLM--Ready",
+            "SKILL.md",
             "zero--dependency",
-            "marketing-",
         ]:
             self.assertIn(badge_pattern, en_content, f"Badge {badge_pattern} missing in README.md")
             self.assertIn(badge_pattern, de_content, f"Badge {badge_pattern} missing in README_de.md")
@@ -185,8 +187,9 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("Umbrella =", content)
         self.assertIn("https://open-bricks.org", content)
         self.assertIn('"Third-Party Licenses" =', content)
-        self.assertIn('"Marketing Log" =', content)
+        self.assertNotIn('"Marketing Log" =', content)
         self.assertIn('"LLM Ready" =', content)
+        self.assertIn('"Product Skill" =', content)
         for kw in ["multi-agent", "zero-egress", "governance", "session-handoff"]:
             self.assertIn(f'"{kw}"', content, f"Keyword {kw} missing in pyproject.toml")
 
@@ -303,16 +306,6 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("pytest", content)
         self.assertIn("ruff", content)
         self.assertIn("MIT License", content)
-
-    def test_marketing_log_structure(self) -> None:
-        """Verify MARKETING-LOG.txt presence and Pfad B sections."""
-        mlog_path = REPO_ROOT / "MARKETING-LOG.txt"
-        self.assertTrue(mlog_path.is_file(), "MARKETING-LOG.txt missing")
-        content = mlog_path.read_text(encoding="utf-8")
-        self.assertIn("MARKETING-LOG — Discoverability, SEO & Positioning Register", content)
-        self.assertIn("Pfad B: Discoverability, Target Personas", content)
-        self.assertIn("Bilingual High-Intent Keyword Matrix", content)
-        self.assertIn("Comparative Architecture & Differentiation", content)
 
     def test_ci_workflow_timeouts_concurrency_and_runner(self) -> None:
         """Verify CI workflow has runaway timeouts, concurrency cancellation, and pytest flags."""
@@ -597,16 +590,6 @@ class MetadataAndManifestTests(unittest.TestCase):
         for topic in expected_topics:
             self.assertIn(f'"{topic}"', pyproject, f"Missing topic '{topic}' in pyproject.toml keywords")
 
-    def test_marketing_log_recency_pfad_b(self) -> None:
-        """Verify MARKETING-LOG.txt contains the 2026-09-29 Pfad B audit record."""
-        mlog_path = REPO_ROOT / "MARKETING-LOG.txt"
-        self.assertTrue(mlog_path.is_file(), "Missing MARKETING-LOG.txt")
-        content = mlog_path.read_text(encoding="utf-8")
-        self.assertIn("2026-09-29 — Pfad B", content)
-        self.assertIn("ASCII 4-View Architecture Topology", content)
-        self.assertIn("THIRD_PARTY_LICENSES.txt", content)
-
-
     def test_contributing_file_exists_and_bilingual_structure(self) -> None:
         """Verify CONTRIBUTING.md exists with bilingual EN/DE sections and all 10 invariants."""
         contrib_path = REPO_ROOT / "CONTRIBUTING.md"
@@ -707,12 +690,6 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("auto-assign.yml", content)
         self.assertIn("label-sync.yml", content)
 
-    def test_marketing_log_recency_pfad_a_20261002(self) -> None:
-        """Verify MARKETING-LOG.txt contains the 2026-10-02 Pfad A audit entry."""
-        content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-        self.assertIn("## 2026-10-02 — Pfad A", content)
-        self.assertIn("CONTRIBUTING.md", content)
-
     def test_sbom_companion_re_audit_20261030(self) -> None:
         """Verify THIRD_PARTY_LICENSES.md and .txt reflect Stand 2026-10-30 and Contributing."""
         md_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
@@ -739,15 +716,6 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("==> Target:  /pfad/zu/meinem-projekt", de_content)
         self.assertIn("==> Profil: STANDARD", de_content)
         self.assertIn("doc-lint --fix --update-dates", de_content)
-
-    def test_marketing_log_recency_pfad_b_20261030(self) -> None:
-        """Verify MARKETING-LOG.txt contains the 2026-10-30 Pfad B audit and recommendations."""
-        content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-        self.assertIn("## 2026-10-30 — Pfad B", content)
-        self.assertIn("Terminal Execution Session Showcase", content)
-        self.assertIn("REC-20261030-01", content)
-        self.assertIn("REC-20261030-02", content)
-        self.assertIn("REC-20261030-03", content)
 
     def test_changelog_recent_pfad_b_20261030_entry(self) -> None:
         """Verify CHANGELOG.md documents 2026-10-30 Pfad B discoverability improvements."""
@@ -786,6 +754,73 @@ class MetadataAndManifestTests(unittest.TestCase):
         for token in ("MASTER-REGISTRY.md", "MOVED-STUB.md", "TODO-SUBLIST.md", "REG-TEMPLATE.md", "CUT-AND-CLUE.md"):
             self.assertIn(token, en_content, f"{token} missing in README.md")
             self.assertIn(token, de_content, f"{token} missing in README_de.md")
+
+    def test_p022_skill_and_llm_entrypoints(self) -> None:
+        """Verify Policy P-022 deliverables: SKILL.md, llm.txt, llms.txt sections, and README LLM prompts."""
+        skill_content = (REPO_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("name: project-docs-template", skill_content)
+        self.assertIn("init-project", skill_content)
+        self.assertIn("doc-lint", skill_content)
+
+        llm_content = (REPO_ROOT / "llm.txt").read_text(encoding="utf-8")
+        self.assertIn("llms.txt", llm_content)
+        self.assertIn("SKILL.md", llm_content)
+
+        llms_content = self.llms_txt_path.read_text(encoding="utf-8")
+        for heading in ("## Prerequisites", "## Installation", "## Verification", "## Minimal Example"):
+            self.assertIn(heading, llms_content, f"{heading} missing in llms.txt")
+
+        en_content = self.readme_en_path.read_text(encoding="utf-8")
+        de_content = self.readme_de_path.read_text(encoding="utf-8")
+        self.assertIn("### Install with your LLM", en_content)
+        self.assertIn("### Mit deinem LLM installieren", de_content)
+        self.assertIn("Read llms.txt and SKILL.md", en_content)
+        self.assertIn("Lies zuerst llms.txt und SKILL.md", de_content)
+
+    def test_community_health_files_and_terminal_svg(self) -> None:
+        """Verify CODE_OF_CONDUCT.md, Issue Templates, and assets/terminal-workflow.svg."""
+        coc = (REPO_ROOT / "CODE_OF_CONDUCT.md").read_text(encoding="utf-8")
+        self.assertIn("Contributor Covenant v2.1", coc)
+
+        for rel in (
+            ".github/ISSUE_TEMPLATE/bug_report.md",
+            ".github/ISSUE_TEMPLATE/feature_request.md",
+            ".github/ISSUE_TEMPLATE/config.yml",
+        ):
+            self.assertTrue((REPO_ROOT / rel).is_file(), f"Missing {rel}")
+
+        svg_path = REPO_ROOT / "assets" / "terminal-workflow.svg"
+        self.assertTrue(svg_path.is_file(), "assets/terminal-workflow.svg missing")
+        svg_text = svg_path.read_text(encoding="utf-8")
+        self.assertIn("<svg", svg_text)
+        self.assertIn("init-project", svg_text)
+
+        self.assertIn("assets/terminal-workflow.svg", self.readme_en_path.read_text(encoding="utf-8"))
+        self.assertIn("assets/terminal-workflow.svg", self.readme_de_path.read_text(encoding="utf-8"))
+
+    def test_marketing_log_untracked_and_no_dead_links(self) -> None:
+        """Verify MARKETING-LOG.txt is ignored and not linked in READMEs or pyproject.toml."""
+        gitignore = (REPO_ROOT / ".gitignore").read_text(encoding="utf-8")
+        self.assertIn("MARKETING-LOG.txt", gitignore)
+        pyproject = self.pyproject_path.read_text(encoding="utf-8")
+        self.assertNotIn("MARKETING-LOG.txt", pyproject)
+        for readme_path in sorted(REPO_ROOT.glob("README*.md")):
+            content = readme_path.read_text(encoding="utf-8")
+            self.assertNotIn("MARKETING-LOG.txt", content, f"Dead MARKETING-LOG.txt link in {readme_path.name}")
+
+    def test_readme_geiger_ai_provenance_disclosure(self) -> None:
+        """Verify concise Geiger AI provenance notice in README.md and README_de.md."""
+        en_content = self.readme_en_path.read_text(encoding="utf-8")
+        de_content = self.readme_de_path.read_text(encoding="utf-8")
+        self.assertIn("Concept & Sign-off: Geiger", en_content)
+        self.assertIn("Idee & Abnahme: Geiger", de_content)
+
+    def test_changelog_recent_pfad_b_20261123_entry(self) -> None:
+        """Verify CHANGELOG.md documents 2026-11-23 Pfad B discoverability and P-022 update."""
+        content = self.changelog_path.read_text(encoding="utf-8")
+        self.assertIn("### 2026-11-23 - Pfad B", content)
+        self.assertIn("Policy P-022", content)
+        self.assertIn("T-20260920-167562623", content)
 
 
 if __name__ == "__main__":
