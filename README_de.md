@@ -8,8 +8,9 @@
 [![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-74%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-80%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Mitwirken](https://img.shields.io/badge/Mitwirken-Richtlinien-blue.svg)](./CONTRIBUTING.md)
+[![Verhaltenskodex](https://img.shields.io/badge/Verhaltenskodex-Contributor%20Covenant-blue.svg)](./CODE_OF_CONDUCT.md)
 [![Datenschutz: lokale Tools, keine Telemetrie](https://img.shields.io/badge/privacy-local%20tools%20%7C%20no%20telemetry-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
 [![Sicherheitsmeldungen](https://img.shields.io/badge/security-reporting_policy-blue.svg)](./SECURITY.md)
@@ -19,18 +20,18 @@
 [![Ecosystem: ellmos-ai](https://img.shields.io/badge/Ecosystem-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
 [![Umbrella: open-bricks](https://img.shields.io/badge/Umbrella-open--bricks-blueviolet.svg)](https://github.com/open-bricks)
 [![LLM-Ready: llms.txt](https://img.shields.io/badge/LLM--Ready-llms.txt-orange.svg)](./llms.txt)
+[![Produkt-Skill: SKILL.md](https://img.shields.io/badge/Produkt--Skill-SKILL.md-teal.svg)](./SKILL.md)
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: English](https://img.shields.io/badge/Language-English-blue.svg)](./README.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--10--30-informational.svg)](./MARKETING-LOG.txt)
+[![Letzte Prüfung](https://img.shields.io/badge/letzte%20pr%C3%BCfung-2026--11--23-informational.svg)](./llms.txt)
 [![Drittanbieter-Lizenzen](https://img.shields.io/badge/lizenzen-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
-[![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Aktiv-blueviolet.svg)](./MARKETING-LOG.txt)
 
 Agenten-optimierte Projektdokumentations-Vorlage mit START/STATE/TODO/DONE,
 Workflows, leichtgewichtigen Tools und KI-freundlichem Projektgedächtnis.
 
 > [!NOTE]
-> **KI / LLM-Indexierung**: KI-Agenten und automatisierte Werkzeuge können [llms.txt](llms.txt) für eine maschinenlesbare Übersicht, Suchbegriffe und Disambiguierung einsehen. Letzte Prüfung: **2026-10-30**.
+> **KI / LLM-Indexierung**: KI-Agenten und automatisierte Werkzeuge können [llms.txt](llms.txt) (oder [llm.txt](llm.txt)) sowie [SKILL.md](SKILL.md) für eine maschinenlesbare Übersicht, Workflow-Anweisungen, Suchbegriffe und Disambiguierung einsehen. Letzte Prüfung: **2026-11-23**.
 
 > Unabhängiges Projekt — keine geschäftliche Verbindung zu Anthropic, OpenAI oder Google.
 > Siehe [Marken](#marken).
@@ -141,7 +142,7 @@ flowchart TD
 |                  [SICHT 4: LOKALE TOOLS, PROZESSKONTEXT & GOVERNANCE]                             |
 |  - CLI übernimmt Aufrufkontext und fordert keine Rechteerhöhung an                                |
 |  - SECURITY.md beschreibt lokale Tools ohne Telemetrie oder ausgehende Netzaufrufe                 |
-|  - Multi-Host Cloud-Sync-Abwehr: .gitignore-Filter für Konfliktkopien (*-WORKSTATION-LG*)        |
+|  - Multi-Host Cloud-Sync-Abwehr: .gitignore-Filter für Konfliktkopien (*-HOSTNAME*, * (copy)*)   |
 |  - Sicherheitsmeldungen: best effort, keine garantierte Antwortzeit laut SECURITY.md             |
 +--------------------------------------------------------------------------------------------------+
 ```
@@ -273,12 +274,26 @@ Dies ist eine Dokumentations- und Koordinationsvorlage, kein Laufzeitframework. 
 - Optionale FULL-Profil-Router & Governance: `MASTER-REGISTRY.md`, `MOVED-STUB.md`, `WORKFLOWS.md`, `TOOLS.md`, `GLOSSARY.md`
 - Bedarfs-Kopiervorlagen in [`template/`](./template/): `TODO-SUBLIST.md` (`TODO-<BEREICH>.md`) und `REG-TEMPLATE.md` (Unterregister)
 - Lokale Werkzeuge in `_tools/`: `init-project`, `doc-lint`, `todo-archive` und `workflows-sync`
+- Repository-Einstieg für LLMs & Community: [`SKILL.md`](./SKILL.md), [`llms.txt`](./llms.txt), [`llm.txt`](./llm.txt) und [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md)
 
 Die eigentlichen Vorlagendateien liegen unter [`template/`](./template/).
 
 ---
 
 ## <a id="sec-09"></a><a id="schnellstart"></a>9. Schnellstart & CLI-Workflows
+
+<p align="center"><img src="assets/terminal-workflow.svg" width="880" alt="Project Docs Template CLI-Workflow-Vorschau"></p>
+
+### Mit deinem LLM installieren
+
+Kopiere den folgenden Prompt in deinen KI-Coding-Agenten (Claude Code, Codex, Gemini CLI oder Antigravity), um das Repository isoliert zu prüfen, einzurichten und zu verifizieren:
+
+```text
+Installiere und verifiziere https://github.com/ellmos-ai/project-docs-template (Release-Tag oder Commit-Pin bevorzugen, keine ungeprüften curl|sh-Pipes):
+1. Lies zuerst llms.txt und SKILL.md im Repo-Root.
+2. Erstelle eine isolierte Python-3.10+-Umgebung (.venv) und führe `python template/_tools/init-project --target /tmp/docs-smoke --name "docs-smoke" --profile STANDARD --dry-run` aus.
+3. Prüfe die Metadaten und die Testsuite mit `python template/_tools/doc-lint --root template` sowie `python -m pytest -ra -v` und berichte das Ergebnis.
+```
 
 Repository klonen und in Sekunden ein agenten-fähiges Arbeitsverzeichnis einrichten:
 
@@ -524,3 +539,5 @@ Die Bereitstellung dieser Software und Vorlagen erfolgt unentgeltlich als gesetz
 
 ### Lizenz
 Dieses Projekt ist unter den Bedingungen der **MIT-Lizenz** lizenziert. Siehe [LICENSE](LICENSE) und [NOTICE](NOTICE) für Urheberrechts- und Lizenzhinweise.
+
+> **Transparenzhinweis:** Idee & Abnahme: Geiger · Textassistenz: LLM-gestützt · Banner-Grafik: KI-generiert

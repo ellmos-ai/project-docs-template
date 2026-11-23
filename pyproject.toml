@@ -66,8 +66,8 @@ Security = "https://github.com/ellmos-ai/project-docs-template/blob/main/SECURIT
 "Third-Party Licenses (Text)" = "https://github.com/ellmos-ai/project-docs-template/blob/main/THIRD_PARTY_LICENSES.txt"
 "Plain-Text License" = "https://github.com/ellmos-ai/project-docs-template/blob/main/THIRD_PARTY_LICENSES.txt"
 Notice = "https://github.com/ellmos-ai/project-docs-template/blob/main/NOTICE"
-"Marketing Log" = "https://github.com/ellmos-ai/project-docs-template/blob/main/MARKETING-LOG.txt"
 "LLM Ready" = "https://github.com/ellmos-ai/project-docs-template/blob/main/llms.txt"
+"Product Skill" = "https://github.com/ellmos-ai/project-docs-template/blob/main/SKILL.md"
 Umbrella = "https://open-bricks.org"
 
 [tool.pytest.ini_options]

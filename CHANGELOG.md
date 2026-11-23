@@ -4,6 +4,20 @@ All notable public-facing changes to this repository are documented here.
 
 ## [Unreleased]
 
+### 2026-11-23 - Pfad B Discoverability, Policy P-022 Entrypoints, Visual CLI Preview & Metadata Cleanup
+
+- **Version-Freeze Disziplin (T-20260920-167562623)**: Version `0.1.2` strikt unverändert beibehalten; alle Änderungen unter `## [Unreleased]` geführt.
+- **Policy P-022 LLM- & Agenten-Einstieg (`SKILL.md`, `llm.txt`, `llms.txt`)**:
+  - Produktspezifischen Skill [`SKILL.md`](./SKILL.md) und Kompatibilitätszeiger [`llm.txt`](./llm.txt) angelegt.
+  - [`llms.txt`](./llms.txt) auf `2026-11-23` aktualisiert und um maschinenlesbare Abschnitte `Prerequisites`, `Installation`, `Verification` und `Minimal Example` ergänzt.
+  - Kopierbare LLM-Installationsblöcke (`Install with your LLM` / `Mit deinem LLM installieren`) in Abschnitt 9 von `README.md` und `README_de.md` ergänzt.
+- **Visuelle CLI-Architektur (`assets/terminal-workflow.svg`) & Community-Governance**:
+  - Dunkles SVG-Terminal-Workflow-Asset [`assets/terminal-workflow.svg`](./assets/terminal-workflow.svg) (880×520) für `init-project`, `doc-lint`, `todo-archive` und `--upgrade` ergänzt und in `README.md`/`README_de.md` eingebettet (bestehendes Header-Banner unverändert erhalten).
+  - Zweisprachigen Verhaltenskodex [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) sowie GitHub Issue Templates (`.github/ISSUE_TEMPLATE/bug_report.md`, `feature_request.md`, `config.yml`) ergänzt.
+  - Transparenz- und KI-Herkunftshinweis (`Idee & Abnahme: Geiger`) in `README.md` und `README_de.md` verankert sowie hostspezifisches Konflikt-Beispiel in `README_de.md` neutralisiert.
+- **Tracking- & Test-Hygiene (`T-20260926-455218633`)**:
+  - `MARKETING-LOG.txt` per `git rm --cached` aus dem Git-Index entfernt (lokal weiter in `.gitignore`), Verweise/Links aus `pyproject.toml`, `llms.txt`, `README*.md` und `tests/test_metadata.py` bereinigt und um 5 P-022-/Community-/Provenance-Vertragstests ergänzt (`80 passed, 26 subtests passed`).
+
 ### Root-Steuerkonzepte & Vorlagen-Ausbau (2026-11-21)
 - Add `template/TODO-SUBLIST.md` (`TODO-<BEREICH>.md` blueprint) and expand `template/TODO.md` with task-splitting rules, index navigation, shrink-back guidance, and shared `DONE.md` archival via `_tools/todo-archive`.
 - Add `template/MASTER-REGISTRY.md` (included in `FULL` profile) as central register index and `template/REG-TEMPLATE.md` as generic sub-register blueprint.

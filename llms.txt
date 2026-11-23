@@ -1,4 +1,4 @@
-## Last-checked: 2026-11-21
+## Last-checked: 2026-11-23
 
 # ellmos-ai/project-docs-template
 
@@ -17,20 +17,15 @@ Primary audience:
 Important files:
 - `README.md`: human-facing overview, 18-point navigation, target personas, and project capabilities with implementation limits.
 - `README_de.md`: complete German documentation, 18-Punkte-Schnellnavigation, and user guide.
-- `README_es.md`: complete Spanish documentation and user guide.
-- `README_fr.md`: complete French documentation and user guide.
-- `README_ru.md`: complete Russian documentation and user guide.
-- `README_ja.md`: complete Japanese documentation and user guide.
-- `README_zh.md`: complete Simplified Chinese documentation and user guide.
-- `README_hi.md`: complete Hindi documentation and user guide.
-- `README_ar.md`: complete Arabic documentation and user guide.
-- `README_bn.md`: complete Bengali documentation and user guide.
-- `README_pt.md`: complete Portuguese documentation and user guide.
+- `README_es.md`, `README_fr.md`, `README_ru.md`, `README_ja.md`, `README_zh.md`, `README_hi.md`, `README_ar.md`, `README_bn.md`, `README_pt.md`: multilingual documentation guides.
+- `SKILL.md`: product-specific LLM workflow skill for scaffolding, linting, archiving, and upgrading documentation profiles.
+- `llm.txt`: compatibility pointer to `llms.txt` and `SKILL.md`.
+- `CODE_OF_CONDUCT.md`: bilingual Contributor Covenant v2.1 community guidelines.
 - `CONTRIBUTING.md`: bilingual development and invariant compliance guidelines (INV-LOCAL-01..INV-SLA-10).
 - `NOTICE`: legal copyright attribution and ecosystem notice.
-- `MARKETING-LOG.txt`: Pfad A repository hygiene & Pfad B discoverability log.
 - `THIRD_PARTY_LICENSES.md`: Level 1 Software Bill of Materials (SBOM) and Governance Invariants Cross-Reference Matrix.
 - `THIRD_PARTY_LICENSES.txt`: Level 1 SBOM plain-text companion with Invariant cross-reference matrix.
+- `assets/terminal-workflow.svg`: dark-mode CLI workflow illustration (`init-project`, `doc-lint`, `todo-archive`, `--upgrade`).
 - `template/TEMPLATE.md`: rationale, profile definitions, and file-by-file explanation.
 - `template/_tools/init-project`: profile-based scaffold generator (`MINIMAL`, `STANDARD`, `FULL`).
 - `template/_tools/init-project --upgrade`: one-step, manifest/hash-verified profile upgrade for existing generated projects; changed or unowned files fail closed rather than being merged.
@@ -45,12 +40,32 @@ Important files:
 - `template/HEADER-RULES.md`, `template/CUT-AND-CLUE.md`, and `template/MOVED-STUB.md`: 2-level self-healing headers, relative file splitting, and move pointers.
 - `template/DECISIONS.md` and `template/PATTERNS.md`: decision, append-only `NACHTRAG`, and practice logs.
 
+## Prerequisites
+
+- Python 3.10 or newer (pure Python standard library at runtime; `dependencies = []`).
+- Git (optional, for cloning and `--git` project initialization).
+
+## Installation
+
+```bash
+git clone https://github.com/ellmos-ai/project-docs-template.git
+cd project-docs-template
+python -m venv .venv
+```
+
 ## Verification
 
-- `pytest` (74 passed, 7 subtests passed) on Linux, Windows and macOS
+- `python -m pytest -ra -v` (80 passed, 26 subtests passed) on Linux, Windows and macOS
+- `python template/_tools/doc-lint --root template` (clean)
 - `ruff check .` (100% clean)
-- `compileall` (100% clean)
+- `python -m compileall -q tests template` (100% clean)
 
+## Minimal Example
+
+```bash
+python template/_tools/init-project --target /path/to/my-project --name "my-project" --profile STANDARD --dry-run
+python template/_tools/init-project --target /path/to/my-project --name "my-project" --profile STANDARD
+```
 
 ## Search Phrases
 
@@ -67,7 +82,7 @@ deterministic documentation staging and profile upgrades
 
 ## Language
 
-The repository documentation (`README.md`, `llms.txt`, `SECURITY.md`,
+The repository documentation (`README.md`, `llms.txt`, `SKILL.md`, `SECURITY.md`,
 `RELEASE_GATE.md`) is English, with German `README_de.md`, Spanish `README_es.md`, French `README_fr.md`, Russian `README_ru.md`, Japanese `README_ja.md`, Simplified Chinese `README_zh.md`, Hindi `README_hi.md`, Arabic `README_ar.md`, Bengali `README_bn.md`, and Portuguese `README_pt.md` guides. The generated
 artefacts are not: the template bodies under `template/` and the CLI output of
 the tools in `template/_tools/` are currently German. File names, profile

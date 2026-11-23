@@ -8,7 +8,7 @@
 [![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](./pyproject.toml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](./pyproject.toml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](./RELEASE_GATE.md)
-[![Pytest](https://img.shields.io/badge/pytest-74%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
+[![Pytest](https://img.shields.io/badge/pytest-80%20passed%20%7C%20100%25-brightgreen.svg)](./tests)
 [![Contributing](https://img.shields.io/badge/Contributing-Guidelines-blue.svg)](./CONTRIBUTING.md)
 [![Privacidad: herramientas locales, sin telemetría](https://img.shields.io/badge/privacy-local%20tools%20%7C%20no%20telemetry-success.svg)](./SECURITY.md)
 [![Security](https://img.shields.io/badge/security-Local--First%20%7C%20Deterministic%20Staging-informational.svg)](./SECURITY.md)
@@ -22,15 +22,14 @@
 [![CI](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ellmos-ai/project-docs-template/actions/workflows/ci.yml)
 [![Language: Deutsch](https://img.shields.io/badge/Language-Deutsch-blue.svg)](./README_de.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Last Checked](https://img.shields.io/badge/last%20checked-2026--10--30-informational.svg)](./MARKETING-LOG.txt)
+[![Last Checked](https://img.shields.io/badge/last%20checked-2026--11--23-informational.svg)](./llms.txt)
 [![Third-Party Licenses](https://img.shields.io/badge/licenses-zero--dependency%20%7C%20MIT-brightgreen.svg)](./THIRD_PARTY_LICENSES.md)
-[![Marketing Log](https://img.shields.io/badge/marketing-Pfad%20A%20%26%20B%20%7C%20Active-blueviolet.svg)](./MARKETING-LOG.txt)
 
 Plantilla de documentación de proyectos preparada para agentes, con START/STATE/TODO/DONE,
 flujos de trabajo, herramientas ligeras y memoria de proyecto adaptada a los LLM.
 
 > [!NOTE]
-> **Indexación para IA / LLM**: los agentes de IA y las herramientas automatizadas pueden consultar [llms.txt](llms.txt) para obtener un resumen legible por máquinas, términos de búsqueda y detalles para desambiguar. Última comprobación: **2026-10-30**.
+> **Indexación para IA / LLM**: los agentes de IA y las herramientas automatizadas pueden consultar [llms.txt](llms.txt) para obtener un resumen legible por máquinas, términos de búsqueda y detalles para desambiguar. Última comprobación: **2026-11-23**.
 
 > Proyecto independiente, no afiliado a Anthropic, OpenAI ni Google.
 > Consulta [Marcas registradas](#trademarks).

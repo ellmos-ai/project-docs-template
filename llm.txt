@@ -1,0 +1,8 @@
+# ellmos-ai/project-docs-template
+
+See [llms.txt](./llms.txt) for the full machine-readable repository index, search phrases, and disambiguation, and [SKILL.md](./SKILL.md) for the agent-ready workflow skill.
+
+Quick summary:
+- Prerequisites: Python 3.10+ (zero external runtime dependencies)
+- Scaffold: `python template/_tools/init-project --target /path/to/project --name "project" --profile STANDARD`
+- Verify: `python -m pytest -ra -v`
