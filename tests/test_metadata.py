@@ -823,5 +823,19 @@ class MetadataAndManifestTests(unittest.TestCase):
         self.assertIn("T-20260920-167562623", content)
 
 
+    def test_documented_init_project_invocations_match_cli(self) -> None:
+        """init-project examples must use --target and --profile; --upgrade takes no value."""
+        files = sorted(REPO_ROOT.glob("README*.md")) + [
+            REPO_ROOT / "SKILL.md",
+            REPO_ROOT / "assets" / "terminal-workflow.svg",
+        ]
+        positional = re.compile(r"init-project\s+[./~]")
+        for path in files:
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(file=path.name):
+                self.assertNotIn("--upgrade full", text)
+                self.assertNotIn("--profile standard", text)
+                self.assertIsNone(positional.search(text))
+
 if __name__ == "__main__":
     unittest.main()

@@ -56,7 +56,7 @@
 
   <line x1="24" y1="352" x2="856" y2="352" stroke="#1e293b" stroke-width="1"/>
 
-  <text x="24" y="378" class="mono"><tspan class="prompt">$</tspan> <tspan class="cmd">python template/_tools/init-project ./my-app --upgrade full</tspan></text>
+  <text x="24" y="378" class="mono"><tspan class="prompt">$</tspan> <tspan class="cmd">python template/_tools/init-project --target ./my-app --upgrade --profile FULL</tspan></text>
   <text x="24" y="400" class="mono"><tspan class="accent">  VERIFY:</tspan> <tspan class="cmd">All managed SHA-256 hashes match manifest (0 unowned collisions)</tspan></text>
   <text x="24" y="422" class="mono"><tspan class="ok">  UPGRADED:</tspan> <tspan class="cmd">STANDARD -&gt; FULL (MASTER-REGISTRY.md, WORKFLOWS.md, TOOLS.md, ARCHITECTURE.md)</tspan></text>
 
