@@ -164,7 +164,7 @@ sequenceDiagram
     participant Linter as "doc-lint / todo-archive"
 
     Note over Engineer,FS: Phase 1: Projekt-Initialisierung & Profil-Scaffolding
-    Engineer->>CLI: Ausführen von init-project --profile standard
+    Engineer->>CLI: Ausführen von init-project --profile STANDARD
     CLI->>FS: Prüfe, ob das Zielverzeichnis fehlt oder leer ist
     CLI->>FS: Erzeuge START.md, STATE.md, TODO.md, DECISIONS.md
     CLI->>Manifest: Berechne SHA-256 Hashes und schreibe Manifest
@@ -184,7 +184,7 @@ sequenceDiagram
     FS-->>NextAgent: Datei-Paar aktualisiert, Journal gelöscht
 
     Note over Engineer,NextAgent: Phase 4: Profil-Upgrade mit Änderungsprüfung
-    Engineer->>CLI: Profil aktualisieren: init-project --upgrade full
+    Engineer->>CLI: Profil aktualisieren: init-project --upgrade --profile FULL
     CLI->>Manifest: Prüfe vorhandene Dateien gegen gespeicherte SHA-256 Hashes
     CLI->>FS: Ergänze FULL-Tier Router (WORKFLOWS.md, TOOLS.md)
     CLI->>Manifest: Speichere neues Profil und aktualisierte Hashes ab
@@ -381,7 +381,7 @@ Bestehende Projekte können schrittweise auf das nächste Profil aktualisiert we
 
 ```bash
 # Vorhandenes Projekt auf FULL-Profil anheben
-python template/_tools/init-project /pfad/zu/meinem-projekt --upgrade full
+python template/_tools/init-project --target /pfad/zu/meinem-projekt --upgrade --profile FULL
 ```
 
 ### Prüfungen und Grenzen beim Upgrade

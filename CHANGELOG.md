@@ -15,6 +15,7 @@ All notable public-facing changes to this repository are documented here.
   - Dunkles SVG-Terminal-Workflow-Asset [`assets/terminal-workflow.svg`](./assets/terminal-workflow.svg) (880×520) für `init-project`, `doc-lint`, `todo-archive` und `--upgrade` ergänzt und in `README.md`/`README_de.md` eingebettet (bestehendes Header-Banner unverändert erhalten).
   - Zweisprachigen Verhaltenskodex [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) sowie GitHub Issue Templates (`.github/ISSUE_TEMPLATE/bug_report.md`, `feature_request.md`, `config.yml`) ergänzt.
   - Transparenz- und KI-Herkunftshinweis (`Idee & Abnahme: Geiger`) in `README.md` und `README_de.md` verankert sowie hostspezifisches Konflikt-Beispiel in `README_de.md` neutralisiert.
+- **CLI example fix (review follow-up for #10)**: `init-project` examples in all 11 READMEs, `SKILL.md` and `assets/terminal-workflow.svg` now use the real interface (`--target <dir> --upgrade --profile FULL`, uppercase profile names); the positional/`--upgrade full` form exited with code 2. `SKILL.md` passes `--root` to `doc-lint`. A contract test guards the documented invocations.
 - **Tracking- & Test-Hygiene (`T-20260926-455218633`)**:
   - `MARKETING-LOG.txt` per `git rm --cached` aus dem Git-Index entfernt (lokal weiter in `.gitignore`), Verweise/Links aus `pyproject.toml`, `llms.txt`, `README*.md` und `tests/test_metadata.py` bereinigt und um 5 P-022-/Community-/Provenance-Vertragstests ergänzt (`80 passed, 26 subtests passed`).
 

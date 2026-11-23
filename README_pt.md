@@ -162,7 +162,7 @@ sequenceDiagram
     participant Linter as "doc-lint / todo-archive"
 
     Note over Engineer,FS: Phase 1: Project Initialization & Profile Scaffolding
-    Engineer->>CLI: Execute init-project --profile standard
+    Engineer->>CLI: Execute init-project --profile STANDARD
     CLI->>FS: Check target is absent or empty
     CLI->>FS: Stage START.md, STATE.md, TODO.md, DECISIONS.md
     CLI->>Manifest: Compute SHA-256 file hashes & write manifest
@@ -182,7 +182,7 @@ sequenceDiagram
     FS-->>NextAgent: Pair update completed, journal cleared
 
     Note over Engineer,NextAgent: Phase 4: Merge-Safe Profile Upgrade
-    Engineer->>CLI: Upgrade profile: init-project --upgrade full
+    Engineer->>CLI: Upgrade profile: init-project --upgrade --profile FULL
     CLI->>Manifest: Verify existing files match recorded SHA-256
     CLI->>FS: Stage additional FULL-tier routers (WORKFLOWS.md, TOOLS.md)
     CLI->>Manifest: Record upgraded profile and new file hashes
@@ -365,7 +365,7 @@ Projetos existentes podem ser atualizados para o próximo nível de perfil:
 
 ```bash
 # Upgrade existing project to FULL profile
-python template/_tools/init-project /path/to/my-project --upgrade full
+python template/_tools/init-project --target /path/to/my-project --upgrade --profile FULL
 ```
 
 ### Verificações de segurança durante a atualização

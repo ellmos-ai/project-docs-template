@@ -34,7 +34,7 @@ Optional `--git` initializes a `main` Git repository with an initial commit.
 
 ```bash
 python template/_tools/doc-lint --root template
-python /path/to/my-project/_tools/doc-lint --fix --update-dates
+python /path/to/my-project/_tools/doc-lint --root /path/to/my-project --fix --update-dates
 ```
 
 ### 3. Archive Completed Tasks
@@ -46,7 +46,7 @@ python /path/to/my-project/_tools/todo-archive --todo /path/to/my-project/TODO.m
 ### 4. Merge-Safe Profile Upgrade
 
 ```bash
-python template/_tools/init-project /path/to/my-project --upgrade full
+python template/_tools/init-project --target /path/to/my-project --upgrade --profile FULL
 ```
 
 ## Verification
